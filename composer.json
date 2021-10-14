@@ -1,0 +1,33 @@
+{
+    "name": "essa/api_generator",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "ahmedesa",
+            "email": "ahmedesa1997@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.0 || ^7.1 || ^7.2 || ^7.3 || ^7.4",
+        "spatie/laravel-query-builder": "^3.3"
+    },
+    "require-dev": {
+        "laravel/framework": "^5.5 || ^6.0 || ^7.0 || ^8.0"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "essa\\APIGenerator\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "essa\\APIGenerator\\APIGeneratorServiceProvider"
+            ]
+        }
+    },
+    "description": ""
+}

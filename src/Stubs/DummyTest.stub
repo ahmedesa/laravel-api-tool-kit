@@ -1,0 +1,161 @@
+<?php
+
+namespace Tests\Feature;
+
+use Tests\TestCase;
+use App\Models\User;
+use App\Models\Dummy;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+
+class DummyTest extends TestCase
+{
+    use  RefreshDatabase;
+
+    protected $endpoint = '/api/dummies';
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->withoutExceptionHandling();
+    }
+
+    public function testCreateDummy(): void
+    {
+        $this->markTestIncomplete('This test case needs review.');
+
+        $this->actingAs(User::factory()->create());
+
+        $payload = Dummy::factory()->make([])->toArray();
+
+        $this->json('POST', $this->endpoint, $payload)
+             ->assertStatus(201)
+             ->assertSee($payload['name']);
+
+        $this->assertDatabaseHas('dummies', ['id' => 1]);
+
+    }
+
+    public function testViewAllDummiesSuccessfully(): void
+    {
+        $this->markTestIncomplete('This test case needs review.');
+
+        $this->actingAs(User::factory()->create());
+
+        Dummy::factory(5)->create();
+
+        $this->json('GET', $this->endpoint)
+             ->assertStatus(200)
+             ->assertSee(Dummy::first(rand(1, 5))->name);
+    }
+
+    public function testViewAllDummiesByFooFilter(): void
+    {
+        $this->markTestIncomplete('This test case needs review.');
+
+        $this->actingAs(User::factory()->create());
+
+        Dummy::factory(5)->create();
+
+        $this->json('GET', $this->endpoint.'?filter[foo]=foo')
+             ->assertStatus(200)
+             ->assertSee('foo')
+             ->assertDontSee('foo');
+    }
+
+    public function testsCreateDummyValidation(): void
+    {
+        $this->markTestIncomplete('This test case needs review.');
+
+        $this->actingAs(User::factory()->create());
+
+        $data = [
+        ];
+
+        $this->json('post', $this->endpoint, $data)
+             ->assertJsonValidationErrors('')
+             ->assertStatus(422);
+    }
+
+    public function testViewDummyData(): void
+    {
+        $this->markTestIncomplete('This test case needs review.');
+
+        $this->actingAs(User::factory()->create());
+
+        Dummy::factory()->create();
+
+        $this->json('GET', $this->endpoint.'/1')
+             ->assertSee(Dummy::first()->name)
+             ->assertStatus(200);
+    }
+
+    public function testUpdateDummy(): void
+    {
+        $this->markTestIncomplete('This test case needs review.');
+
+        $this->actingAs(User::factory()->create());
+
+        Dummy::factory()->create();
+
+        $payload = [
+
+        ];
+
+        $this->json('PUT', $this->endpoint.'/1', $payload)
+             ->assertStatus(200)
+             ->assertSee($payload['name']);
+    }
+
+    public function testDeleteDummy(): void
+    {
+        $this->markTestIncomplete('This test case needs review.');
+
+        $this->actingAs(User::factory()->create());
+
+        Dummy::factory()->create();
+
+        $this->json('DELETE', $this->endpoint.'/1')
+             ->assertStatus(204);
+
+        $this->assertEquals(1, Dummy::onlyTrashed()->whereNotNull('deleted_at')->get()->count());
+    }
+
+    public function testRestoreDummy(): void
+    {
+        $this->markTestIncomplete('This test case needs review.');
+
+        $this->actingAs(User::factory()->create());
+
+        Dummy::factory()->create();
+
+        $this->json('DELETE', $this->endpoint.'/1')
+             ->assertStatus(204);
+
+        $this->json('GET', $this->endpoint.'/1/restore')
+             ->assertStatus(200);
+
+        $this->assertDatabaseHas('dummies', [
+            'id'         => 1,
+            'deleted_at' => null,
+        ]);
+    }
+
+    public function testPermanentDummy(): void
+    {
+        $this->markTestIncomplete('This test case needs review.');
+
+        $this->actingAs(User::factory()->create());
+
+        Dummy::factory()->create();
+
+        $this->json('DELETE', $this->endpoint.'/1')
+             ->assertStatus(204);
+
+        $this->json('DELETE', $this->endpoint.'/1/permanent-delete')
+             ->assertStatus(204);
+
+        $this->assertDatabaseMissing('dummies', ['id' => 1]);
+
+    }
+}

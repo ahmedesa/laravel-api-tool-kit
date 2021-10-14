@@ -1,0 +1,40 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use essa\APIGenerator\Filters\Filterable;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
+/**
+ * @mixin \Eloquent
+ */
+class Dummy extends Model
+{
+    use HasFactory, SoftDeletes,Filterable;
+
+    /**
+     * Mass-assignable attributes.
+     *
+     * @var array
+     */
+    protected $fillable = [
+
+    ];
+
+    /**
+     * @var array
+     */
+    protected $dates = [
+
+    ];
+
+    /**
+     * @var array
+     */
+    protected $hidden = [
+
+    ];
+
+}

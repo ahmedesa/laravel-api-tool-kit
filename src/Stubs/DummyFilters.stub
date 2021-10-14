@@ -1,0 +1,12 @@
+<?php
+
+namespace App\Filters;
+
+use essa\APIGenerator\Filters\QueryFilters;
+
+class DummyFilters extends QueryFilters
+{
+    protected array $allowedFilters = [];
+
+    protected array $columnSearch = [];
+}

@@ -1,0 +1,71 @@
+<?php
+
+namespace App\Http\Controllers\API;
+
+use App\Models\Dummy;
+use App\Filters\DummyFilters;
+use App\Services\DummyService;
+use Illuminate\Http\JsonResponse;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\Dummy\DummyResource;
+use App\Http\Requests\Dummy\CreateDummyRequest;
+use App\Http\Requests\Dummy\UpdateDummyRequest;
+
+class DummyController extends Controller
+{
+    public function __construct()
+    {
+        $this->middleware(['auth:api']);
+    }
+
+    public function index(DummyFilters $filters): AnonymousResourceCollection
+    {
+        $dummies = Dummy::filter($filters)->customPaginate();
+
+        return new DummyCollection($dummies);
+    }
+
+    public function store(CreateDummyRequest $request): JsonResponse
+    {
+        $dummy = Dummy::create($request->validated());
+
+        return $this->responseCreated('Dummy created successfully', new DummyResource($dummy));
+    }
+
+    public function show(Dummy $dummy): JsonResponse
+    {
+        return $this->responseSuccess(null, new DummyResource($dummy));
+    }
+
+    public function update(UpdateDummyRequest $request, Dummy $dummy): JsonResponse
+    {
+        $dummy->update($request->validated());
+
+        return $this->responseSuccess('Dummy updated Successfully', new DummyResource($dummy));
+    }
+
+    public function destroy(Dummy $dummy): JsonResponse
+    {
+        $dummy->delete();
+
+        return $this->responseDeleted();
+    }
+
+    public function restore($id): JsonResponse
+    {
+        $dummy = Dummy::onlyTrashed()->findOrFail($id);
+
+        $dummy->restore();
+
+        return $this->responseSuccess('Dummy restored Successfully.');
+    }
+
+    public function permanentDelete($id): JsonResponse
+    {
+        $dummy = Dummy::withTrashed()->findOrFail($id);
+
+        $dummy->forceDelete();
+
+        return $this->responseDeleted();
+    }
+}

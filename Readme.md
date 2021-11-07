@@ -80,7 +80,7 @@ if you write the command it will ask you if you want to generate all default opt
 -app/Http/Requests/Car/CreateCarRequest.php
 -app/Http/Requests/Car/UpdateCarRequest.php
 -app/Filters/CarFilters.php
--database/seeds/CarSeeder.php
+-database/seeders/CarSeeder.php
 -database/factories/CarFactory.php
 -Tests/Feature/CarTest.php
 -database/migrations/x_x_x_x_create_cars_table.php

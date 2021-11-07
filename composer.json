@@ -1,5 +1,5 @@
 {
-    "name": "essa/api_generator",
+    "name": "essa/api_tool_kit",
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -9,23 +9,21 @@
         }
     ],
     "require": {
-        "php": "^7.0 || ^7.1 || ^7.2 || ^7.3 || ^7.4",
-        "spatie/laravel-query-builder": "^3.3"
-    },
-    "require-dev": {
-        "laravel/framework": "^5.5 || ^6.0 || ^7.0 || ^8.0"
+        "php": "^7.4|^8.0",
+        "illuminate/support": "^6.20.13|7.30.4|^8.22.2"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
-            "essa\\APIGenerator\\": "src/"
+            "essa\\APIToolKit\\": "src/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "essa\\APIGenerator\\APIGeneratorServiceProvider"
+                "essa\\APIToolKit\\APIToolKitServiceProvider",
+                "essa\\APIToolKit\\MacroServiceProvider"
             ]
         }
     },

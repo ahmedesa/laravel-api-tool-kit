@@ -1,6 +1,6 @@
 <?php
 
-namespace essa\APIGenerator\Api;
+namespace essa\APIToolKit\Api;
 
 use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;

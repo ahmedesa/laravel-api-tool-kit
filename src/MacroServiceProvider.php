@@ -1,28 +1,13 @@
 <?php
 
-namespace essa\APIGenerator;
+namespace essa\APIToolKit;
 
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Builder;
-use essa\APIGenerator\Commands\GenerateComponent;
 
-class APIGeneratorServiceProvider extends ServiceProvider
+class MacroServiceProvider extends ServiceProvider
 {
-    /**
-     * Register services.
-     *
-     * @return void
-     */
-    public function register()
-    {
-    }
-
-    /**
-     * Bootstrap services.
-     *
-     * @return void
-     */
     public function boot()
     {
         Builder::macro('customPaginate', function () {
@@ -44,11 +29,5 @@ class APIGeneratorServiceProvider extends ServiceProvider
                 'pageName' => 'page',
             ]);
         });
-
-        if ($this->app->runningInConsole()) {
-            $this->commands([
-                GenerateComponent::class,
-            ]);
-        }
     }
 }

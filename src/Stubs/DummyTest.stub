@@ -12,6 +12,7 @@ class DummyTest extends TestCase
     use  RefreshDatabase;
 
     protected $endpoint = '/api/dummies';
+    protected $table_name = 'dummies';
 
     public function setUp(): void
     {
@@ -32,8 +33,7 @@ class DummyTest extends TestCase
              ->assertStatus(201)
              ->assertSee($payload['name']);
 
-        $this->assertDatabaseHas('dummies', ['id' => 1]);
-
+        $this->assertDatabaseHas($this->table_name, ['id' => 1]);
     }
 
     public function testViewAllDummiesSuccessfully(): void
@@ -46,6 +46,7 @@ class DummyTest extends TestCase
 
         $this->json('GET', $this->endpoint)
              ->assertStatus(200)
+             ->assertJsonCount(5, 'data')
              ->assertSee(Dummy::first(rand(1, 5))->name);
     }
 
@@ -57,7 +58,7 @@ class DummyTest extends TestCase
 
         Dummy::factory(5)->create();
 
-        $this->json('GET', $this->endpoint.'?filter[foo]=foo')
+        $this->json('GET', $this->endpoint.'?foo=1')
              ->assertStatus(200)
              ->assertSee('foo')
              ->assertDontSee('foo');
@@ -73,7 +74,6 @@ class DummyTest extends TestCase
         ];
 
         $this->json('post', $this->endpoint, $data)
-             ->assertJsonValidationErrors('')
              ->assertStatus(422);
     }
 
@@ -118,9 +118,9 @@ class DummyTest extends TestCase
         $this->json('DELETE', $this->endpoint.'/1')
              ->assertStatus(204);
 
-        $this->assertEquals(1, Dummy::onlyTrashed()->whereNotNull('deleted_at')->get()->count());
+        $this->assertEquals(0, Dummy::count());
     }
-
+    @if('soft_delete')
     public function testRestoreDummy(): void
     {
         $this->markTestIncomplete('This test case needs review.');
@@ -135,7 +135,7 @@ class DummyTest extends TestCase
         $this->json('GET', $this->endpoint.'/1/restore')
              ->assertStatus(200);
 
-        $this->assertDatabaseHas('dummies', [
+        $this->assertDatabaseHas($this->table_name, [
             'id'         => 1,
             'deleted_at' => null,
         ]);
@@ -155,7 +155,6 @@ class DummyTest extends TestCase
         $this->json('DELETE', $this->endpoint.'/1/permanent-delete')
              ->assertStatus(204);
 
-        $this->assertDatabaseMissing('dummies', ['id' => 1]);
-
-    }
+        $this->assertDatabaseMissing($this->table_name, ['id' => 1]);
+    }@endif('soft_delete')
 }

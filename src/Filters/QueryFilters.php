@@ -1,5 +1,5 @@
 <?php
-namespace essa\APIGenerator\Filters;
+namespace essa\APIToolKit\Filters;
 
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;

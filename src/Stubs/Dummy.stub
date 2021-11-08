@@ -3,19 +3,19 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-@if('filters')use App\Filters\DummyFilters;
-use essa\APIToolKit\Filters\Filterable;@endif('filters')
+@if('filter')use App\Filters\DummyFilters;
+use essa\APIToolKit\Filters\Filterable;@endif('filter')
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-@if('soft_delete')use Illuminate\Database\Eloquent\SoftDeletes;@endif('soft_delete')
+@if('soft-delete')use Illuminate\Database\Eloquent\SoftDeletes;@endif('soft-delete')
 
 /**
  * @mixin \Eloquent
  */
 class Dummy extends Model
 {
-    use HasFactory@if('filters'),Filterable@endif('filters')@if('soft_delete'),SoftDeletes@endif('soft_delete');
+    use HasFactory@if('filter'),Filterable@endif('filter')@if('soft-delete'),SoftDeletes@endif('soft-delete');
 
-@if('filters')protected $default_filters = DummyFilters::class;@endif('filters')
+@if('filter')protected $default_filters = DummyFilters::class;@endif('filter')
 
     /**
      * Mass-assignable attributes.

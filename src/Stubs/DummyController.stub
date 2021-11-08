@@ -20,7 +20,7 @@ class DummyController extends Controller
 
     public function index()@if('resource'): AnonymousResourceCollection @endif('resource')
     {
-        $dummies = Dummy::@if('filters')useFilters()->@endif('filters')customPaginate();
+        $dummies = Dummy::@if('filter')useFilters()->@endif('filter')customPaginate();
 
         return @if('resource')DummyResource::collection(@endif('resource')$dummies@if('resource'))@endif('resource');
     }
@@ -50,7 +50,7 @@ class DummyController extends Controller
 
         return $this->responseDeleted();
     }
-@if('soft_delete')
+@if('soft-delete')
     public function restore($id): JsonResponse
     {
         $dummy = Dummy::onlyTrashed()->findOrFail($id);
@@ -68,5 +68,5 @@ class DummyController extends Controller
 
         return $this->responseDeleted();
     }
-@endif('soft_delete')
+@endif('soft-delete')
 }

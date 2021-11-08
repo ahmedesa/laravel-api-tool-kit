@@ -4,11 +4,11 @@
 =============================*/
 
 Route::apiResource('/dummies', \App\Http\Controllers\API\DummyController::class);
-@if('soft_delete')
+@if('soft-delete')
 Route::group([
    'prefix' => 'dummies',
 ], function() {
     Route::get('{id}/restore', [\App\Http\Controllers\API\DummyController::class, 'restore']);
     Route::delete('{id}/permanent-delete', [\App\Http\Controllers\API\DummyController::class, 'permanentDelete']);
-});@endif('soft_delete')
+});@endif('soft-delete')
 /*=====  End of dummies   ======*/

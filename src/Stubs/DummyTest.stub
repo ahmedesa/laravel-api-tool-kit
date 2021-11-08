@@ -120,7 +120,7 @@ class DummyTest extends TestCase
 
         $this->assertEquals(0, Dummy::count());
     }
-    @if('soft_delete')
+    @if('soft-delete')
     public function testRestoreDummy(): void
     {
         $this->markTestIncomplete('This test case needs review.');
@@ -156,5 +156,5 @@ class DummyTest extends TestCase
              ->assertStatus(204);
 
         $this->assertDatabaseMissing($this->table_name, ['id' => 1]);
-    }@endif('soft_delete')
+    }@endif('soft-delete')
 }

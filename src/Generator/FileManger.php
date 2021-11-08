@@ -6,7 +6,7 @@ use Illuminate\Support\Str;
 
 trait FileManger
 {
-    protected function getTemplate($type)
+    protected function getTemplate(string $type): string
     {
         $patterns = [
             '/Dummy/',
@@ -28,39 +28,35 @@ trait FileManger
             $this->getStubs($type)
         );
 
-        $output = $this->removeTags(
-            $output,
-            $this->option('soft-delete'),
-            'soft_delete'
-        );
-
-        $output = $this->removeTags(
-            $output,
-            $this->option('request'),
-            'request'
-        );
-
-        $output = $this->removeTags(
-            $output,
-            $this->option('resource'),
-            'resource'
-        );
-
-        $output = $this->removeTags(
-            $output,
-            $this->option('filter'),
-            'filters'
-        );
-
-        return $output;
+        return $this->removeTags($output, [
+            'soft-delete',
+            'request',
+            'resource',
+            'filter',
+        ]);
     }
 
-    private function getStubs($type)
+    private function getStubs(string $type): string
     {
         return file_get_contents(__DIR__ . '/../Stubs/' . $type . ".stub");
     }
 
-    public function removeTags($string, $condition, $tag)
+    private function removeTags(string $string, array $options): string
+    {
+        $result = $string;
+
+        foreach ($options as $option) {
+            $result = $this->removeTag(
+                $result,
+                $this->option($option),
+                $option
+            );
+        }
+
+        return $result;
+    }
+
+    private function removeTag(string $string, $condition, string $tag): string
     {
         $pattern = $condition
             ? "/@if\(\'$tag\'\)|@endif\(\'$tag\'\)/"

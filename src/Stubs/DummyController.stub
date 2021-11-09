@@ -20,7 +20,7 @@ class DummyController extends Controller
 
     public function index()@if('resource'): AnonymousResourceCollection @endif('resource')
     {
-        $dummies = Dummy::@if('filter')useFilters()->@endif('filter')customPaginate();
+        $dummies = Dummy::@if('filter')useFilters()->@endif('filter')dynamicPaginate();
 
         return @if('resource')DummyResource::collection(@endif('resource')$dummies@if('resource'))@endif('resource');
     }

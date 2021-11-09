@@ -12,6 +12,8 @@ Laravel api tool kit is a set of tools that will help you to build a fast and we
 
 [Api response](#api-response)
 
+[Dynamic Pagination](#dynamic-pagination)
+
 [Filters](#filters)
 
 [comment]: <> ([Out of the box permissions]&#40;#out-of-the-box-permissions&#41;)
@@ -153,6 +155,24 @@ responseWithCustomError($error_title, $error_details, $status_code) //send custo
 ```
 [🔝 Back to contents](#contents)
 
+### **Dynamic Pagination**
+
+use pagination dynamically
+
+#### usage
+to use dynamic pagination to get all users :
+```php
+$users = User::dynamicPaginate();
+```
+to get all users without pagination :
+```
+\users?pagination='none'
+```
+to get all users paginated 10 users per page:
+```
+\users?per_page=10
+```
+by default pagination is 20 element per page you can change the default value from config/api-tool-kit
 ### **Filters**
 
 usage:
@@ -280,7 +300,6 @@ $image_path = MediaHelper::uploadImage($file ,$path);
 //to delete an image
 MediaHelper::deleteImage($path); //to delete image
 ```
-Available Methods
 
 [🔝 Back to contents](#contents)
 

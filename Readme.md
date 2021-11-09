@@ -1,5 +1,7 @@
 # Laravel API tool kit and best API practices
 
+![](laravel-api-tool-kit.png)
+
 Laravel api tool kit is a set of tools that will help you to build a fast and well-organized API using laravel best practices.
 
 ## Contents

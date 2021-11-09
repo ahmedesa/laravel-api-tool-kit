@@ -6,7 +6,7 @@ Laravel api tool kit is a set of tools that will help you to build a fast and we
 
 [Installation](#installation)
 
-[Api Generator module](#api-generator-module)
+[Api Generator](#api-generator)
 
 [Api response](#api-response)
 
@@ -33,7 +33,7 @@ to publish config
 php artisan vendor:publish --provider="essa\APIToolKit\APIToolKitServiceProvider" --tag="config"
 ```
 
-use exception handler to standardize the error response
+use exception handler to standardize the error response [Error Response](#error-response)
 
 ```php
 
@@ -64,7 +64,7 @@ check : [API response](#api-response)
 
 [🔝 Back to contents](#contents)
 
-### **API Generator module**
+### **API Generator**
 
 #### Usage :
 
@@ -72,38 +72,49 @@ check : [API response](#api-response)
 php artisan api:generate Car
 ```
 
-if you write the command it will ask you if you want to generate all default options which you can select in config/api-tool-kit file if you decide not to change the default option and decide to select all option it will generate the following files :
+when you type the command it will ask you whether you want default options :
+- (N) it will ask you which files you want to generate . 
+- (Y) it will generate files for all options that exists in config/api-tool-kit
+##### options :
 ```
+ ** by default it will create a model :
 -app/Models/Car.php
+ ** controller :
 -app/Http/Controllers/API/CarController.php
+ ** resource :
 -app/Http/Resources/CarResource.php
+ ** request :
 -app/Http/Requests/Car/CreateCarRequest.php
 -app/Http/Requests/Car/UpdateCarRequest.php
+ ** filter :
 -app/Filters/CarFilters.php
+ ** seeder :
 -database/seeders/CarSeeder.php
+ ** factory :
 -database/factories/CarFactory.php
+ ** test :
 -Tests/Feature/CarTest.php
+ ** migration :
 -database/migrations/x_x_x_x_create_cars_table.php
 ```
-and will create api.php in routes file and will add the routes to it
+in addition, the routes will be created and added in routes/api.php files 
 
-if you choose not to select all options it will ask you which files you want to generate
 
 [🔝 Back to contents](#contents)
 
-### **API Response**
+#### **API Response**
 
 it is used to format your response to standard format and status codes
 for success responses, it will be
 
+### **Success Response**
 ```json
 {
   "message": "your message",
   "data": "your date"
 }
 ```
-for errors responses
-
+#### **Error Response**
 ```json
 {
   "errors": [
@@ -130,13 +141,13 @@ Available Methods
 responseSuccess($message , $data)  // returns a 200 HTTP status code
 responseCreated($message,$data)  // returns a 201 HTTP status code 
 responseDeleted()  // returns empty response with a 204 HTTP status code
-responseNotFound($details,$message)  // returns a 404 HTTP status code
-responseBadRequest($details,$message)  // returns a 400 HTTP status code
-responseUnAuthorized($details,$message)  // returns a 403 HTTP status code
-responseConflictError($details,$message)  // returns a 409 HTTP status code
-responseUnprocessable($details,$message)  // returns a 422 HTTP status code
-responseUnAuthenticated ($details,$message) // returns a 401 HTTP status code
-responseWithCustomError($title, $details, $status_code) //send custom error 
+responseNotFound($error_details,$error_title)  // returns a 404 HTTP status code
+responseBadRequest($error_details,$error_title)  // returns a 400 HTTP status code
+responseUnAuthorized($error_details,$error_title)  // returns a 403 HTTP status code
+responseConflictError($error_details,$error_title)  // returns a 409 HTTP status code
+responseUnprocessable($error_details,$error_title)  // returns a 422 HTTP status code
+responseUnAuthenticated ($error_details,$error_title) // returns a 401 HTTP status code
+responseWithCustomError($error_title, $error_details, $status_code) //send custom error 
 ```
 [🔝 Back to contents](#contents)
 
@@ -165,41 +176,46 @@ Car::useFilters(SpecialCaseCarFilters::class)->get();
 options in Filter class
 
 ```php
-    //to add the attributes to filter by =>> /cars?color=red&model_id=1
-    protected array $allowedFilters  = ['color' , 'model_id']; 
-    //to add the attributes to filter by =>> desc : ?sorts=created_at asc : ?sorts=-created_at
-    protected array $allowedSorts    = ['created_at'];
-    //allowed relationships to be loaded 
-    protected array $allowedIncludes = ['model'];
-    //column that will be included in search =>> ?search=tesla
-    protected array $columnSearch    = ['name','descriptions']; 
-    //relation that will be included in search =>> ?search=ahmed
-    protected array $relationSearch = [
-        'user' => ['first_name', 'last_name']
-    ]; 
+//to add the attributes to filter by =>> /cars?color=red&model_id=1
+protected array $allowedFilters  = ['color' , 'model_id']; 
+//to add the attributes to filter by :
+// desc : ?sorts=created_at
+// asc  : ?sorts=-created_at
+protected array $allowedSorts= ['created_at'];
+//allowed relationships to be loaded 
+protected array $allowedIncludes = ['model'];
+//column that will be included in search =>> ?search=tesla
+protected array $columnSearch= ['name','descriptions']; 
+//relation that will be included in search =>> ?search=ahmed
+protected array $relationSearch = [
+    'user' => ['first_name', 'last_name']
+]; 
 ```
 
 to create a custom query you will just create a new function in the class and add your query
 example filter by year:
 ```php
-    public function year($term)
-    {
-        $this->builder->whereYear('created_At', $term);
-    }
+public function year($term)
+{
+    $this->builder->whereYear('created_At', $term);
+}
+
+//usage : /cars?year=2020
 ```
 filter by relationship :
 ```php 
-    public function option($term)
-    {
-        $this->builder->whereHas('options', fn($query) => $query->where('option_id', $term));
-    }
+public function option($term)
+{
+    $this->builder->whereHas('options', fn($query) => $query->where('option_id', $term));
+}
+//usage : /cars?option=1
 ```
 
 
 [🔝 Back to contents](#contents)
 
 ### **Actions**
-action is a laravel implementation of command design pattern where can add the business logic in https://en.wikipedia.org/wiki/Command_pattern
+action is a laravel implementation of command design pattern which create a class where you can add your business logic in https://en.wikipedia.org/wiki/Command_pattern
 
 usage:
 
@@ -213,47 +229,48 @@ namespace App\Actions;
 
 class CreateCar
 {
-    public function execute(array $data)
+    public function execute($data)
     {
       //add business logic to create a car
     }
 }
 ```
-
 The best practice to use the action class is to use dependency injection
+
 you have many options
-1-use laravel app class
+1-use laravel application container
 ```php
 app(CreateCar::class)->execute($data);
 ```
-2-inject it in class construct
+2-inject it in the class in constructor
 
 ```php
-    private $create_car_action ;
-    public function __construct(CreateCar $create_car_action)
-    {
-        $this->create_car_action=$create_car_action;
-    }
-    
-    public function doSomething()
-    {
-        $this->create_car_action->execute($data);
-    }
+private $create_car_action ;
+
+public function __construct(CreateCar $create_car_action)
+{
+    $this->create_car_action=$create_car_action;
+}
+
+public function doSomething()
+{
+    $this->create_car_action->execute($data);
+}
 ```
-3-use it in laravel controller function
+3-inject the class in laravel controller function
 
 ```php
-    public function doSomething(CreateCar $create_car_action)
-    {
-        $create_car_action->execute($data);
-    }
+public function doSomething(CreateCar $create_car_action)
+{
+    $create_car_action->execute($data);
+}
 ```
 [🔝 Back to contents](#contents)
 
 
 ### **Media Helper**
 
-it is used to upload and delete an image
+it is used to upload and delete an image in storage
 
 ```php
 // to upload image
@@ -267,7 +284,7 @@ Available Methods
 
 ### **Enum
 bad practice :
-if I have two types of users admin and student instead of hard coding the name of user type every time using it you can simply use the enum class
+if I have two types of users (admin ,student) instead of hard coding the name of user type every time using it you can simply use the enum class
 
 usage :
 ```
@@ -285,9 +302,9 @@ class UserTypes extends Enum
 ```
 methods:
 ```php
-getAll() //get all types 
-isValid($value) //to check if this value exist in the enum
-toArray() //to get all enums as key and value
+UserTypes::getAll() //get all types 
+UserTypes::isValid($value) //to check if this value exist in the enum
+UserTypes::toArray() //to get all enums as key and value
 ```
 
 [🔝 Back to contents](#contents)
@@ -296,15 +313,13 @@ toArray() //to get all enums as key and value
 
 ### **throw error instead of return json response**
 
-A class and a method should have only one responsibility.
-
 Bad:
 
 ```php
 public function index()
 {
     if (auth()->user()->not_active ) {
-        $this->responseUnAuthorized('you cant preform this action'');
+        $this->responseUnAuthorized('you can not preform this action');
     } 
 }
 ```
@@ -314,7 +329,7 @@ good
 public function index()
 {
     if (auth()->user()->not_active ) {
-        throw new AuthorizationException('you cant preform this action'');
+        throw new AuthorizationException('you can not preform this action');
     } 
 }
 ```

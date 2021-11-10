@@ -27,7 +27,7 @@ Laravel api tool kit is a set of tools that will help you to build a fast and we
 [General tips](#general-tips)
 
 
-### **Installation**
+## **Installation**
 
 ```
 composer require essa/api-tool-kit
@@ -68,12 +68,12 @@ check : [API response](#api-response)
 
 [🔝 Back to contents](#contents)
 
-#### **API Response**
+## **API Response**
 
 it is used to format your response to standard format and status codes
 for success responses, it will be
 
-### **Success Response**
+#### **Success Response**
 ```json
 {
   "message": "your message",
@@ -117,7 +117,7 @@ responseWithCustomError($error_title, $error_details, $status_code) //send custo
 ```
 [🔝 Back to contents](#contents)
 
-### **Dynamic Pagination**
+## **Dynamic Pagination**
 
 use pagination dynamically
 
@@ -135,7 +135,7 @@ to get all users paginated 10 users per page:
 \users?per_page=10
 ```
 by default pagination is 20 element per page you can change the default value from config/api-tool-kit
-### **Filters**
+## **Filters**
 
 usage:
 
@@ -198,7 +198,7 @@ public function option($term)
 
 [🔝 Back to contents](#contents)
 
-### **API Generator**
+## **API Generator**
 
 #### Usage :
 
@@ -235,7 +235,7 @@ in addition, the routes will be created and added in routes/api.php files
 
 
 [🔝 Back to contents](#contents)
-### **Actions**
+## **Actions**
 action is a laravel implementation of command design pattern which create a class where you can add your business logic in https://en.wikipedia.org/wiki/Command_pattern
 
 usage:
@@ -289,7 +289,7 @@ public function doSomething(CreateCar $create_car_action)
 [🔝 Back to contents](#contents)
 
 
-### **Media Helper**
+## **Media Helper**
 
 it is used to upload and delete an image in storage
 
@@ -302,7 +302,7 @@ MediaHelper::deleteImage($path); //to delete image
 
 [🔝 Back to contents](#contents)
 
-### **Enum
+## **Enum
 bad practice :
 if I have two types of users (admin ,student) instead of hard coding the name of user type every time using it you can simply use the enum class
 
@@ -329,7 +329,7 @@ UserTypes::toArray() //to get all enums as key and value
 
 [🔝 Back to contents](#contents)
 
-### **General Tips**
+## **General Tips**
 
 ### **throw error instead of return json response**
 

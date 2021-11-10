@@ -8,13 +8,13 @@ Laravel api tool kit is a set of tools that will help you to build a fast and we
 
 [Installation](#installation)
 
-[Api Generator](#api-generator)
-
 [Api response](#api-response)
 
 [Dynamic Pagination](#dynamic-pagination)
 
 [Filters](#filters)
+
+[Api Generator](#api-generator)
 
 [comment]: <> ([Out of the box permissions]&#40;#out-of-the-box-permissions&#41;)
 
@@ -65,44 +65,6 @@ class Controller extends BaseController
 }
 ```
 check : [API response](#api-response)
-
-[🔝 Back to contents](#contents)
-
-### **API Generator**
-
-#### Usage :
-
-```
-php artisan api:generate Car
-```
-
-when you type the command it will ask you whether you want default options :
-- (N) it will ask you which files you want to generate . 
-- (Y) it will generate files for all options that exists in config/api-tool-kit
-##### options :
-```
- ** by default it will create a model :
--app/Models/Car.php
- ** controller :
--app/Http/Controllers/API/CarController.php
- ** resource :
--app/Http/Resources/CarResource.php
- ** request :
--app/Http/Requests/Car/CreateCarRequest.php
--app/Http/Requests/Car/UpdateCarRequest.php
- ** filter :
--app/Filters/CarFilters.php
- ** seeder :
--database/seeders/CarSeeder.php
- ** factory :
--database/factories/CarFactory.php
- ** test :
--Tests/Feature/CarTest.php
- ** migration :
--database/migrations/x_x_x_x_create_cars_table.php
-```
-in addition, the routes will be created and added in routes/api.php files 
-
 
 [🔝 Back to contents](#contents)
 
@@ -236,6 +198,43 @@ public function option($term)
 
 [🔝 Back to contents](#contents)
 
+### **API Generator**
+
+#### Usage :
+
+```
+php artisan api:generate Car
+```
+
+when you type the command it will ask you whether you want default options :
+- (N) it will ask you which files you want to generate .
+- (Y) it will generate files for all options that exists in config/api-tool-kit
+##### options :
+```
+ ** by default it will create a model :
+-app/Models/Car.php
+ ** controller :
+-app/Http/Controllers/API/CarController.php
+ ** resource :
+-app/Http/Resources/CarResource.php
+ ** request :
+-app/Http/Requests/Car/CreateCarRequest.php
+-app/Http/Requests/Car/UpdateCarRequest.php
+ ** filter :
+-app/Filters/CarFilters.php
+ ** seeder :
+-database/seeders/CarSeeder.php
+ ** factory :
+-database/factories/CarFactory.php
+ ** test :
+-Tests/Feature/CarTest.php
+ ** migration :
+-database/migrations/x_x_x_x_create_cars_table.php
+```
+in addition, the routes will be created and added in routes/api.php files
+
+
+[🔝 Back to contents](#contents)
 ### **Actions**
 action is a laravel implementation of command design pattern which create a class where you can add your business logic in https://en.wikipedia.org/wiki/Command_pattern
 

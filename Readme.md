@@ -1,4 +1,4 @@
-# Laravel API tool kit and best API practices
+# Laravel API tool kit
 
 ![](laravel-api-tool-kit.png)
 

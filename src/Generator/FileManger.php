@@ -1,6 +1,6 @@
 <?php
 
-namespace essa\APIToolKit\Generator;
+namespace Essa\APIToolKit\Generator;
 
 use Illuminate\Support\Str;
 

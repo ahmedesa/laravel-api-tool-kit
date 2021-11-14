@@ -2,7 +2,7 @@
 
 namespace DummyNamespace;
 
-use essa\APIToolKit\Enum\Enum;
+use Essa\APIToolKit\Enum\Enum;
 
 class DummyClass extends Enum
 {

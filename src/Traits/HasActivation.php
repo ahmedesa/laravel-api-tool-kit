@@ -1,6 +1,6 @@
 <?php
 
-namespace essa\APIToolKit\Traits;
+namespace Essa\APIToolKit\Traits;
 
 use Illuminate\Database\Eloquent\Builder;
 

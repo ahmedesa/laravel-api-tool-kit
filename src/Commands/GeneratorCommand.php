@@ -1,13 +1,13 @@
 <?php
 
-namespace essa\APIToolKit\Commands;
+namespace Essa\APIToolKit\Commands;
 
 use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Artisan;
-use essa\APIToolKit\Generator\Generator;
-use essa\APIToolKit\Generator\FileManger;
+use Essa\APIToolKit\Generator\Generator;
+use Essa\APIToolKit\Generator\FileManger;
 
 class GeneratorCommand extends Command
 {

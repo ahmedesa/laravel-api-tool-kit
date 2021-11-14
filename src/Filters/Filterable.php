@@ -1,6 +1,6 @@
 <?php
 
-namespace essa\APIToolKit\Filters;
+namespace Essa\APIToolKit\Filters;
 
 use Illuminate\Database\Eloquent\Builder;
 

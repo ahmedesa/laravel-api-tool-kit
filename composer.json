@@ -1,11 +1,21 @@
 {
     "name": "essa/api_tool_kit",
+    "description": "set of tools to build an api with laravel",
+    "keywords": [
+        "laravel",
+        "api",
+        "filters",
+        "dynamic-pagination",
+        "tools",
+        "api-generator"
+    ],
+    "homepage": "https://github.com/ahmedesa/laravel-api-tool-kit",
     "type": "library",
     "license": "MIT",
     "authors": [
         {
-            "name": "ahmedesa",
-            "email": "ahmedesa1997@gmail.com"
+            "name": "Ahmed Esa",
+            "email": "ahmedesa6120@gmail.com"
         }
     ],
     "require": {
@@ -16,16 +26,15 @@
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
-            "essa\\APIToolKit\\": "src/"
+            "Essa\\APIToolKit\\": "src/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "essa\\APIToolKit\\APIToolKitServiceProvider",
-                "essa\\APIToolKit\\MacroServiceProvider"
+                "Essa\\APIToolKit\\APIToolKitServiceProvider",
+                "Essa\\APIToolKit\\MacroServiceProvider"
             ]
         }
-    },
-    "description": ""
+    }
 }

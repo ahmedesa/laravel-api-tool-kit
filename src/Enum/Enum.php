@@ -1,6 +1,6 @@
 <?php
 
-namespace essa\APIToolKit\Enum;
+namespace Essa\APIToolKit\Enum;
 
 abstract class Enum
 {

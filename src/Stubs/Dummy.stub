@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 @if('filter')use App\Filters\DummyFilters;
-use essa\APIToolKit\Filters\Filterable;@endif('filter')
+use Essa\APIToolKit\Filters\Filterable;@endif('filter')
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 @if('soft-delete')use Illuminate\Database\Eloquent\SoftDeletes;@endif('soft-delete')
 

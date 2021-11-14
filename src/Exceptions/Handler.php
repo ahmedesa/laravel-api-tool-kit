@@ -1,11 +1,11 @@
 <?php
 
-namespace essa\APIToolKit\Exceptions;
+namespace Essa\APIToolKit\Exceptions;
 
 use Illuminate\Support\Str;
 use Psr\Log\LoggerInterface;
 use Illuminate\Http\Response;
-use essa\APIToolKit\Api\ApiResponse;
+use Essa\APIToolKit\Api\ApiResponse;
 use Illuminate\Database\QueryException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Validation\ValidationException;

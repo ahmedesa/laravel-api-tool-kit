@@ -1,13 +1,13 @@
 <?php
 
-namespace essa\APIToolKit;
+namespace Essa\APIToolKit;
 
 use Illuminate\Support\ServiceProvider;
-use essa\APIToolKit\Commands\MakeEnumCommand;
-use essa\APIToolKit\Commands\GeneratorCommand;
-use essa\APIToolKit\Commands\MakeActionCommand;
-use essa\APIToolKit\Commands\MakeFilterCommand;
-use essa\APIToolKit\Commands\GeneratePermissions;
+use Essa\APIToolKit\Commands\MakeEnumCommand;
+use Essa\APIToolKit\Commands\GeneratorCommand;
+use Essa\APIToolKit\Commands\MakeActionCommand;
+use Essa\APIToolKit\Commands\MakeFilterCommand;
+use Essa\APIToolKit\Commands\GeneratePermissions;
 
 class APIToolKitServiceProvider extends ServiceProvider
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace essa\APIToolKit\Api;
+namespace Essa\APIToolKit\Api;
 
 use GuzzleHttp\Client;
 

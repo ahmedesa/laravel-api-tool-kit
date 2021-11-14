@@ -2,7 +2,7 @@
 
 namespace App\Filters;
 
-use essa\APIToolKit\Filters\QueryFilters;
+use Essa\APIToolKit\Filters\QueryFilters;
 
 class DummyFilters extends QueryFilters
 {

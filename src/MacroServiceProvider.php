@@ -1,6 +1,6 @@
 <?php
 
-namespace essa\APIToolKit;
+namespace Essa\APIToolKit;
 
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;

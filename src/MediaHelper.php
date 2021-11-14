@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Helpers;
+namespace Essa\APIToolKit;
 
 use Illuminate\Support\Facades\Storage;
 

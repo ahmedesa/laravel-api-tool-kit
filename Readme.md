@@ -34,7 +34,7 @@ composer require essa/api-tool-kit
 ```
 to publish config
 ```
-php artisan vendor:publish --provider="essa\APIToolKit\APIToolKitServiceProvider" --tag="config"
+php artisan vendor:publish --provider="Essa\APIToolKit\APIToolKitServiceProvider" --tag="config"
 ```
 
 use exception handler to standardize the error response [Error Response](#error-response)
@@ -43,8 +43,8 @@ use exception handler to standardize the error response [Error Response](#error-
 
 namespace App\Exceptions;
 
-use essa\APIToolKit\Exceptions\Handler;
-use essa\APIToolKit\Exceptions\Handler as APIHandler;
+use Essa\APIToolKit\Exceptions\Handler;
+use Essa\APIToolKit\Exceptions\Handler as APIHandler;
 
 class Handler extends ExceptionHandler
 {
@@ -57,7 +57,7 @@ use API Response Trait in Controller
 `App\Http\Controllers\Controller.php`:
 
 ```php
-use essa\APIToolKit\Http\ApiResponse;
+use Essa\APIToolKit\Http\ApiResponse;
 
 class Controller extends BaseController
 {

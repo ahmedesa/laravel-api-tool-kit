@@ -1,6 +1,6 @@
 <?php
 
-namespace essa\APIToolKit\Traits;
+namespace Essa\APIToolKit\Traits;
 
 use Str;
 use Illuminate\Database\Eloquent\Model;

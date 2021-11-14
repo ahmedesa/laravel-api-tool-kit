@@ -1,6 +1,6 @@
 <?php
 
-namespace essa\APIToolKit\Commands;
+namespace Essa\APIToolKit\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;

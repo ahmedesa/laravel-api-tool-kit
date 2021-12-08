@@ -39,14 +39,14 @@ php artisan vendor:publish --provider="Essa\APIToolKit\APIToolKitServiceProvider
 
 use exception handler to standardize the error response [Error Response](#error-response)
 
+in App\Exceptions\Handler class extend the APIHandler class
 ```php
 
 namespace App\Exceptions;
 
-use Essa\APIToolKit\Exceptions\Handler;
 use Essa\APIToolKit\Exceptions\Handler as APIHandler;
 
-class Handler extends ExceptionHandler
+class Handler extends APIHandler
 {
 }
 

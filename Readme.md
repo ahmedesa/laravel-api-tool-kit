@@ -57,7 +57,7 @@ use API Response Trait in Controller
 `App\Http\Controllers\Controller.php`:
 
 ```php
-use Essa\APIToolKit\Http\ApiResponse;
+use Essa\APIToolKit\Api\ApiResponse;
 
 class Controller extends BaseController
 {
@@ -141,7 +141,7 @@ usage:
 
 to create a filter class:
 ```
-php artisan make:action CarFilters
+php artisan make:filter CarFilters
 ```
 to set default filters to the Car model , in Car model you will add
 ```php

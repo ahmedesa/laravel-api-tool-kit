@@ -93,7 +93,7 @@ trait ApiResponse
         $message = 'Unauthorized!'
     ): JsonResponse
     {
-        return $this->APIError(Response::HTTP_UNAUTHORIZED, $message, $details);
+        return $this->APIError(Response::HTTP_FORBIDDEN, $message, $details);
     }
 
     /**
@@ -106,7 +106,7 @@ trait ApiResponse
         $message = 'unauthenticated!'
     ): JsonResponse
     {
-        return $this->APIError(Response::HTTP_FORBIDDEN, $message, $details);
+        return $this->APIError(Response::HTTP_UNAUTHORIZED, $message, $details);
     }
 
     /**

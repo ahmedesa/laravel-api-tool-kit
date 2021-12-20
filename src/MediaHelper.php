@@ -27,6 +27,25 @@ class MediaHelper
         return $image->store('/' . $path);
     }
 
+
+    /**
+     * upload multiple images
+     * @param array $images
+     * @param string $path
+     * @param bool $with_original_names
+     * @return array
+     */
+    public static function uploadMultiple(array $images, string $path, bool $with_original_names = false): array
+    {
+        $images_names = [];
+
+        foreach ($images as $image) {
+            $images_names[] = self::uploadImage($image, $path, $with_original_names);
+        }
+
+        return $images_names;
+    }
+
     /**
      * [deleteImage description]
      * @param  [string] $image [image path to be deleted]

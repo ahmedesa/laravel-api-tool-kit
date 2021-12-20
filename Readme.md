@@ -297,7 +297,9 @@ it is used to upload and delete an image in storage
 // to upload image
 $image_path = MediaHelper::uploadImage($file ,$path); 
 //to delete an image
-MediaHelper::deleteImage($path); //to delete image
+MediaHelper::deleteImage($path); 
+//upload multiple images
+$files_paths = MediaHelper::uploadMultiple($files ,$path); 
 ```
 
 [🔝 Back to contents](#contents)

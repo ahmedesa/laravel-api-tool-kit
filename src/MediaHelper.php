@@ -46,6 +46,31 @@ class MediaHelper
         return $images_names;
     }
 
+
+    /**
+     * @param $image
+     * @param string $path
+     * @param string|null $old_image
+     * @return string
+     */
+    public static function uploadBase64Image($image, string $path, string $old_image = null): string
+    {
+        if (! is_null($old_image)) {
+            self::deleteImage($old_image);
+        }
+
+        @list($type, $file_data) = explode(';', $image);
+
+        @list(, $file_data) = explode(',', $file_data);
+
+        $image_name = time().uniqid() . '.png';
+
+        return Storage::put(
+            $path . '/' . $image_name,
+            base64_decode($file_data)
+        );
+    }
+
     /**
      * [deleteImage description]
      * @param  [string] $image [image path to be deleted]

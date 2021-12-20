@@ -298,8 +298,10 @@ it is used to upload and delete an image in storage
 $image_path = MediaHelper::uploadImage($file ,$path); 
 //to delete an image
 MediaHelper::deleteImage($path); 
-//upload multiple images
+//upload multiple files
 $files_paths = MediaHelper::uploadMultiple($files ,$path); 
+//upload base64 image
+$image_path = MediaHelper::uploadBase64Image($encoded_image ,$path); 
 ```
 
 [🔝 Back to contents](#contents)

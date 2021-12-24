@@ -7,78 +7,77 @@ use Illuminate\Support\Facades\Storage;
 class MediaHelper
 {
     /**
-     * @param      $image              [ image]
+     * @param      $file              [ file]
      * @param      $path
-     * @param null $old_image          [image path] [delete old image if exist]
-     * @param null $with_original_name if want to save image with its original data
-     * @return string [image full path after being moved]
+     * @param null $old_file          [file path] [delete old file if exist]
+     * @param null $with_original_name if you want to save file with its original data
+     * @return string [file full path after being moved]
      */
-    public static function uploadImage($image, $path, $old_image = null, $with_original_name = null): string
+    public static function uploadFile($file, $path, $old_file = null, $with_original_name = null): string
     {
-        if (!is_null($old_image)) {
-            self::deleteImage($old_image);
+        if (!is_null($old_file)) {
+            self::deleteFile($old_file);
         }
 
         if (!is_null($with_original_name)) {
 
-            return Storage::putFileAs($path, $image, $image->getClientOriginalName());
+            return Storage::putFileAs($path, $file, $file->getClientOriginalName());
         }
 
-        return $image->store('/' . $path);
+        return $file->store('/' . $path);
     }
 
-
     /**
-     * upload multiple images
-     * @param array $images
+     * upload multiple files
+     * @param array $files
      * @param string $path
      * @param bool $with_original_names
      * @return array
      */
-    public static function uploadMultiple(array $images, string $path, bool $with_original_names = false): array
+    public static function uploadMultiple(array $files, string $path, bool $with_original_names = false): array
     {
-        $images_names = [];
+        $files_names = [];
 
-        foreach ($images as $image) {
-            $images_names[] = self::uploadImage($image, $path, $with_original_names);
+        foreach ($files as $file) {
+            $files_names[] = self::uploadFile($file, $path, $with_original_names);
         }
 
-        return $images_names;
+        return $files_names;
     }
 
 
     /**
-     * @param $image
+     * @param $file
      * @param string $path
-     * @param string|null $old_image
+     * @param string|null $old_file
      * @return string
      */
-    public static function uploadBase64Image($image, string $path, string $old_image = null): string
+    public static function uploadBase64Image($file, string $path, string $old_file = null): string
     {
-        if (! is_null($old_image)) {
-            self::deleteImage($old_image);
+        if (! is_null($old_file)) {
+            self::deleteFile($old_file);
         }
 
-        @list($type, $file_data) = explode(';', $image);
+        @list($type, $file_data) = explode(';', $file);
 
         @list(, $file_data) = explode(',', $file_data);
 
-        $image_name = time().uniqid() . '.png';
+        $file_name = time().uniqid() . '.png';
 
         return Storage::put(
-            $path . '/' . $image_name,
+            $path . '/' . $file_name,
             base64_decode($file_data)
         );
     }
 
     /**
-     * [deleteImage description]
-     * @param  [string] $image [image path to be deleted]
+     * [deleteFile description]
+     * @param  [string] $file [image path to be deleted]
      */
-    public static function deleteImage($image)
+    public static function deleteFile($file)
     {
-        if (Storage::exists($image)) {
-            Storage::delete($image);
+        if (Storage::exists($file)) {
+            Storage::delete($file);
         }
     }
 }

@@ -10,17 +10,16 @@ class MediaHelper
      * @param      $file              [ file]
      * @param      $path
      * @param null $old_file          [file path] [delete old file if exist]
-     * @param null $with_original_name if you want to save file with its original data
+     * @param bool $with_original_name if you want to save file with its original data
      * @return string [file full path after being moved]
      */
-    public static function uploadFile($file, $path, $old_file = null, $with_original_name = null): string
+    public static function uploadFile($file, $path, $old_file = null,bool $with_original_name = false): string
     {
         if (!is_null($old_file)) {
             self::deleteFile($old_file);
         }
 
-        if (!is_null($with_original_name)) {
-
+        if ($with_original_name) {
             return Storage::putFileAs($path, $file, $file->getClientOriginalName());
         }
 

@@ -12,14 +12,15 @@ trait ConsumesExternalServices
         $queryParams = [],
         $formParams = [],
         $headers = [],
-        $isJsonRequest = false
+        $isJsonRequest = false,
+        $decode_response = true
     )
     {
         $client = new Client([
             'base_uri' => $this->baseUri,
         ]);
 
-        if (method_exists($this, 'resolveAuthorization') && !$headers) {
+        if (method_exists($this, 'resolveAuthorization') && ! $headers) {
             $this->resolveAuthorization($queryParams, $formParams, $headers);
         }
 
@@ -29,6 +30,8 @@ trait ConsumesExternalServices
             'query' => $queryParams,
         ]);
 
-        return json_decode($response->getBody()->getContents());
+        $response_content = $response->getBody()->getContents();
+
+        return $decode_response ? json_decode($response_content) : $response_content;
     }
 }

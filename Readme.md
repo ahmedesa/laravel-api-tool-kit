@@ -291,13 +291,13 @@ public function doSomething(CreateCar $create_car_action)
 
 ## **Media Helper**
 
-it is used to upload and delete an image in storage
+it is used to upload and delete files to storage
 
 ```php
-// to upload image
-$image_path = MediaHelper::uploadImage($file ,$path); 
-//to delete an image
-MediaHelper::deleteImage($path); 
+// to upload file
+$file_path = MediaHelper::uploadFile($file ,$path); 
+//to delete an file
+MediaHelper::deleteFile($path); 
 //upload multiple files
 $files_paths = MediaHelper::uploadMultiple($files ,$path); 
 //upload base64 image

@@ -27,7 +27,10 @@
     "autoload": {
         "psr-4": {
             "Essa\\APIToolKit\\": "src/"
-        }
+        },
+        "files": [
+            "src/Helpers/helpers.php"
+        ]
     },
     "extra": {
         "laravel": {

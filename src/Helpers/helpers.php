@@ -4,7 +4,7 @@ if (!function_exists('createOrRandomFactory')) {
      * Get a random item from the given model $class_name or create a new one by factory
      *
      * @param string $class_name must be type model
-     * @return object instance of a $class_name or stdClass
+     * @return object instance of a $class_name
      * @throws Exception
      */
     function createOrRandomFactory(string $class_name): object

@@ -167,7 +167,7 @@ protected array $allowedFilters  = ['color' , 'model_id'];
 // asc  : ?sorts=-created_at
 protected array $allowedSorts= ['created_at'];
 // allowed relationships to be loaded 
-// ?include=model
+// ?includes=model
 protected array $allowedIncludes = ['model'];
 //column that will be included in search =>> ?search=tesla
 protected array $columnSearch= ['name','descriptions']; 

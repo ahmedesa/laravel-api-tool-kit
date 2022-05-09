@@ -19,8 +19,7 @@
         }
     ],
     "require": {
-        "php": "^7.4|^8.0",
-        "illuminate/support": "^6.20.13|7.30.4|^8.22.2"
+        "php": "^7.4|^8.0|^8.1"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

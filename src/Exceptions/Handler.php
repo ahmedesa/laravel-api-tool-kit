@@ -9,10 +9,12 @@ use Essa\APIToolKit\Api\ApiResponse;
 use Illuminate\Database\QueryException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Validation\ValidationException;
+use Http\Discovery\Exception\NotFoundException;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotAcceptableHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
@@ -80,6 +82,10 @@ class Handler extends ExceptionHandler
 
             if ($exception instanceof AuthorizationException) {
                 return $this->responseUnAuthorized();
+            }
+
+            if ($exception instanceof NotFoundHttpException) {
+                return $this->responseNotFound($exception->getMessage());
             }
 
             if ($exception instanceof UnprocessableEntityHttpException) {

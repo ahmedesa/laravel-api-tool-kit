@@ -63,10 +63,12 @@ class MediaHelper
 
         $file_name = time().uniqid() . '.png';
 
-        return Storage::put(
+        Storage::put(
             $path . '/' . $file_name,
             base64_decode($file_data)
         );
+
+        return $path . '/' . $file_name;
     }
 
     /**

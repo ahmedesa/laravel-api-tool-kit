@@ -7,20 +7,20 @@ use GuzzleHttp\Client;
 trait ConsumesExternalServices
 {
     public function makeRequest(
-        $method,
-        $requestUrl,
-        $queryParams = [],
-        $formParams = [],
-        $headers = [],
-        $isJsonRequest = false,
-        $decode_response = true
+        string $method,
+        string $requestUrl,
+        array  $queryParams = [],
+        array  $formParams = [],
+        array  $headers = [],
+        bool   $isJsonRequest = false,
+        bool   $decode_response = true
     )
     {
         $client = new Client([
             'base_uri' => $this->baseUri,
         ]);
 
-        if (method_exists($this, 'resolveAuthorization') && ! $headers) {
+        if (method_exists($this, 'resolveAuthorization') && !$headers) {
             $this->resolveAuthorization($queryParams, $formParams, $headers);
         }
 

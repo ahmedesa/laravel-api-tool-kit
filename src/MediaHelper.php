@@ -2,24 +2,25 @@
 
 namespace Essa\APIToolKit;
 
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
 class MediaHelper
 {
     /**
-     * @param      $file              [ file]
-     * @param      $path
-     * @param null $old_file          [file path] [delete old file if exist]
-     * @param bool $with_original_name if you want to save file with its original data
-     * @return string [file full path after being moved]
+     * @param UploadedFile $file [ file]
+     * @param string $path
+     * @param null $oldFilePath delete old file if exist
+     * @param bool $withOriginalName if you want to save file with its original name
+     * @return string file full path after being uploaded
      */
-    public static function uploadFile($file, $path, $old_file = null,bool $with_original_name = false): string
+    public static function uploadFile(UploadedFile $file, string $path, $oldFilePath = null, bool $withOriginalName = false): string
     {
-        if (!is_null($old_file)) {
-            self::deleteFile($old_file);
+        if (!is_null($oldFilePath)) {
+            self::deleteFile($oldFilePath);
         }
 
-        if ($with_original_name) {
+        if ($withOriginalName) {
             return Storage::putFileAs($path, $file, $file->getClientOriginalName());
         }
 
@@ -30,15 +31,15 @@ class MediaHelper
      * upload multiple files
      * @param array $files
      * @param string $path
-     * @param bool $with_original_names
+     * @param bool $withOriginalNames
      * @return array
      */
-    public static function uploadMultiple(array $files, string $path, bool $with_original_names = false): array
+    public static function uploadMultiple(array $files, string $path, bool $withOriginalNames = false): array
     {
         $files_names = [];
 
         foreach ($files as $file) {
-            $files_names[] = self::uploadFile($file, $path, $with_original_names);
+            $files_names[] = self::uploadFile($file, $path, $withOriginalNames);
         }
 
         return $files_names;
@@ -46,39 +47,36 @@ class MediaHelper
 
 
     /**
-     * @param $file
+     * @param string $decodedFile
      * @param string $path
-     * @param string|null $old_file
+     * @param string|null $oldFilePath
      * @return string
      */
-    public static function uploadBase64Image($file, string $path, string $old_file = null): string
+    public static function uploadBase64Image(string $decodedFile, string $path, string $oldFilePath = null): string
     {
-        if (! is_null($old_file)) {
-            self::deleteFile($old_file);
+        if (!is_null($oldFilePath)) {
+            self::deleteFile($oldFilePath);
         }
 
-        @list($type, $file_data) = explode(';', $file);
+        @list($type, $file_data) = explode(';', $decodedFile);
 
         @list(, $file_data) = explode(',', $file_data);
 
-        $file_name = time().uniqid() . '.png';
+        $file_name = time() . uniqid() . '.png';
 
-        Storage::put(
+        return Storage::put(
             $path . '/' . $file_name,
             base64_decode($file_data)
         );
-
-        return $path . '/' . $file_name;
     }
 
     /**
-     * [deleteFile description]
-     * @param  [string] $file [image path to be deleted]
+     * @param string $filePath
      */
-    public static function deleteFile($file)
+    public static function deleteFile(string $filePath): void
     {
-        if (Storage::exists($file)) {
-            Storage::delete($file);
+        if (Storage::exists($filePath)) {
+            Storage::delete($filePath);
         }
     }
 }

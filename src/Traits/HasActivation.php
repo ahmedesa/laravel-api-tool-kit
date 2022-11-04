@@ -12,11 +12,11 @@ trait HasActivation
     /**
      * fetch all records that is active.
      *
-     * @param $query
+     * @param Builder $query
      *
-     * @return mixed
+     * @return Builder
      */
-    public function scopeActive(Builder $query)
+    public function scopeActive(Builder $query): Builder
     {
         return $query->where('is_active', 1);
     }
@@ -26,7 +26,7 @@ trait HasActivation
      */
     public function toggleActivation(): void
     {
-        $this->is_active = ! $this->is_active;
+        $this->is_active = !$this->is_active;
 
         $this->save();
     }

@@ -6,5 +6,7 @@ use Essa\APIToolKit\Enum\Enum;
 
 class DummyClass extends Enum
 {
-    public const FOO = "foo";
+    /**
+     * EXAMPLE public const FOO = 'foo';
+     */
 }

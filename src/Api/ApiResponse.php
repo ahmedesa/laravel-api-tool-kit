@@ -2,46 +2,19 @@
 
 namespace Essa\APIToolKit\Api;
 
-use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
+use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
- *  handle json response.
+ * handle json response.
  */
 trait ApiResponse
 {
     /**
-     * @param int $code
-     * @param string $title
-     * @param null $details
-     * @return JsonResponse
-     */
-    private function APIError(
-        int $code,
-        $title = 'Oops . Something went wrong , try again or contact the support',
-        $details = null
-    ): JsonResponse
-    {
-        return response()->json(
-            [
-                'errors' => [
-                    [
-                        'status' => $code,
-                        'title' => $title,
-                        'detail' => $details,
-                    ],
-                ],
-            ],
-            $code,
-            ['Content-Type' => 'application/problem+json']
-        );
-    }
-
-    /**
      * @param null $message
      * @param null $details
-     * @return JsonResponse
      */
     public function responseServerError($details = null, $message = null): JsonResponse
     {
@@ -56,7 +29,6 @@ trait ApiResponse
     /**
      * @param null $message
      * @param null $details
-     * @return JsonResponse
      */
     public function responseUnprocessable($details = null, $message = null): JsonResponse
     {
@@ -66,7 +38,6 @@ trait ApiResponse
     /**
      * @param null $message
      * @param null $details
-     * @return JsonResponse
      */
     public function responseBadRequest($details = null, $message = null): JsonResponse
     {
@@ -74,121 +45,112 @@ trait ApiResponse
     }
 
     /**
-     * @param string $message
      * @param null $details
-     * @return JsonResponse
      */
-    public function responseNotFound($details = null, $message = 'Record not found!'): JsonResponse
+    public function responseNotFound($details = null, string $message = 'Record not found!'): JsonResponse
     {
         return $this->APIError(Response::HTTP_NOT_FOUND, $message, $details);
     }
 
-    /**
-     * @param string $message
-     * @param string $details
-     * @return JsonResponse
-     */
     public function responseUnAuthorized(
-        $details = 'you are not authorized to preform this actions',
-        $message = 'Unauthorized!'
-    ): JsonResponse
-    {
+        string $details = 'you are not authorized to preform this actions',
+        string $message = 'Unauthorized!'
+    ): JsonResponse {
         return $this->APIError(Response::HTTP_FORBIDDEN, $message, $details);
     }
 
-    /**
-     * @param string $message
-     * @param string $details
-     * @return JsonResponse
-     */
     public function responseUnAuthenticated(
-        $details = 'you are not authenticated to preform this actions',
-        $message = 'unauthenticated!'
-    ): JsonResponse
-    {
+        string $details = 'you are not authenticated to preform this actions',
+        string $message = 'unauthenticated!'
+    ): JsonResponse {
         return $this->APIError(Response::HTTP_UNAUTHORIZED, $message, $details);
     }
 
-    /**
-     * @param string $message
-     * @param string $details
-     * @return JsonResponse
-     */
     public function responseConflictError(
-        $details = 'conflict',
-        $message = 'conflict!'
-    ): JsonResponse
-    {
+        string $details = 'conflict',
+        string $message = 'conflict!'
+    ): JsonResponse {
         return $this->APIError(Response::HTTP_CONFLICT, $message, $details);
     }
 
     /**
      * @param null $message
      * @param null $data
-     * @return JsonResponse
      */
-    public function responseSuccess(
-        $message = null,
-        $data = null
-    ): JsonResponse
+    public function responseSuccess($message = null, $data = null): JsonResponse
     {
-        return response()->json(
-            [
-                'message' => $message,
-                'data' => $data,
-            ],
-            Response::HTTP_OK
-        );
+        return response()->json([
+            'message' => $message,
+            'data' => $data,
+        ], Response::HTTP_OK);
     }
 
     /**
-     * @param string $message
      * @param null $data
-     * @return JsonResponse
      */
-    public function responseCreated(
-        $message = 'Record created successfully',
-        $data = null
-    ): JsonResponse
+    public function responseCreated(string $message = 'Record created successfully', $data = null): JsonResponse
     {
-        return response()->json(
-            [
-                'message' => $message,
-                'data' => $data,
-            ],
-            Response::HTTP_CREATED
-        );
+        return response()->json([
+            'message' => $message,
+            'data' => $data,
+        ], Response::HTTP_CREATED);
     }
 
     public function responseDeleted(): JsonResponse
     {
-        return response()->json(
-            null,
-            Response::HTTP_NO_CONTENT
-        );
+        return response()->json(null, Response::HTTP_NO_CONTENT);
     }
 
-    public function ResponseValidationError($exception): JsonResponse
+    public function ResponseValidationError(ValidationException $exception): JsonResponse
     {
         $errors = (new Collection($exception->validator->errors()))
-            ->map(function ($error, $key) {
+            ->map(function ($error, $key): array {
                 return [
                     'status' => Response::HTTP_UNPROCESSABLE_ENTITY,
                     'title' => 'Validation Error',
                     'detail' => $error[0],
                     'source' => [
-                        'pointer' => '/' . str_replace('.', '/', $key),
+                        'pointer' => '/'.str_replace('.', '/', $key),
                     ],
                 ];
             })
             ->values();
 
-        return response()->json(
+        return new JsonResponse(
             [
-                'errors' => $errors,
+                [
+                    'errors' => $errors,
+                ],
             ],
             Response::HTTP_UNPROCESSABLE_ENTITY,
-            ['Content-Type' => 'application/problem+json']
+            [
+                'Content-Type' => 'application/problem+json',
+            ]
+        );
+    }
+
+    /**
+     * @param null $details
+     */
+    private function APIError(
+        int $code,
+        string $title = 'Oops . Something went wrong , try again or contact the support',
+        $details = null
+    ): JsonResponse {
+        return new JsonResponse(
+            [
+                'errors' => [
+                    [
+                        'status' => $code,
+                        'title' => $title,
+                        'detail' => $details,
+                    ],
+                ],
+            ],
+            $code,
+            [
+                'Content-Type' => 'application/problem+json',
+            ]
         );
     }
 }

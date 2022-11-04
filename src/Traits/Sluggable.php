@@ -2,16 +2,16 @@
 
 namespace Essa\APIToolKit\Traits;
 
-use Str;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Str;
 
 /**
  * @method static findBySlug($slug)
  */
 trait Sluggable
 {
-    protected static function bootSluggable()
+    protected static function bootSluggable(): void
     {
         static::creating(function (Model $model) {
             if ($model->enableSluggableInCreating()) {
@@ -32,14 +32,14 @@ trait Sluggable
      * @param Builder $query
      * @param string $slug
      *
-     * @return mixed
+     * @return Model
      */
-    public function scopeFindBySlug(Builder $query, string $slug)
+    public function scopeFindBySlug(Builder $query, string $slug): Model
     {
         return $query->where($this->getSlugFieldName(), $slug)->firstOrFail();
     }
 
-    public function generateSlug()
+    public function generateSlug(): void
     {
         $this->{$this->getSlugFieldName()} = Str::slug($this->{$this->getSlugSourceName()});
     }

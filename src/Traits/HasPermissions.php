@@ -4,7 +4,7 @@ namespace Essa\APIToolKit\Traits;
 
 trait HasPermissions
 {
-    protected function authorizeFor($type)
+    protected function authorizeFor(string $type): void
     {
         $middleware = [];
 

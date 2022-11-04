@@ -2,23 +2,30 @@
 
 namespace Essa\APIToolKit;
 
+use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Contracts\Foundation\Application;
 
 class MacroServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-        Builder::macro('dynamicPaginate', function () {
+        /** @var Application $request */
+        $app = $this->app;
 
-            if (request()->pagination === 'none') {
+        Builder::macro('dynamicPaginate', function () use ($app) {
+            /** @var Request $request */
+            $request = $app->get('request');
+
+            if ($request->get('pagination') === 'none') {
                 return $this->get();
             }
 
             $page = Paginator::resolveCurrentPage();
 
-            $perPage = request()->per_page ? request()->per_page : config('api-tool-kit.default_pagination_number');
+            $perPage = $request->get('per_page', config('api-tool-kit.default_pagination_number'));
 
             $results = ($total = $this->toBase()->getCountForPagination())
                 ? $this->forPage($page, $perPage)->get(['*'])

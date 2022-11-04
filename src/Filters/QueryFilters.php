@@ -1,25 +1,21 @@
 <?php
+
 namespace Essa\APIToolKit\Filters;
 
-use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\Request;
 
 class QueryFilters
 {
-    /**
-     * @var Request
-     */
-    protected $request;
-    /**
-     * @var Builder
-     */
+    protected Request $request;
+
     protected Builder $builder;
 
-    protected array $allowedFilters  = [];
-    protected array $allowedSorts    = [];
+    protected array $allowedFilters = [];
+    protected array $allowedSorts = [];
     protected array $allowedIncludes = [];
-    protected array $columnSearch    = [];
-    protected array $relationSearch  = [];
+    protected array $columnSearch = [];
+    protected array $relationSearch = [];
 
     public function __construct()
     {
@@ -33,10 +29,6 @@ class QueryFilters
         'applySearch',
     ];
 
-    /**
-     * @param Builder $builder
-     * @return Builder
-     */
     public function apply(Builder $builder): Builder
     {
         $this->builder = $builder;
@@ -118,11 +110,12 @@ class QueryFilters
         return strpos($sort, '-') === 0 ? 'desc' : 'asc';
     }
 
-    private function applySearch()
+    private function applySearch(): void
     {
         if (is_null($this->search())) {
             return;
         }
+
         $keyword = $this->search();
 
         $columns = $this->columnSearch;
@@ -138,7 +131,7 @@ class QueryFilters
         });
     }
 
-    private function searchByRelationship($query, $keyword)
+    private function searchByRelationship(Builder $query, string $keyword): void
     {
         $relativeTables = $this->relationSearch;
 

@@ -8,9 +8,6 @@ use Essa\APIToolKit\Filters\Filterable;@endif('filter')
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 @if('soft-delete')use Illuminate\Database\Eloquent\SoftDeletes;@endif('soft-delete')
 
-/**
- * @mixin \Eloquent
- */
 class Dummy extends Model
 {
     use HasFactory@if('filter'),Filterable@endif('filter')@if('soft-delete'),SoftDeletes@endif('soft-delete');
@@ -25,19 +22,4 @@ class Dummy extends Model
     protected $fillable = [
 
     ];
-
-    /**
-     * @var array
-     */
-    protected $dates = [
-
-    ];
-
-    /**
-     * @var array
-     */
-    protected $hidden = [
-
-    ];
-
 }

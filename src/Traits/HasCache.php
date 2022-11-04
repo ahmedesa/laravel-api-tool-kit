@@ -2,6 +2,7 @@
 
 namespace Essa\APIToolKit\Traits;
 
+use Essa\APIToolKit\Enum\CacheKeys;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 
@@ -25,6 +26,6 @@ trait HasCache
 
     protected function cacheKey(): string
     {
-        return 'default.all';
+        return CacheKeys::DEFAULT_CACHE_KEY;
     }
 }

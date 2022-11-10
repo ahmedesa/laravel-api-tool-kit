@@ -37,7 +37,7 @@ class Handler extends ExceptionHandler
      */
     protected $dontFlash = ['password', 'password_confirmation'];
 
-    public function render($request, $e): JsonResponse
+    public function render($request, $e): Response
     {
         $this->log($e);
 

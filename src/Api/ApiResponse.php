@@ -47,7 +47,7 @@ trait ApiResponse
     /**
      * @param null $details
      */
-    public function responseNotFound($details = null, string $message = 'Record not found!'): JsonResponse
+    public function responseNotFound($details = null, ?string $message = 'Record not found!'): JsonResponse
     {
         return $this->APIError(Response::HTTP_NOT_FOUND, $message, $details);
     }
@@ -79,7 +79,7 @@ trait ApiResponse
      */
     public function responseSuccess($message = null, $data = null): JsonResponse
     {
-        return response()->json([
+        return new JsonResponse([
             'message' => $message,
             'data' => $data,
         ], Response::HTTP_OK);
@@ -88,9 +88,9 @@ trait ApiResponse
     /**
      * @param null $data
      */
-    public function responseCreated(string $message = 'Record created successfully', $data = null): JsonResponse
+    public function responseCreated(?string $message = 'Record created successfully', $data = null): JsonResponse
     {
-        return response()->json([
+        return new JsonResponse([
             'message' => $message,
             'data' => $data,
         ], Response::HTTP_CREATED);
@@ -98,7 +98,7 @@ trait ApiResponse
 
     public function responseDeleted(): JsonResponse
     {
-        return response()->json(null, Response::HTTP_NO_CONTENT);
+        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 
     public function ResponseValidationError(ValidationException $exception): JsonResponse
@@ -118,9 +118,7 @@ trait ApiResponse
 
         return new JsonResponse(
             [
-                [
-                    'errors' => $errors,
-                ],
+                'errors' => $errors,
             ],
             Response::HTTP_UNPROCESSABLE_ENTITY,
             [
@@ -134,7 +132,7 @@ trait ApiResponse
      */
     private function APIError(
         int $code,
-        string $title = 'Oops . Something went wrong , try again or contact the support',
+        ?string $title,
         $details = null
     ): JsonResponse {
         return new JsonResponse(
@@ -142,7 +140,7 @@ trait ApiResponse
                 'errors' => [
                     [
                         'status' => $code,
-                        'title' => $title,
+                        'title' => $title ?? 'Oops . Something went wrong , try again or contact the support',
                         'detail' => $details,
                     ],
                 ],

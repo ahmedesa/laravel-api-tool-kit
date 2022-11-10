@@ -10,11 +10,11 @@ class MediaHelper
     /**
      * @param UploadedFile $file [ file]
      * @param string $path
-     * @param null $oldFilePath delete old file if exist
+     * @param string|null $oldFilePath delete old file if exist
      * @param bool $withOriginalName if you want to save file with its original name
      * @return string file full path after being uploaded
      */
-    public static function uploadFile(UploadedFile $file, string $path, $oldFilePath = null, bool $withOriginalName = false): string
+    public static function uploadFile(UploadedFile $file, string $path, ?string $oldFilePath = null, bool $withOriginalName = false): string
     {
         if (!is_null($oldFilePath)) {
             self::deleteFile($oldFilePath);
@@ -78,5 +78,10 @@ class MediaHelper
         if (Storage::exists($filePath)) {
             Storage::delete($filePath);
         }
+    }
+
+    public static function getFileFullPath(?string $filePath): ?string
+    {
+        return is_null($filePath) ? null : Storage::url($filePath);
     }
 }

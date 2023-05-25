@@ -2,12 +2,12 @@
 
 namespace Essa\APIToolKit\Filters;
 
+use Essa\APIToolKit\DTO\FiltersDTO;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Http\Request;
 
 class QueryFilters
 {
-    protected Request $request;
+    protected FiltersDTO $filtersDTO;
 
     protected Builder $builder;
 
@@ -16,11 +16,6 @@ class QueryFilters
     protected array $allowedIncludes = [];
     protected array $columnSearch = [];
     protected array $relationSearch = [];
-
-    public function __construct()
-    {
-        $this->request = request();
-    }
 
     private array $operations = [
         'applyFilters',
@@ -43,30 +38,9 @@ class QueryFilters
 
         return $this->builder;
     }
-
-    protected function filters(): array
-    {
-        return $this->request->except('includes', 'sorts');
-    }
-
-    private function includes(): array
-    {
-        return explode(',', $this->request->get('includes'));
-    }
-
-    private function sorts()
-    {
-        return $this->request->all('sorts')['sorts'];
-    }
-
-    private function search()
-    {
-        return $this->request->all('search')['search'];
-    }
-
     private function applyFilters(): void
     {
-        foreach ($this->filters() as $name => $value) {
+        foreach ($this->getFiltersDTO()->getFilters() as $name => $value) {
             if (method_exists($this, $name)) {
                 $this->$name($value);
             }
@@ -87,15 +61,15 @@ class QueryFilters
 
     private function applyIncludes(): void
     {
-        $includes = array_intersect($this->includes(), $this->allowedIncludes);
+        $includes = array_intersect($this->getFiltersDTO()->getIncludes(), $this->allowedIncludes);
 
         $this->builder->with($includes);
     }
 
     private function applySorts(): void
     {
-        if ($this->sorts() != null) {
-            $first_sort = explode(',', $this->sorts())[0];
+        if ($this->getFiltersDTO()->getSorts() != null) {
+            $first_sort = explode(',', $this->getFiltersDTO()->getSorts())[0];
 
             $value = ltrim($first_sort, '-');
 
@@ -112,11 +86,11 @@ class QueryFilters
 
     private function applySearch(): void
     {
-        if (is_null($this->search())) {
+        if (is_null($this->getFiltersDTO()->getSearch())) {
             return;
         }
 
-        $keyword = $this->search();
+        $keyword = $this->getFiltersDTO()->getSearch();
 
         $columns = $this->columnSearch;
 
@@ -143,5 +117,15 @@ class QueryFilters
                 }
             });
         }
+    }
+
+    public function getFiltersDTO(): FiltersDTO
+    {
+        return $this->filtersDTO;
+    }
+
+    public function setFiltersDTO(FiltersDTO $filtersDTO): void
+    {
+        $this->filtersDTO = $filtersDTO;
     }
 }

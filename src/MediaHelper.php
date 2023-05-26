@@ -16,14 +16,16 @@ class MediaHelper
     public static function uploadFile(UploadedFile $file, string $path, ?string $oldFilePath = null, bool $withOriginalName = false): string
     {
         if (! is_null($oldFilePath)) {
-            self::deleteFile($oldFilePath);
+            static::deleteFile($oldFilePath);
         }
 
         if ($withOriginalName) {
             return Storage::putFileAs($path, $file, $file->getClientOriginalName());
         }
 
-        return $file->store('/' . $path);
+        $fullFilePath = static::getBasePathPrefix() . $path;
+
+        return $file->store($fullFilePath);
     }
 
     /**
@@ -34,7 +36,7 @@ class MediaHelper
         $filesNames = [];
 
         foreach ($files as $file) {
-            $filesNames[] = self::uploadFile($file, $path, $withOriginalNames);
+            $filesNames[] = static::uploadFile($file, $path, $withOriginalNames);
         }
 
         return $filesNames;
@@ -42,20 +44,24 @@ class MediaHelper
 
     public static function uploadBase64Image(string $decodedFile, string $path, string $oldFilePath = null): string
     {
-        if (! is_null($oldFilePath)) {
-            self::deleteFile($oldFilePath);
+        if (!is_null($oldFilePath)) {
+            static::deleteFile($oldFilePath);
         }
 
-        @[$type, $file_data] = explode(';', $decodedFile);
+        @list($type, $fileData) = explode(';', $decodedFile);
 
-        @[, $file_data] = explode(',', $file_data);
+        @list(, $fileData) = explode(',', $fileData);
 
-        $file_name = time() . uniqid() . '.png';
+        $fileName = time() . uniqid() . '.png';
 
-        return Storage::put(
-            $path . '/' . $file_name,
-            base64_decode($file_data)
+        $fullFilePath = static::getBasePathPrefix() . $path . '/' . $fileName;
+
+        Storage::put(
+            $fullFilePath,
+            base64_decode($fileData)
         );
+
+        return $fullFilePath;
     }
 
     public static function deleteFile(string $filePath): void
@@ -68,5 +74,10 @@ class MediaHelper
     public static function getFileFullPath(?string $filePath): ?string
     {
         return is_null($filePath) ? null : Storage::url($filePath);
+    }
+
+    protected static function getBasePathPrefix(): string
+    {
+        return '/';
     }
 }

@@ -2,12 +2,12 @@
 
 namespace Essa\APIToolKit;
 
-use Illuminate\Support\ServiceProvider;
-use Essa\APIToolKit\Commands\MakeEnumCommand;
+use Essa\APIToolKit\Commands\GeneratePermissions;
 use Essa\APIToolKit\Commands\GeneratorCommand;
 use Essa\APIToolKit\Commands\MakeActionCommand;
+use Essa\APIToolKit\Commands\MakeEnumCommand;
 use Essa\APIToolKit\Commands\MakeFilterCommand;
-use Essa\APIToolKit\Commands\GeneratePermissions;
+use Illuminate\Support\ServiceProvider;
 
 class APIToolKitServiceProvider extends ServiceProvider
 {
@@ -46,7 +46,7 @@ class APIToolKitServiceProvider extends ServiceProvider
                 MakeActionCommand::class,
                 MakeEnumCommand::class,
                 GeneratePermissions::class,
-                MakeFilterCommand::class
+                MakeFilterCommand::class,
             ]);
         }
     }

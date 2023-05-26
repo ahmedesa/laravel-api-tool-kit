@@ -2,19 +2,15 @@
 
 namespace Essa\APIToolKit\Commands;
 
-use Illuminate\Support\Str;
+use Essa\APIToolKit\Generator\FileManger;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Artisan;
-use Essa\APIToolKit\Generator\Generator;
-use Essa\APIToolKit\Generator\FileManger;
+use Illuminate\Support\Str;
 
 class GeneratorCommand extends Command
 {
     use FileManger;
-
-    private string     $model;
-    private Filesystem $filesystem;
 
     protected array $all_options = [
         'controller',
@@ -114,6 +110,9 @@ class GeneratorCommand extends Command
 
     protected $description = 'This command generate api crud.';
 
+    private string     $model;
+    private Filesystem $filesystem;
+
     public function __construct(Filesystem $filesystem)
     {
         $this->filesystem = $filesystem;
@@ -181,8 +180,8 @@ class GeneratorCommand extends Command
 
     private function createController(): void
     {
-        if (! file_exists(app_path("/Http/Controllers/API"))) {
-            $this->filesystem->makeDirectory(app_path("/Http/Controllers/API"));
+        if (! file_exists(app_path('/Http/Controllers/API'))) {
+            $this->filesystem->makeDirectory(app_path('/Http/Controllers/API'));
         }
 
         file_put_contents(app_path("Http/Controllers/API/{$this->model}Controller.php"), $this->getTemplate('DummyController'));
@@ -200,8 +199,8 @@ class GeneratorCommand extends Command
 
     private function createFilter(): void
     {
-        if (! file_exists(app_path("/Filters"))) {
-            $this->filesystem->makeDirectory(app_path("/Filters"));
+        if (! file_exists(app_path('/Filters'))) {
+            $this->filesystem->makeDirectory(app_path('/Filters'));
         }
 
         file_put_contents(app_path("Filters/{$this->model}Filters.php"), $this->getTemplate('DummyFilters'));
@@ -209,12 +208,12 @@ class GeneratorCommand extends Command
 
     private function createResources(): void
     {
-        if (! file_exists(app_path("/Http/Resources"))) {
-            $this->filesystem->makeDirectory(app_path("/Http/Resources"));
+        if (! file_exists(app_path('/Http/Resources'))) {
+            $this->filesystem->makeDirectory(app_path('/Http/Resources'));
         }
 
-        if (! file_exists(app_path("/Http/Resources/" . $this->model))) {
-            $this->filesystem->makeDirectory(app_path("/Http/Resources/" . $this->model));
+        if (! file_exists(app_path('/Http/Resources/' . $this->model))) {
+            $this->filesystem->makeDirectory(app_path('/Http/Resources/' . $this->model));
         }
 
         file_put_contents(
@@ -266,20 +265,20 @@ class GeneratorCommand extends Command
     private function getUserChoices(): void
     {
         $yes_or_no = [
-            "y" => 'Yes',
-            "n" => 'No',
+            'y' => 'Yes',
+            'n' => 'No',
         ];
 
         $all_default_selected = $this->choice(
             "Select all default options :\n "
-            . implode(",", config('api-tool-kit.default_generates'))
-            . "?",
+            . implode(',', config('api-tool-kit.default_generates'))
+            . '?',
             $yes_or_no,
             'y'
         );
 
         $choice = $this->choice(
-            "Do you want to use <options=bold>soft delete</> ?",
+            'Do you want to use <options=bold>soft delete</> ?',
             $yes_or_no,
             'y'
         );
@@ -290,7 +289,6 @@ class GeneratorCommand extends Command
             foreach (config('api-tool-kit.default_generates') as $option) {
                 if (in_array($option, $this->all_options)) {
                     $this->input->setOption($option, true);
-
                 }
             }
 

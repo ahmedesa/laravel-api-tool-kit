@@ -19,7 +19,8 @@
         }
     ],
     "require": {
-        "php": "^7.4|^8.0|^8.1"
+        "php": "^7.4|^8.0|^8.1",
+        "tightenco/duster": "^1.2"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
@@ -35,5 +36,8 @@
                 "Essa\\APIToolKit\\MacroServiceProvider"
             ]
         }
+    },
+    "scripts": {
+        "fix-style": "./vendor/bin/duster fix"
     }
 }

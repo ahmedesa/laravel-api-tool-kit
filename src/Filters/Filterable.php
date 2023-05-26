@@ -3,6 +3,7 @@
 namespace Essa\APIToolKit\Filters;
 
 use Essa\APIToolKit\DTO\FiltersDTO;
+use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
@@ -12,13 +13,12 @@ use Illuminate\Http\Request;
 trait Filterable
 {
     public function scopeUseFilters(
-        Builder     $query,
-        string      $filterClass = null,
+        Builder $query,
+        string $filterClass = null,
         ?FiltersDTO $filteredDTO = null
-    ): Builder
-    {
-        if (!property_exists($this, 'default_filters') && is_null($filterClass)) {
-            throw new \Exception('please add default_filters property to the model');
+    ): Builder {
+        if (! property_exists($this, 'default_filters') && is_null($filterClass)) {
+            throw new Exception('please add default_filters property to the model');
         }
 
         $filteredDTO = $filteredDTO ?? FiltersDTO::buildFromRequest(app(Request::class));

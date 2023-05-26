@@ -38,8 +38,7 @@ class MakeFilterCommand extends GeneratorCommand
     /**
      * Get the default namespace for the class.
      *
-     * @param string $rootNamespace
-     *
+     * @param  string  $rootNamespace
      * @return string
      */
     protected function getDefaultNamespace($rootNamespace)
@@ -49,7 +48,7 @@ class MakeFilterCommand extends GeneratorCommand
 
     protected function replaceClass($stub, $name)
     {
-        $class = str_replace($this->getNamespace($name).'\\', '', $name);
+        $class = str_replace($this->getNamespace($name) . '\\', '', $name);
 
         return str_replace(['DummyFilters', '{{ class }}', '{{class}}'], $class, $stub);
     }
@@ -57,7 +56,7 @@ class MakeFilterCommand extends GeneratorCommand
     protected function replaceNamespace(&$stub, $name)
     {
         $searches = [
-            ['App\Filters']
+            ['App\Filters'],
         ];
 
         foreach ($searches as $search) {
@@ -83,4 +82,3 @@ class MakeFilterCommand extends GeneratorCommand
         ];
     }
 }
-

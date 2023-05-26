@@ -11,10 +11,6 @@ trait HasActivation
 {
     /**
      * fetch all records that is active.
-     *
-     * @param Builder $query
-     *
-     * @return Builder
      */
     public function scopeActive(Builder $query): Builder
     {
@@ -26,9 +22,8 @@ trait HasActivation
      */
     public function toggleActivation(): void
     {
-        $this->is_active = !$this->is_active;
+        $this->is_active = ! $this->is_active;
 
         $this->save();
     }
 }
-

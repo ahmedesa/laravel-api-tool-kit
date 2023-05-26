@@ -2,11 +2,11 @@
 
 namespace Essa\APIToolKit;
 
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Contracts\Foundation\Application;
 
 class MacroServiceProvider extends ServiceProvider
 {

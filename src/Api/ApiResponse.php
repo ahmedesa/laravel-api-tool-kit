@@ -13,8 +13,8 @@ use Symfony\Component\HttpFoundation\Response;
 trait ApiResponse
 {
     /**
-     * @param null $message
-     * @param null $details
+     * @param  null  $message
+     * @param  null  $details
      */
     public function responseServerError($details = null, $message = null): JsonResponse
     {
@@ -27,8 +27,8 @@ trait ApiResponse
     }
 
     /**
-     * @param null $message
-     * @param null $details
+     * @param  null  $message
+     * @param  null  $details
      */
     public function responseUnprocessable($details = null, $message = null): JsonResponse
     {
@@ -36,8 +36,8 @@ trait ApiResponse
     }
 
     /**
-     * @param null $message
-     * @param null $details
+     * @param  null  $message
+     * @param  null  $details
      */
     public function responseBadRequest($details = null, $message = null): JsonResponse
     {
@@ -45,7 +45,7 @@ trait ApiResponse
     }
 
     /**
-     * @param null $details
+     * @param  null  $details
      */
     public function responseNotFound($details = null, ?string $message = 'Record not found!'): JsonResponse
     {
@@ -74,8 +74,8 @@ trait ApiResponse
     }
 
     /**
-     * @param null $message
-     * @param null $data
+     * @param  null  $message
+     * @param  null  $data
      */
     public function responseSuccess($message = null, $data = null): JsonResponse
     {
@@ -86,7 +86,7 @@ trait ApiResponse
     }
 
     /**
-     * @param null $data
+     * @param  null  $data
      */
     public function responseCreated(?string $message = 'Record created successfully', $data = null): JsonResponse
     {
@@ -110,7 +110,7 @@ trait ApiResponse
                     'title' => 'Validation Error',
                     'detail' => $error[0],
                     'source' => [
-                        'pointer' => '/'.str_replace('.', '/', $key),
+                        'pointer' => '/' . str_replace('.', '/', $key),
                     ],
                 ];
             })
@@ -128,7 +128,7 @@ trait ApiResponse
     }
 
     /**
-     * @param null $details
+     * @param  null  $details
      */
     private function APIError(
         int $code,

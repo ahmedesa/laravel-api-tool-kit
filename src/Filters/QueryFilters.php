@@ -38,6 +38,17 @@ class QueryFilters
 
         return $this->builder;
     }
+
+    public function getFiltersDTO(): FiltersDTO
+    {
+        return $this->filtersDTO;
+    }
+
+    public function setFiltersDTO(FiltersDTO $filtersDTO): void
+    {
+        $this->filtersDTO = $filtersDTO;
+    }
+
     private function applyFilters(): void
     {
         foreach ($this->getFiltersDTO()->getFilters() as $name => $value) {
@@ -98,7 +109,7 @@ class QueryFilters
             if (count($columns) > 0) {
                 foreach ($columns as $key => $column) {
                     $clause = $key == 0 ? 'where' : 'orWhere';
-                    $query->$clause($column, "LIKE", "%$keyword%");
+                    $query->$clause($column, 'LIKE', "%{$keyword}%");
                 }
             }
             $this->searchByRelationship($query, $keyword);
@@ -113,19 +124,9 @@ class QueryFilters
             $query->orWhereHas($relationship, function ($relationQuery) use ($keyword, $relativeColumns) {
                 foreach ($relativeColumns as $key => $column) {
                     $clause = $key == 0 ? 'where' : 'orWhere';
-                    $relationQuery->$clause($column, "LIKE", "%$keyword%");
+                    $relationQuery->$clause($column, 'LIKE', "%{$keyword}%");
                 }
             });
         }
-    }
-
-    public function getFiltersDTO(): FiltersDTO
-    {
-        return $this->filtersDTO;
-    }
-
-    public function setFiltersDTO(FiltersDTO $filtersDTO): void
-    {
-        $this->filtersDTO = $filtersDTO;
     }
 }

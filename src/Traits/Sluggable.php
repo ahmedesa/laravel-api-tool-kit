@@ -4,7 +4,7 @@ namespace Essa\APIToolKit\Traits;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Str;
+use Illuminate\Support\Str;
 
 /**
  * @method static findBySlug($slug)
@@ -28,11 +28,6 @@ trait Sluggable
 
     /**
      * find model by slug.
-     *
-     * @param Builder $query
-     * @param string $slug
-     *
-     * @return Model
      */
     public function scopeFindBySlug(Builder $query, string $slug): Model
     {

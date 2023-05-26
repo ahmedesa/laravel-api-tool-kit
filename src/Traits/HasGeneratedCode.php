@@ -11,6 +11,13 @@ use Illuminate\Support\Str;
  */
 trait HasGeneratedCode
 {
+    protected static function bootHasGeneratedCode(): void
+    {
+        static::creating(function (Model $model): void {
+            $model->refreshCode();
+        });
+    }
+
     public function scopeFindByCode(Builder $query, string $code): Model
     {
         return $query->where($this->codeField(), $code)
@@ -31,13 +38,6 @@ trait HasGeneratedCode
         }
 
         return $code;
-    }
-
-    protected static function bootHasGeneratedCode(): void
-    {
-        static::creating(function (Model $model): void {
-            $model->refreshCode();
-        });
     }
 
     protected function codeField(): string

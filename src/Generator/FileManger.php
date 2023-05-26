@@ -38,7 +38,7 @@ trait FileManger
 
     private function getStubs(string $type): string
     {
-        return file_get_contents(__DIR__ . '/../Stubs/' . $type . ".stub");
+        return file_get_contents(__DIR__ . '/../Stubs/' . $type . '.stub');
     }
 
     private function removeTags(string $string, array $options): string
@@ -59,8 +59,8 @@ trait FileManger
     private function removeTag(string $string, $condition, string $tag): string
     {
         $pattern = $condition
-            ? "/@if\(\'$tag\'\)|@endif\(\'$tag\'\)/"
-            : "/@if\(\'$tag\'\)((?>[^@]++))*@endif\(\'$tag\'\)/";
+            ? "/@if\(\'{$tag}\'\)|@endif\(\'{$tag}\'\)/"
+            : "/@if\(\'{$tag}\'\)((?>[^@]++))*@endif\(\'{$tag}\'\)/";
 
         return preg_replace($pattern, '', $string);
     }

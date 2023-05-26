@@ -43,80 +43,130 @@ class Handler extends ExceptionHandler
 
         if ($request->expectsJson()) {
             if ($e instanceof ThrottleRequestsException) {
-                return $this->responseWithCustomError(
-                    'Too Many Attempts.',
-                    'Too Many Attempts Please Try Again Later.',
-                    429
-                );
+                return $this->responseForThrottleRequestsException();
             }
 
             if ($e instanceof ValidationException) {
-                return $this->ResponseValidationError($e);
+                return $this->responseForValidationException($e);
             }
 
             if ($e instanceof ModelNotFoundException) {
-                $id = [] !== $e->getIds() ? ' '.implode(', ', $e->getIds()) : '.';
-
-                $model = class_basename($e->getModel());
-
-                return $this->responseNotFound("{$model} with id {$id} not found", 'Record not found!');
+                return $this->responseForModelNotFoundException($e);
             }
 
             if ($e instanceof QueryException) {
-                if (app()->isProduction()) {
-                    return $this->responseServerError();
-                }
-
-                return $this->responseNotFound(
-                    $e->getMessage(),
-                    Str::title(Str::snake(class_basename($e), ' '))
-                );
+                return $this->responseForQueryException($e);
             }
 
             if ($e instanceof AuthorizationException) {
-                return $this->responseUnAuthorized();
+                return $this->responseForAuthorizationException();
             }
 
             if ($e instanceof NotFoundHttpException) {
-                return $this->responseNotFound($e->getMessage());
+                return $this->responseForNotFoundHttpException($e);
             }
 
             if ($e instanceof UnprocessableEntityHttpException) {
-                return $this->responseUnprocessable(
-                    $e->getMessage(),
-                    Str::title(Str::snake(class_basename($e), ' '))
-                );
+                return $this->responseForUnprocessableEntityHttpException($e);
             }
 
             if ($e instanceof AuthenticationException) {
-                return $this->responseUnAuthenticated($e->getMessage());
+                return $this->responseForAuthenticationException($e);
             }
 
             if ($e instanceof BadRequestHttpException) {
-                return $this->responseBadRequest(
-                    $e->getMessage(),
-                    Str::title(Str::snake(class_basename($e), ' '))
-                );
+                return $this->responseForBadRequestHttpException($e);
             }
 
             if ($e instanceof NotAcceptableHttpException) {
-                return $this->responseWithCustomError(
-                    'Not Accessible !!',
-                    $e->getMessage(),
-                    Response::HTTP_NOT_ACCEPTABLE
-                );
+                return $this->responseForNotAcceptableHttpException($e);
             }
         }
 
         return parent::render($request, $e);
     }
 
-    private function log($exception): void
+    protected function log($exception): void
     {
         $logger = $this->container->make(LoggerInterface::class);
 
         $logger->error($exception->getMessage(), array_merge($this->context(), [
             'exception' => $exception,
         ]));
+    }
+
+    protected function responseForNotAcceptableHttpException(NotAcceptableHttpException $e): JsonResponse
+    {
+        return $this->responseWithCustomError(
+            'Not Accessible !!',
+            $e->getMessage(),
+            Response::HTTP_NOT_ACCEPTABLE
+        );
+    }
+
+    protected function responseForBadRequestHttpException(BadRequestHttpException $e): JsonResponse
+    {
+        return $this->responseBadRequest(
+            $e->getMessage(),
+            Str::title(Str::snake(class_basename($e), ' '))
+        );
+    }
+
+    protected function responseForAuthenticationException(AuthenticationException $e): JsonResponse
+    {
+        return $this->responseUnAuthenticated($e->getMessage());
+    }
+
+    protected function responseForUnprocessableEntityHttpException(UnprocessableEntityHttpException $e): JsonResponse
+    {
+        return $this->responseUnprocessable(
+            $e->getMessage(),
+            Str::title(Str::snake(class_basename($e), ' '))
+        );
+    }
+
+    protected function responseForNotFoundHttpException(NotFoundHttpException $e): JsonResponse
+    {
+        return $this->responseNotFound($e->getMessage());
+    }
+
+    protected function responseForAuthorizationException(): JsonResponse
+    {
+        return $this->responseUnAuthorized();
+    }
+
+    protected function responseForQueryException(QueryException $e): JsonResponse
+    {
+        if (app()->isProduction()) {
+            return $this->responseServerError();
+        }
+
+        return $this->responseNotFound(
+            $e->getMessage(),
+            Str::title(Str::snake(class_basename($e), ' '))
+        );
+    }
+
+    protected function responseForModelNotFoundException(ModelNotFoundException $e): JsonResponse
+    {
+        $id = [] !== $e->getIds() ? ' ' . implode(', ', $e->getIds()) : '.';
+
+        $model = class_basename($e->getModel());
+
+        return $this->responseNotFound("{$model} with id {$id} not found", 'Record not found!');
+    }
+
+    protected function responseForValidationException(ValidationException $e): JsonResponse
+    {
+        return $this->ResponseValidationError($e);
+    }
+
+    protected function responseForThrottleRequestsException(): JsonResponse
+    {
+        return $this->responseWithCustomError(
+            'Too Many Attempts.',
+            'Too Many Attempts Please Try Again Later.',
+            429
+        );
     }
 }

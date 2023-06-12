@@ -72,4 +72,13 @@ class FiltersDTO
     {
         $this->search = $search;
     }
+
+    public function getFilter(string $key)
+    {
+        if (!key_exists($key, $this->filters)) {
+            return null;
+        }
+
+        return $this->filters[$key];
+    }
 }

@@ -49,7 +49,7 @@ class QueryFilters
         $this->filtersDTO = $filtersDTO;
     }
 
-    private function applyFilters(): void
+    protected function applyFilters(): void
     {
         foreach ($this->getFiltersDTO()->getFilters() as $name => $value) {
             if (method_exists($this, $name)) {
@@ -70,14 +70,14 @@ class QueryFilters
         }
     }
 
-    private function applyIncludes(): void
+    protected function applyIncludes(): void
     {
         $includes = array_intersect($this->getFiltersDTO()->getIncludes(), $this->allowedIncludes);
 
         $this->builder->with($includes);
     }
 
-    private function applySorts(): void
+    protected function applySorts(): void
     {
         if ($this->getFiltersDTO()->getSorts() != null) {
             $first_sort = explode(',', $this->getFiltersDTO()->getSorts())[0];
@@ -90,12 +90,7 @@ class QueryFilters
         }
     }
 
-    private function getDirection(string $sort): string
-    {
-        return strpos($sort, '-') === 0 ? 'desc' : 'asc';
-    }
-
-    private function applySearch(): void
+    protected function applySearch(): void
     {
         if (is_null($this->getFiltersDTO()->getSearch())) {
             return;
@@ -116,7 +111,7 @@ class QueryFilters
         });
     }
 
-    private function searchByRelationship(Builder $query, string $keyword): void
+    protected function searchByRelationship(Builder $query, string $keyword): void
     {
         $relativeTables = $this->relationSearch;
 
@@ -128,5 +123,10 @@ class QueryFilters
                 }
             });
         }
+    }
+
+    private function getDirection(string $sort): string
+    {
+        return strpos($sort, '-') === 0 ? 'desc' : 'asc';
     }
 }

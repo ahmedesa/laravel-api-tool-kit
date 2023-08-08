@@ -38,6 +38,8 @@ class FiltersTest extends TestCase
 
         // Additional test case
         // ...
+
+        // Add assertions here
     }
 
     /**
@@ -50,6 +52,8 @@ class FiltersTest extends TestCase
 
         // Additional test case
         // ...
+
+        // Add assertions here
     }
 
     /**
@@ -62,6 +66,8 @@ class FiltersTest extends TestCase
 
         // Additional test case
         // ...
+
+        // Add assertions here
     }
 
     /**
@@ -74,5 +80,7 @@ class FiltersTest extends TestCase
 
         // Additional test case
         // ...
+
+        // Add assertions here
     }
 }

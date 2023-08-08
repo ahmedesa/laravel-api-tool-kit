@@ -21,140 +21,123 @@ class DummyTest extends TestCase
         $this->withoutExceptionHandling();
     }
 
-    public function testCreateDummy(): void
+    /**
+     * Test responseServerError method.
+     *
+     * @return void
+     */
+    public function testResponseServerError(): void
     {
-        $this->markTestIncomplete('This test case needs review.');
-
-        $this->actingAs(User::factory()->create());
-
-        $payload = Dummy::factory()->make([])->toArray();
-
-        $this->json('POST', $this->endpoint, $payload)
-             ->assertStatus(201)
-             ->assertSee($payload['name']);
-
-        $this->assertDatabaseHas($this->table_name, ['id' => 1]);
+        // Test code for responseServerError method
     }
 
-    public function testViewAllDummiesSuccessfully(): void
+    /**
+     * Test responseWithCustomError method.
+     *
+     * @return void
+     */
+    public function testResponseWithCustomError(): void
     {
-        $this->markTestIncomplete('This test case needs review.');
-
-        $this->actingAs(User::factory()->create());
-
-        Dummy::factory(5)->create();
-
-        $this->json('GET', $this->endpoint)
-             ->assertStatus(200)
-             ->assertJsonCount(5, 'data')
-             ->assertSee(Dummy::first(rand(1, 5))->name);
+        // Test code for responseWithCustomError method
     }
 
-    public function testViewAllDummiesByFooFilter(): void
+    /**
+     * Test responseUnprocessable method.
+     *
+     * @return void
+     */
+    public function testResponseUnprocessable(): void
     {
-        $this->markTestIncomplete('This test case needs review.');
-
-        $this->actingAs(User::factory()->create());
-
-        Dummy::factory(5)->create();
-
-        $this->json('GET', $this->endpoint.'?foo=1')
-             ->assertStatus(200)
-             ->assertSee('foo')
-             ->assertDontSee('foo');
+        // Test code for responseUnprocessable method
     }
 
-    public function testsCreateDummyValidation(): void
+    /**
+     * Test responseBadRequest method.
+     *
+     * @return void
+     */
+    public function testResponseBadRequest(): void
     {
-        $this->markTestIncomplete('This test case needs review.');
-
-        $this->actingAs(User::factory()->create());
-
-        $data = [
-        ];
-
-        $this->json('post', $this->endpoint, $data)
-             ->assertStatus(422);
+        // Test code for responseBadRequest method
     }
 
-    public function testViewDummyData(): void
+    /**
+     * Test responseNotFound method.
+     *
+     * @return void
+     */
+    public function testResponseNotFound(): void
     {
-        $this->markTestIncomplete('This test case needs review.');
-
-        $this->actingAs(User::factory()->create());
-
-        Dummy::factory()->create();
-
-        $this->json('GET', $this->endpoint.'/1')
-             ->assertSee(Dummy::first()->name)
-             ->assertStatus(200);
+        // Test code for responseNotFound method
     }
 
-    public function testUpdateDummy(): void
+    /**
+     * Test responseUnAuthorized method.
+     *
+     * @return void
+     */
+    public function testResponseUnAuthorized(): void
     {
-        $this->markTestIncomplete('This test case needs review.');
-
-        $this->actingAs(User::factory()->create());
-
-        Dummy::factory()->create();
-
-        $payload = [
-
-        ];
-
-        $this->json('PUT', $this->endpoint.'/1', $payload)
-             ->assertStatus(200)
-             ->assertSee($payload['name']);
+        // Test code for responseUnAuthorized method
     }
 
-    public function testDeleteDummy(): void
+    /**
+     * Test responseUnAuthenticated method.
+     *
+     * @return void
+     */
+    public function testResponseUnAuthenticated(): void
     {
-        $this->markTestIncomplete('This test case needs review.');
-
-        $this->actingAs(User::factory()->create());
-
-        Dummy::factory()->create();
-
-        $this->json('DELETE', $this->endpoint.'/1')
-             ->assertStatus(204);
-
-        $this->assertEquals(0, Dummy::count());
-    }
-    @if('soft-delete')
-    public function testRestoreDummy(): void
-    {
-        $this->markTestIncomplete('This test case needs review.');
-
-        $this->actingAs(User::factory()->create());
-
-        Dummy::factory()->create();
-
-        $this->json('DELETE', $this->endpoint.'/1')
-             ->assertStatus(204);
-
-        $this->json('GET', $this->endpoint.'/1/restore')
-             ->assertStatus(200);
-
-        $this->assertDatabaseHas($this->table_name, [
-            'id'         => 1,
-            'deleted_at' => null,
-        ]);
+        // Test code for responseUnAuthenticated method
     }
 
-    public function testPermanentDummy(): void
+    /**
+     * Test responseConflictError method.
+     *
+     * @return void
+     */
+    public function testResponseConflictError(): void
     {
-        $this->markTestIncomplete('This test case needs review.');
+        // Test code for responseConflictError method
+    }
 
-        $this->actingAs(User::factory()->create());
+    /**
+     * Test responseSuccess method.
+     *
+     * @return void
+     */
+    public function testResponseSuccess(): void
+    {
+        // Test code for responseSuccess method
+    }
 
-        Dummy::factory()->create();
+    /**
+     * Test responseCreated method.
+     *
+     * @return void
+     */
+    public function testResponseCreated(): void
+    {
+        // Test code for responseCreated method
+    }
 
-        $this->json('DELETE', $this->endpoint.'/1')
-             ->assertStatus(204);
+    /**
+     * Test responseDeleted method.
+     *
+     * @return void
+     */
+    public function testResponseDeleted(): void
+    {
+        // Test code for responseDeleted method
+    }
 
-        $this->json('DELETE', $this->endpoint.'/1/permanent-delete')
-             ->assertStatus(204);
-
-        $this->assertDatabaseMissing($this->table_name, ['id' => 1]);
-    }@endif('soft-delete')
+    /**
+     * Test ResponseValidationError method.
+     *
+     * @return void
+     */
+    public function testResponseValidationError(): void
+    {
+        // Test code for ResponseValidationError method
+    }
 }

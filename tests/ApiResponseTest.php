@@ -1,9 +1,8 @@
 <?php
 
-namespace Essa\APIToolKit\Tests\API;
+namespace Essa\APIToolKit\Tests;
 
 use Essa\APIToolKit\Api\ApiResponse;
-use Essa\APIToolKit\Tests\TestCase;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\JsonResponse;

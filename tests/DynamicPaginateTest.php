@@ -20,10 +20,10 @@ class DynamicPaginateTest extends TestCase
             'per_page' => $randomNumber,
         ]));
 
-        /** @var LengthAwarePaginator $getAllWithPagination */
-        $getAllWithPagination = TestModel::dynamicPaginate();
+        /** @var LengthAwarePaginator $paginatedRecords */
+        $paginatedRecords = TestModel::dynamicPaginate();
 
-        $this->assertCount($randomNumber, $getAllWithPagination->all());
+        $this->assertCount($randomNumber, $paginatedRecords->all());
     }
 
     /**
@@ -37,9 +37,9 @@ class DynamicPaginateTest extends TestCase
             'pagination' => 'none',
         ]));
 
-        /** @var LengthAwarePaginator $getAllWithPagination */
-        $getAllWithPagination = TestModel::dynamicPaginate();
+        /** @var LengthAwarePaginator $paginatedRecords */
+        $paginatedRecords = TestModel::dynamicPaginate();
 
-        $this->assertCount(50, $getAllWithPagination->all());
+        $this->assertCount(50, $paginatedRecords->all());
     }
 }

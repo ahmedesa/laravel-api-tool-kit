@@ -1,16 +1,15 @@
 <?php
 
-namespace Commands;
+namespace Essa\APIToolKit\Tests;
 
 use Essa\APIToolKit\Tests\Mocks\TestEnum;
-use Essa\APIToolKit\Tests\TestCase;
 
-class MakeEnumCommandTest extends TestCase
+class EnumTest extends TestCase
 {
     /**
      * @test
      */
-    public function generatesQueueableActions()
+    public function generatesEnumClass()
     {
         $name = 'TestEnum';
 

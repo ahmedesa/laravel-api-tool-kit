@@ -1,15 +1,13 @@
 <?php
 
-namespace Essa\APIToolKit\Tests\Commands;
+namespace Essa\APIToolKit\Tests;
 
-use Essa\APIToolKit\Tests\TestCase;
-
-class MakeActionCommandTest extends TestCase
+class ActionTest extends TestCase
 {
     /**
      * @test
      */
-    public function generateAction()
+    public function generateActionClass()
     {
         $name = 'TestAction';
 

@@ -1,6 +1,7 @@
 /vendor
 .idea
 .phpintel
+build
 .phpunit.result.cache
 /.phpunit.cache
 composer.lock

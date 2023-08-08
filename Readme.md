@@ -101,13 +101,13 @@ Available Methods
 responseSuccess($message , $data)  // returns a 200 HTTP status code
 responseCreated($message,$data)  // returns a 201 HTTP status code 
 responseDeleted()  // returns empty response with a 204 HTTP status code
-responseNotFound($error_details,$error_title)  // returns a 404 HTTP status code
-responseBadRequest($error_details,$error_title)  // returns a 400 HTTP status code
-responseUnAuthorized($error_details,$error_title)  // returns a 403 HTTP status code
-responseConflictError($error_details,$error_title)  // returns a 409 HTTP status code
-responseUnprocessable($error_details,$error_title)  // returns a 422 HTTP status code
-responseUnAuthenticated ($error_details,$error_title) // returns a 401 HTTP status code
-responseWithCustomError($error_title, $error_details, $status_code) //send custom error 
+responseNotFound($errorDetails,$errorTitle)  // returns a 404 HTTP status code
+responseBadRequest($errorDetails,$errorTitle)  // returns a 400 HTTP status code
+responseUnAuthorized($errorDetails,$errorTitle)  // returns a 403 HTTP status code
+responseConflictError($errorDetails,$errorTitle)  // returns a 409 HTTP status code
+responseUnprocessable($errorDetails,$errorTitle)  // returns a 422 HTTP status code
+responseUnAuthenticated ($errorDetails,$errorTitle) // returns a 401 HTTP status code
+responseWithCustomError($errorTitle, $errorDetails, $statusCode) //send custom error 
 ```
 [🔝 Back to contents](#contents)
 
@@ -304,7 +304,7 @@ $filesPaths = MediaHelper::uploadMultiple($files ,$path);
 ```
 Upload base64 image:
 ```php
-$imagePath = MediaHelper::uploadBase64Image($encoded_image ,$path); 
+$imagePath = MediaHelper::uploadBase64Image($encodedImage ,$path); 
 ```
 
 [🔝 Back to contents](#contents)

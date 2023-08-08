@@ -18,12 +18,14 @@ trait ApiResponse
      */
     public function responseServerError($details = null, $message = null): JsonResponse
     {
-        // Testable code for responseServerError method
+        // Implement the code correctly for responseServerError method
+        return $this->APIError(Response::HTTP_INTERNAL_SERVER_ERROR, $message, $details);
     }
 
     public function responseWithCustomError($title, $details, $status_code): JsonResponse
     {
-        // Testable code for responseWithCustomError method
+        // Implement the code correctly for responseWithCustomError method
+        return $this->APIError($status_code, $title, $details);
     }
 
     /**
@@ -32,7 +34,8 @@ trait ApiResponse
      */
     public function responseUnprocessable($details = null, $message = null): JsonResponse
     {
-        // Testable code for responseUnprocessable method
+        // Implement the code correctly for responseUnprocessable method
+        return $this->APIError(Response::HTTP_UNPROCESSABLE_ENTITY, $message, $details);
     }
 
     /**
@@ -41,7 +44,8 @@ trait ApiResponse
      */
     public function responseBadRequest($details = null, $message = null): JsonResponse
     {
-        // Testable code for responseBadRequest method
+        // Implement the code correctly for responseBadRequest method
+        return $this->APIError(Response::HTTP_BAD_REQUEST, $message, $details);
     }
 
     /**
@@ -49,28 +53,32 @@ trait ApiResponse
      */
     public function responseNotFound($details = null, ?string $message = 'Record not found!'): JsonResponse
     {
-        // Testable code for responseNotFound method
+        // Implement the code correctly for responseNotFound method
+        return $this->APIError(Response::HTTP_NOT_FOUND, $message, $details);
     }
 
     public function responseUnAuthorized(
         string $details = 'you are not authorized to preform this actions',
         string $message = 'Unauthorized!'
     ): JsonResponse {
-        // Testable code for responseUnAuthorized method
+        // Implement the code correctly for responseUnAuthorized method
+        return $this->APIError(Response::HTTP_FORBIDDEN, $message, $details);
     }
 
     public function responseUnAuthenticated(
         string $details = 'you are not authenticated to preform this actions',
         string $message = 'unauthenticated!'
     ): JsonResponse {
-        // Testable code for responseUnAuthenticated method
+        // Implement the code correctly for responseUnAuthenticated method
+        return $this->APIError(Response::HTTP_UNAUTHORIZED, $message, $details);
     }
 
     public function responseConflictError(
         string $details = 'conflict',
         string $message = 'conflict!'
     ): JsonResponse {
-        // Testable code for responseConflictError method
+        // Implement the code correctly for responseConflictError method
+        return $this->APIError(Response::HTTP_CONFLICT, $message, $details);
     }
 
     /**
@@ -79,7 +87,11 @@ trait ApiResponse
      */
     public function responseSuccess($message = null, $data = null): JsonResponse
     {
-        // Testable code for responseSuccess method
+        // Implement the code correctly for responseSuccess method
+        return new JsonResponse([
+            'message' => $message,
+            'data' => $data,
+        ], Response::HTTP_OK);
     }
 
     /**
@@ -87,17 +99,44 @@ trait ApiResponse
      */
     public function responseCreated(?string $message = 'Record created successfully', $data = null): JsonResponse
     {
-        // Testable code for responseCreated method
+        // Implement the code correctly for responseCreated method
+        return new JsonResponse([
+            'message' => $message,
+            'data' => $data,
+        ], Response::HTTP_CREATED);
     }
 
     public function responseDeleted(): JsonResponse
     {
-        // Testable code for responseDeleted method
+        // Implement the code correctly for responseDeleted method
+        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 
     public function ResponseValidationError(ValidationException $exception): JsonResponse
     {
-        // Testable code for ResponseValidationError method
+        // Implement the code correctly for ResponseValidationError method
+        $errors = (new Collection($exception->validator->errors()))
+            ->map(function ($error, $key): array {
+                return [
+                    'status' => Response::HTTP_UNPROCESSABLE_ENTITY,
+                    'title' => 'Validation Error',
+                    'detail' => $error[0],
+                    'source' => [
+                        'pointer' => '/' . str_replace('.', '/', $key),
+                    ],
+                ];
+            })
+            ->values();
+        
+        return new JsonResponse(
+            [
+                'errors' => $errors,
+            ],
+            Response::HTTP_UNPROCESSABLE_ENTITY,
+            [
+                'Content-Type' => 'application/problem+json',
+            ]
+        );
     }
 
     /**

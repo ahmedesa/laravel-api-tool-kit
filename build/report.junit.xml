@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="" tests="1" assertions="1" errors="0" warnings="0" failures="0" skipped="0" time="0.069560">
+    <testsuite name="Test Suite" tests="1" assertions="1" errors="0" warnings="0" failures="0" skipped="0" time="0.069560">
+      <testsuite name="Essa\APIToolKit\Tests\ExampleTest" file="/var/www/app/tests/ExampleTest.php" tests="1" assertions="1" errors="0" warnings="0" failures="0" skipped="0" time="0.069560">
+        <testcase name="test" class="Essa\APIToolKit\Tests\ExampleTest" classname="Essa.APIToolKit.Tests.ExampleTest" file="/var/www/app/tests/ExampleTest.php" line="7" assertions="1" time="0.069560"/>
+      </testsuite>
+    </testsuite>
+  </testsuite>
+</testsuites>

@@ -44,13 +44,13 @@ class MediaHelper
 
     public static function uploadBase64Image(string $decodedFile, string $path, string $oldFilePath = null): string
     {
-        if (!is_null($oldFilePath)) {
+        if (! is_null($oldFilePath)) {
             static::deleteFile($oldFilePath);
         }
 
-        @list($type, $fileData) = explode(';', $decodedFile);
+        @[$type, $fileData] = explode(';', $decodedFile);
 
-        @list(, $fileData) = explode(',', $fileData);
+        @[, $fileData] = explode(',', $fileData);
 
         $fileName = time() . uniqid() . '.png';
 

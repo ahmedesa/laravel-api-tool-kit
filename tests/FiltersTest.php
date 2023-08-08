@@ -53,6 +53,9 @@ class FiltersTest extends TestCase
         // Additional test case
         // ...
 
+        $result = TestModel::useFilters()->get();
+        $expectedRecords = // define expected records based on the data set up for the test
+
         $this->assertContainsOnly($expectedRecords, $result);
     }
 
@@ -67,6 +70,8 @@ class FiltersTest extends TestCase
         // Additional test case
         // ...
 
+        $result = TestModel::useFilters()->get();
+
         $this->assertEmpty($result);
     }
 
@@ -80,6 +85,8 @@ class FiltersTest extends TestCase
 
         // Additional test case
         // ...
+
+        $result = TestModel::useFilters()->get();
 
         $this->assertEmpty($result);
     }

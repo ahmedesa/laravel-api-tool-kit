@@ -28,18 +28,15 @@ The Laravel API Toolkit is a comprehensive suite of tools designed to help you c
 
 
 ## **Installation**
-
+To get started, install the package using Composer:
 ```
 composer require essa/api-tool-kit
 ```
-to publish config
+To publish the configuration files, run:
 ```
 php artisan vendor:publish --provider="Essa\APIToolKit\APIToolKitServiceProvider" --tag="config"
 ```
-
-use exception handler to standardize the error response [Error Response](#error-response)
-
-in App\Exceptions\Handler class extend the APIHandler class
+For standardizing error responses, extend your exception handler from the APIHandler class:
 ```php
 
 namespace App\Exceptions;
@@ -52,7 +49,7 @@ class Handler extends APIHandler
 
 ```
 
-use API Response Trait in Controller
+Utilize the API Response Trait in your controllers:
 
 `App\Http\Controllers\Controller.php`:
 
@@ -64,14 +61,14 @@ class Controller extends BaseController
     use ApiResponse;
 }
 ```
-check : [API response](#api-response)
+For more details, refer to [API response](#api-response)
 
 [🔝 Back to contents](#contents)
 
 ## **API Response**
 
-it is used to format your response to standard format and status codes
-for success responses, it will be
+The API Response feature provides standardized response formatting and status codes.
+
 
 #### **Success Response**
 ```json
@@ -93,10 +90,7 @@ for success responses, it will be
 }
 ```
 
-usage:
-you can use the trait inside the class you want to return the response form
-
-and use it like this
+Usage: Include the ApiResponse trait in your class, then use the provided methods such as responseSuccess, responseCreated, responseDeleted, etc., to generate appropriate responses. Refer to the documentation for a full list of available methods.
 
 ```php
 $this->responseSuccess('car created successfully' , $car);
@@ -118,41 +112,40 @@ responseWithCustomError($error_title, $error_details, $status_code) //send custo
 [🔝 Back to contents](#contents)
 
 ## **Dynamic Pagination**
-
-use pagination dynamically
+Use dynamic pagination to manage the number of results per page in API responses.
 
 #### usage
-to use dynamic pagination to get all users :
+To paginate results with the default of 20 items per page:
 ```php
 $users = User::dynamicPaginate();
 ```
-to get all users without pagination :
+To retrieve all users without pagination:
 ```
 \users?pagination='none'
 ```
-to get all users paginated 10 users per page:
+To paginate with a custom number of items per page:
 ```
 \users?per_page=10
 ```
 by default pagination is 20 element per page you can change the default value from config/api-tool-kit
 ## **Filters**
+Filters allow you to refine API query results based on various attributes.
 
 usage:
 
-to create a filter class:
+Generate a filter class:
 ```
 php artisan make:filter CarFilters
 ```
-to set default filters to the Car model , in Car model you will add
+In the Car model, set default filters:
 ```php
 protected $default_filters = CarFilters::class;
 ```
-to use it
-
+Use filters:
 ```php
 Car::useFilters()->get();
 ```
-if you want to override the default filters
+Override default filters:
 
 ```php
 Car::useFilters(SpecialCaseCarFilters::class)->get();
@@ -200,6 +193,7 @@ public function option($term)
 [🔝 Back to contents](#contents)
 
 ## **API Generator**
+Generate API-related files quickly and easily with the following command:
 
 #### Usage :
 
@@ -237,9 +231,10 @@ in addition, the routes will be created and added in routes/api.php files
 
 [🔝 Back to contents](#contents)
 ## **Actions**
-action is a laravel implementation of command design pattern which create a class where you can add your business logic in https://en.wikipedia.org/wiki/Command_pattern
+Actions implement the command design pattern, providing a structured way to encapsulate business logic.
+#### Usage :
 
-usage:
+Generate an action class:
 
 ```
 php artisan make:action CreateCar
@@ -267,55 +262,62 @@ app(CreateCar::class)->execute($data);
 2-inject it in the class in constructor
 
 ```php
-private $create_car_action ;
+private $createCarAction ;
 
-public function __construct(CreateCar $create_car_action)
+public function __construct(CreateCar $createCarAction)
 {
-    $this->create_car_action=$create_car_action;
+    $this->createCarAction=$createCarAction;
 }
 
 public function doSomething()
 {
-    $this->create_car_action->execute($data);
+    $this->createCarAction->execute($data);
 }
 ```
 3-inject the class in laravel controller function
 
 ```php
-public function doSomething(CreateCar $create_car_action)
+public function doSomething(CreateCar $createCarAction)
 {
-    $create_car_action->execute($data);
+    $createCarAction->execute($data);
 }
 ```
 [🔝 Back to contents](#contents)
 
 
 ## **Media Helper**
+The Media Helper simplifies file uploading and deletion processes:
+#### Usage :
 
-it is used to upload and delete files to storage
+Upload a file:
 
 ```php
-// to upload file
-$file_path = MediaHelper::uploadFile($file ,$path); 
-//to delete an file
+$filePath = MediaHelper::uploadFile($file ,$path); 
+```
+Delete a file:
+```php
 MediaHelper::deleteFile($path); 
-//upload multiple files
-$files_paths = MediaHelper::uploadMultiple($files ,$path); 
-//upload base64 image
-$image_path = MediaHelper::uploadBase64Image($encoded_image ,$path); 
+```
+Upload multiple files:
+```php
+$filesPaths = MediaHelper::uploadMultiple($files ,$path); 
+```
+Upload base64 image:
+```php
+$imagePath = MediaHelper::uploadBase64Image($encoded_image ,$path); 
 ```
 
 [🔝 Back to contents](#contents)
 
-## **Enum
-bad practice :
-if I have two types of users (admin ,student) instead of hard coding the name of user type every time using it you can simply use the enum class
+## **Enum**
+Utilize enums to avoid hardcoding values and create clear, maintainable code.
 
-usage :
+#### Usage :
+Generate an enum class:
 ```
 php artisan make:enum UserTypes
 ```
-it will generate classes like this
+Define enum values:
 ```php
 namespace App\Enums;
 
@@ -336,7 +338,7 @@ UserTypes::toArray() //to get all enums as key and value
 
 ## **General Tips**
 
-### **throw error instead of return json response**
+Prefer throwing exceptions instead of directly returning JSON responses for better error handling.
 
 Bad:
 

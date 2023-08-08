@@ -3,7 +3,7 @@
   on: [push]
 
   jobs:
-    test:
+    check-code:
       runs-on: ubuntu-latest
 
       steps:

@@ -5,22 +5,6 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Dummy;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-
-class DummyTest extends TestCase
-{
-    use  RefreshDatabase;
-
-    protected $endpoint = '/api/dummies';
-    protected $table_name = 'dummies';
-
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        $this->withoutExceptionHandling();
-    }
-
     public function testCreateDummy(): void
     {
         $this->actingAs(User::factory()->create());
@@ -139,4 +123,3 @@ class DummyTest extends TestCase
 
         $this->assertDatabaseMissing($this->table_name, ['id' => 1]);
     }@endif('soft-delete')
-}

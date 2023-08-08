@@ -23,8 +23,6 @@ class DummyTest extends TestCase
 
     public function testCreateDummy(): void
     {
-        $this->markTestIncomplete('This test case needs review.');
-
         $this->actingAs(User::factory()->create());
 
         $payload = Dummy::factory()->make([])->toArray();
@@ -38,8 +36,6 @@ class DummyTest extends TestCase
 
     public function testViewAllDummiesSuccessfully(): void
     {
-        $this->markTestIncomplete('This test case needs review.');
-
         $this->actingAs(User::factory()->create());
 
         Dummy::factory(5)->create();

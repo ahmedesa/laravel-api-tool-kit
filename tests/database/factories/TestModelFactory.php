@@ -2,7 +2,7 @@
 
 namespace Essa\APIToolKit\Tests\database\factories;
 
-use Essa\APIToolKit\Tests\Mocks\TestModel;
+use Essa\APIToolKit\Tests\Mocks\Models\TestModel;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class TestModelFactory extends Factory

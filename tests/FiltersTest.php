@@ -1,7 +1,8 @@
 <?php
 
-use Essa\APIToolKit\Tests\Mocks\TestModel;
-use Essa\APIToolKit\Tests\TestCase;
+namespace Essa\APIToolKit\Tests;
+
+use Essa\APIToolKit\Tests\Mocks\Models\TestModel;
 use Illuminate\Http\Request;
 
 class FiltersTest extends TestCase

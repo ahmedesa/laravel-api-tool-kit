@@ -75,7 +75,7 @@ class FiltersDTO
 
     public function getFilter(string $key)
     {
-        if (!key_exists($key, $this->filters)) {
+        if (! array_key_exists($key, $this->filters)) {
             return null;
         }
 

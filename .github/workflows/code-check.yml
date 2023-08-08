@@ -1,0 +1,17 @@
+  name: Run Code Check
+
+  on: [push]
+
+  jobs:
+    test:
+      runs-on: ubuntu-latest
+
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v2
+
+        - name: Install dependencies
+          run: composer install
+
+        - name: Run Duster
+          run: composer check-code

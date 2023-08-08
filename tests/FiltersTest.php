@@ -53,7 +53,7 @@ class FiltersTest extends TestCase
         // Additional test case
         // ...
 
-        // Add assertions here
+        $this->assertContainsOnly($expectedRecords, $result);
     }
 
     /**
@@ -67,7 +67,7 @@ class FiltersTest extends TestCase
         // Additional test case
         // ...
 
-        // Add assertions here
+        $this->assertEmpty($result);
     }
 
     /**
@@ -81,6 +81,6 @@ class FiltersTest extends TestCase
         // Additional test case
         // ...
 
-        // Add assertions here
+        $this->assertEmpty($result);
     }
 }

@@ -63,4 +63,46 @@ class FiltersTest extends TestCase
         $this->assertCount(1, $records);
         $this->assertEquals(2, $records->first()->id);
     }
+
+    /**
+     * @test
+     */
+    public function useFilterClassToSearchForNonexistentColumn()
+    {
+        TestModel::factory(5)->create([
+            'name' => 'aaa',
+        ]);
+
+        TestModel::factory(7)->create([
+            'name' => 'bbb',
+        ]);
+
+        $this->app->bind('request', fn () => new Request([
+            'search' => 'c',
+        ]));
+
+        $records = TestModel::useFilters()->get();
+
+        $this->assertCount(0, $records);
+    }
+
+    /**
+     * @test
+     */
+    public function useFilterClassWithEmptyRequest()
+    {
+        TestModel::factory(5)->create([
+            'name' => 'aaa',
+        ]);
+
+        TestModel::factory(7)->create([
+            'name' => 'bbb',
+        ]);
+
+        $this->app->bind('request', fn () => new Request());
+
+        $records = TestModel::useFilters()->get();
+
+        $this->assertCount(12, $records);
+    }
 }

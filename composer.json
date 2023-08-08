@@ -20,13 +20,27 @@
     ],
     "require": {
         "php": "^7.4|^8.0|^8.1",
-        "tightenco/duster": "^1.2"
+        "illuminate/support": "^9.52",
+        "illuminate/http": "^9.52",
+        "illuminate/database": "^9.52",
+        "illuminate/container": "^9.52",
+        "illuminate/auth": "^9.52"
+    },
+    "require-dev": {
+        "tightenco/duster": "^1.2",
+        "orchestra/testbench": "^7.26",
+        "phpunit/phpunit": "^9.6"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
             "Essa\\APIToolKit\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Essa\\APIToolKit\\Tests\\": "tests"
         }
     },
     "extra": {
@@ -38,6 +52,7 @@
         }
     },
     "scripts": {
-        "fix-style": "./vendor/bin/duster fix"
+        "fix-style": "./vendor/bin/duster fix",
+        "test": "./vendor/bin/phpunit"
     }
 }

@@ -28,7 +28,8 @@ class DummyTest extends TestCase
      */
     public function testResponseServerError(): void
     {
-        // Test code for responseServerError method
+        // Implement the code correctly for responseServerError method
+        // Add the original test logic for responseServerError method
     }
 
     /**
@@ -38,7 +39,8 @@ class DummyTest extends TestCase
      */
     public function testResponseWithCustomError(): void
     {
-        // Test code for responseWithCustomError method
+        // Implement the code correctly for responseWithCustomError method
+        // Add the original test logic for responseWithCustomError method
     }
 
     /**
@@ -48,7 +50,8 @@ class DummyTest extends TestCase
      */
     public function testResponseUnprocessable(): void
     {
-        // Test code for responseUnprocessable method
+        // Implement the code correctly for responseUnprocessable method
+        // Add the original test logic for responseUnprocessable method
     }
 
     /**
@@ -58,7 +61,8 @@ class DummyTest extends TestCase
      */
     public function testResponseBadRequest(): void
     {
-        // Test code for responseBadRequest method
+        // Implement the code correctly for responseBadRequest method
+        // Add the original test logic for responseBadRequest method
     }
 
     /**
@@ -68,7 +72,8 @@ class DummyTest extends TestCase
      */
     public function testResponseNotFound(): void
     {
-        // Test code for responseNotFound method
+        // Implement the code correctly for responseNotFound method
+        // Add the original test logic for responseNotFound method
     }
 
     /**
@@ -78,7 +83,8 @@ class DummyTest extends TestCase
      */
     public function testResponseUnAuthorized(): void
     {
-        // Test code for responseUnAuthorized method
+        // Implement the code correctly for responseUnAuthorized method
+        // Add the original test logic for responseUnAuthorized method
     }
 
     /**
@@ -88,7 +94,8 @@ class DummyTest extends TestCase
      */
     public function testResponseUnAuthenticated(): void
     {
-        // Test code for responseUnAuthenticated method
+        // Implement the code correctly for responseUnAuthenticated method
+        // Add the original test logic for responseUnAuthenticated method
     }
 
     /**
@@ -98,7 +105,8 @@ class DummyTest extends TestCase
      */
     public function testResponseConflictError(): void
     {
-        // Test code for responseConflictError method
+        // Implement the code correctly for responseConflictError method
+        // Add the original test logic for responseConflictError method
     }
 
     /**
@@ -108,7 +116,8 @@ class DummyTest extends TestCase
      */
     public function testResponseSuccess(): void
     {
-        // Test code for responseSuccess method
+        // Implement the code correctly for responseSuccess method
+        // Add the original test logic for responseSuccess method
     }
 
     /**
@@ -118,7 +127,8 @@ class DummyTest extends TestCase
      */
     public function testResponseCreated(): void
     {
-        // Test code for responseCreated method
+        // Implement the code correctly for responseCreated method
+        // Add the original test logic for responseCreated method
     }
 
     /**
@@ -128,7 +138,8 @@ class DummyTest extends TestCase
      */
     public function testResponseDeleted(): void
     {
-        // Test code for responseDeleted method
+        // Implement the code correctly for responseDeleted method
+        // Add the original test logic for responseDeleted method
     }
 
     /**
@@ -138,6 +149,7 @@ class DummyTest extends TestCase
      */
     public function testResponseValidationError(): void
     {
-        // Test code for ResponseValidationError method
+        // Implement the code correctly for ResponseValidationError method
+        // Add the original test logic for ResponseValidationError method
     }
 }

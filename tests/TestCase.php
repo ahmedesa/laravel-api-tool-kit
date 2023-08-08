@@ -36,6 +36,7 @@ abstract class TestCase extends OrchestraTestCase
             $table->increments('id');
             $table->timestamps();
             $table->string('name');
+            $table->string('code');
             $table->boolean('is_active')->default(true);
         });
 

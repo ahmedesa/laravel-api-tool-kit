@@ -12,7 +12,7 @@ class GeneratorCommand extends Command
 {
     use FileManger;
 
-    protected array $all_options = [
+    protected array $allOptions = [
         'controller',
         'request',
         'resource',
@@ -96,21 +96,20 @@ class GeneratorCommand extends Command
     ];
 
     protected $signature = 'api:generate {model}
-    {--m|migration}
-    {--c|controller}
-    {--R|request}
-    {--r|resource}
-    {--s|seeder}
-    {--f|factory}
-    {--F|filter}
-    {--t|test}
-    {--routes}
-    {--soft-delete}
-    ';
+                            {--m|migration}
+                            {--c|controller}
+                            {--R|request}
+                            {--r|resource}
+                            {--s|seeder}
+                            {--f|factory}
+                            {--F|filter}
+                            {--t|test}
+                            {--routes}
+                            {--soft-delete}';
 
     protected $description = 'This command generate api crud.';
 
-    private string     $model;
+    private string $model;
     private Filesystem $filesystem;
 
     public function __construct(Filesystem $filesystem)
@@ -122,13 +121,13 @@ class GeneratorCommand extends Command
 
     public function handle()
     {
+        $model = ucfirst($this->argument('model'));
+
         if ($this->isReservedName($this->argument('model'))) {
             $this->error('The name "' . $this->argument('model') . '" is reserved by PHP.');
 
             return false;
         }
-
-        $model = ucfirst($this->argument('model'));
 
         $this->model = $model;
 
@@ -136,6 +135,15 @@ class GeneratorCommand extends Command
 
         $this->createModel();
 
+        $this->createComponents();
+
+        $this->updateRoutes();
+
+        $this->info('Module created successfully!');
+    }
+
+    private function createComponents(): void
+    {
         if ($this->option('controller')) {
             $this->createController();
         }
@@ -167,15 +175,6 @@ class GeneratorCommand extends Command
         if ($this->option('seeder')) {
             $this->createSeeder();
         }
-
-        if ($this->option('routes')) {
-            $this->filesystem->append(
-                base_path('routes/api.php'),
-                $this->getTemplate('routes')
-            );
-        }
-
-        $this->info('Module created successfully!');
     }
 
     private function createController(): void
@@ -194,6 +193,10 @@ class GeneratorCommand extends Command
 
     private function createTest(): void
     {
+        if (! file_exists(base_path('tests/Feature/'))) {
+            $this->filesystem->makeDirectory(base_path('tests/Feature/'));
+        }
+
         file_put_contents(base_path("tests/Feature/{$this->model}Test.php"), $this->getTemplate('DummyTest'));
     }
 
@@ -240,11 +243,11 @@ class GeneratorCommand extends Command
     private function createRequest(): void
     {
         Artisan::call('make:request', [
-            'name' => $this->model . '\Create' . $this->model . 'Request',
+            'name' => "{$this->model}\Create{$this->model}Request",
         ]);
 
         Artisan::call('make:request', [
-            'name' => $this->model . '\Update' . $this->model . 'Request',
+            'name' => "{$this->model}\Update{$this->model}Request",
         ]);
     }
 
@@ -253,6 +256,16 @@ class GeneratorCommand extends Command
         Artisan::call('make:seeder', [
             'name' => $this->model . 'Seeder',
         ]);
+    }
+
+    private function updateRoutes(): void
+    {
+        if ($this->option('routes')) {
+            $this->filesystem->append(
+                base_path('routes/api.php'),
+                $this->getTemplate('routes')
+            );
+        }
     }
 
     private function isReservedName($name): bool
@@ -264,45 +277,48 @@ class GeneratorCommand extends Command
 
     private function getUserChoices(): void
     {
-        $yes_or_no = [
+        $yesOrNo = [
             'y' => 'Yes',
             'n' => 'No',
         ];
 
-        $all_default_selected = $this->choice(
-            "Select all default options :\n "
-            . implode(',', config('api-tool-kit.default_generates'))
-            . '?',
-            $yes_or_no,
+        $allDefaultSelected = $this->choice(
+            'Select all default options ?',
+            $yesOrNo,
             'y'
         );
 
         $choice = $this->choice(
             'Do you want to use <options=bold>soft delete</> ?',
-            $yes_or_no,
+            $yesOrNo,
             'y'
         );
 
         $this->input->setOption('soft-delete', $choice == 'y');
 
-        if ($all_default_selected == 'y') {
-            foreach (config('api-tool-kit.default_generates') as $option) {
-                if (in_array($option, $this->all_options)) {
-                    $this->input->setOption($option, true);
-                }
-            }
+        if ($allDefaultSelected == 'y') {
+            $this->setDefaultOptions();
 
             return;
         }
 
-        foreach ($this->all_options as $option) {
+        foreach ($this->allOptions as $option) {
             $choice = $this->choice(
                 "Do you want to generate <options=bold>{$option}</> ?",
-                $yes_or_no,
+                $yesOrNo,
                 'y'
             );
 
             $this->input->setOption($option, $choice == 'y');
+        }
+    }
+
+    private function setDefaultOptions(): void
+    {
+        foreach (config('api-tool-kit.default_generates') as $option) {
+            if (in_array($option, $this->allOptions)) {
+                $this->input->setOption($option, true);
+            }
         }
     }
 }

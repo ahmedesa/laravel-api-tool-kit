@@ -9,6 +9,7 @@ use Essa\APIToolKit\Traits\HasCache;
 use Essa\APIToolKit\Traits\HasGeneratedCode;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class TestModel extends Model
 {
@@ -21,4 +22,9 @@ class TestModel extends Model
     protected string $default_filters = TestModelFilters::class;
 
     protected $guarded = [];
+
+    public function sluggableTestModel(): HasMany
+    {
+        return $this->hasMany(SluggableTestModel::class);
+    }
 }

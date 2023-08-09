@@ -45,6 +45,7 @@ abstract class TestCase extends OrchestraTestCase
             $table->timestamps();
             $table->string('name');
             $table->string('slug');
+            $table->foreignId('test_model_id')->nullable();
         });
     }
 }

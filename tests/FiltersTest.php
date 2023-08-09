@@ -1,7 +1,10 @@
 <?php
 
-use Essa\APIToolKit\Tests\Mocks\TestModel;
-use Essa\APIToolKit\Tests\TestCase;
+namespace Essa\APIToolKit\Tests;
+
+use Carbon\Carbon;
+use Essa\APIToolKit\Tests\Mocks\Models\SluggableTestModel;
+use Essa\APIToolKit\Tests\Mocks\Models\TestModel;
 use Illuminate\Http\Request;
 
 class FiltersTest extends TestCase
@@ -62,5 +65,142 @@ class FiltersTest extends TestCase
 
         $this->assertCount(1, $records);
         $this->assertEquals(2, $records->first()->id);
+    }
+
+    public function useFilterClassToSortDateAscending()
+    {
+        TestModel::factory()->create([
+            'created_at' => Carbon::parse('2023-08-01'),
+        ]);
+        TestModel::factory()->create([
+            'created_at' => Carbon::parse('2023-08-02'),
+        ]);
+
+        $this->app->bind('request', fn () => new Request([
+            'sorts' => 'created_at',
+        ]));
+
+        $records = TestModel::useFilters()->get();
+
+        $this->assertTrue($records[0]->created_at <= $records[1]->created_at);
+    }
+
+    /**
+     * @test
+     */
+    public function useFilterClassWithSortsAsc()
+    {
+        TestModel::factory()->create([
+            'name' => 'Zebra',
+        ]);
+        TestModel::factory()->create([
+            'name' => 'Apple',
+        ]);
+
+        $this->app->bind('request', fn () => new Request([
+            'sorts' => 'name',
+        ]));
+
+        $records = TestModel::useFilters()->get();
+
+        $this->assertEquals('Apple', $records->first()->name);
+    }
+
+    /**
+     * @test
+     */
+    public function useFilterClassWithSortsDesc()
+    {
+        TestModel::factory()->create([
+            'name' => 'Zebra',
+        ]);
+        TestModel::factory()->create([
+            'name' => 'Apple',
+        ]);
+
+        $this->app->bind('request', fn () => new Request([
+            'sorts' => '-name',
+        ]));
+
+        $records = TestModel::useFilters()->get();
+
+        $this->assertEquals('Zebra', $records->first()->name);
+    }
+
+    /**
+     * @test
+     */
+    public function useFilterClassWithCustomFilter()
+    {
+        TestModel::factory(2)->create([
+            'created_at' => '2023-01-01',
+        ]);
+        TestModel::factory(3)->create([
+            'created_at' => '2011-02-01',
+        ]);
+
+        TestModel::factory(7)->create([
+            'created_at' => '2022-02-01',
+        ]);
+
+        $this->app->bind('request', fn () => new Request([
+            'year' => 2022,
+        ]));
+
+        $records = TestModel::useFilters()->get();
+
+        $this->assertCount(7, $records);
+    }
+
+    /**
+     * @test
+     */
+    public function useFilterClassWithRelationSearch()
+    {
+        $modelWithOutRelation = TestModel::factory()->create([
+            'name' => 'Parent Model',
+        ]);
+
+        $modelWithRelation = TestModel::factory()->create([
+            'name' => 'Parent Model',
+        ]);
+
+        SluggableTestModel::create([
+            'name' => 'Child Model',
+            'test_model_id' => $modelWithRelation->id,
+        ]);
+
+        $this->app->bind('request', fn () => new Request([
+            'search' => 'ild',
+        ]));
+
+        $records = TestModel::useFilters()->get();
+
+        $this->assertCount(1, $records);
+    }
+
+    /**
+     * @test
+     */
+    public function useFilterClassWithInclude()
+    {
+        // Arrange
+        $model = TestModel::factory()->create();
+
+        SluggableTestModel::create([
+            'name' => 'Included Model',
+            'test_model_id' => $model->id,
+        ]);
+
+        $this->app->bind('request', fn () => new Request([
+            'includes' => 'sluggableTestModel',
+        ]));
+
+        // Act
+        $records = TestModel::useFilters()->get();
+
+        // Assert
+        $this->assertCount(1, $records);
+        $this->assertTrue($records->first()->relationLoaded('sluggableTestModel'));
     }
 }

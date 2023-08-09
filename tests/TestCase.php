@@ -36,7 +36,16 @@ abstract class TestCase extends OrchestraTestCase
             $table->increments('id');
             $table->timestamps();
             $table->string('name');
-            $table->boolean('is_visible')->default(true);
+            $table->string('code');
+            $table->boolean('is_active')->default(true);
+        });
+
+        $app['db']->connection()->getSchemaBuilder()->create('sluggable_test_models', function (Blueprint $table) {
+            $table->increments('id');
+            $table->timestamps();
+            $table->string('name');
+            $table->string('slug');
+            $table->foreignId('test_model_id')->nullable();
         });
     }
 }

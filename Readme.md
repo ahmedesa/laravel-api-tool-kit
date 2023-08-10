@@ -103,7 +103,7 @@ Available Methods
 
 responseSuccess($message , $data)  // returns a 200 HTTP status code
 responseCreated($message,$data)  // returns a 201 HTTP status code 
-responseDeleted()  // returns empty response with a 204 HTTP status code
+responseDeleted()  // returns an empty response with a 204 HTTP status code
 responseNotFound($errorDetails,$errorTitle)  // returns a 404 HTTP status code
 responseBadRequest($errorDetails,$errorTitle)  // returns a 400 HTTP status code
 responseUnAuthorized($errorDetails,$errorTitle)  // returns a 403 HTTP status code
@@ -134,66 +134,83 @@ by default pagination is 20 element per page you can change the default value fr
 ## **Filters**
 Filters allow you to refine API query results based on various attributes.
 
-usage:
+### Creating a Filter
 
+To create a filter, use the provided Artisan command:
 Generate a filter class:
 ```
 php artisan make:filter CarFilters
 ```
-In the Car model, set default filters:
+Using Filters in Models
 ```php
-protected $default_filters = CarFilters::class;
+namespace App\Models;
+
+use Essa\APIToolKit\Filters\Filterable;
+
+class Car extends Model
+{
+    use Filterable;
+
+    protected string $default_filters = CarFilters::class;
+
+    // Other model code...
+}
+
 ```
-Use filters:
+### Applying Filters
+Filters can be applied to a query using the useFilters scope method:
 ```php
 Car::useFilters()->get();
 ```
-Override default filters:
+### Available Filter Options
+In your filter class (CarFilters in this case), you have several options you can customize:
 
+Allowed Filters
+Define the attributes you want to allow filtering by using the $allowedFilters property:
 ```php
-Car::useFilters(SpecialCaseCarFilters::class)->get();
+protected array $allowedFilters = ['color', 'model_id'];
 ```
-options in Filter class
-
+Allowed Sorts
+Specify the attributes that can be used for sorting using the $allowedSorts property:
 ```php
-//to add the attributes to filter by =>> /cars?color=red&model_id=1
-protected array $allowedFilters  = ['color' , 'model_id']; 
-//to add the attributes to filter by :
-// desc : ?sorts=created_at
-// asc  : ?sorts=-created_at
-protected array $allowedSorts= ['created_at'];
-// allowed relationships to be loaded 
-// ?includes=model
+protected array $allowedSorts = ['created_at'];
+```
+To sort in descending or descending order . For example, to sort by created_at :
+```
+// descending : ?sorts=created_at
+// ascending  : ?sorts=-created_at
+```
+Allowed Includes
+For eager loading relationships, set the $allowedIncludes property:
+```php
 protected array $allowedIncludes = ['model'];
-//column that will be included in search =>> ?search=tesla
-protected array $columnSearch= ['name','descriptions']; 
-//relation that will be included in search =>> ?search=ahmed
+```
+Column and Relation Search
+Specify columns and relationships that can be searched using the $columnSearch and $relationSearch properties:
+```php
+protected array $columnSearch = ['name', 'description'];
 protected array $relationSearch = [
     'user' => ['first_name', 'last_name']
-]; 
+];
 ```
-
-to create a custom query you will just create a new function in the class and add your query
-example filter by year:
+### Creating Custom Filters
+You can create custom filters by adding new methods to your filter class. For example, to filter cars by their manufacturing year:
 ```php
 public function year($term)
 {
-    $this->builder->whereYear('created_At', $term);
+    $this->builder->whereYear('manufacturing_date', $term);
 }
-
-//usage : /cars?year=2020
 ```
-filter by relationship :
-```php 
-public function option($term)
-{
-    $this->builder->whereHas('options', fn($query) => $query->where('option_id', $term));
-}
-//usage : /cars?option=1
+### Using Filters in Requests
+Filters can be applied by including query parameters in the API request. For example, to filter cars by color:
 ```
+GET /cars?color=red
+```
+### Additional Tips
+When searching for a value within a column or relationship, use the search query parameter.
 ### **DateFilter and TimeFilter**
 
-The `DateFilter` and `TimeFilter` traits simplify querying records within specific date or time ranges.
+The `DateFilter` and `TimeFilter` traits simplify querying records within a specific date or time ranges.
 
 To use these traits, include them in your filter class:
 
@@ -279,11 +296,11 @@ class CreateCar
 The best practice to use the action class is to use dependency injection
 
 you have many options
-1-use laravel application container
+1-use Laravel application container
 ```php
 app(CreateCar::class)->execute($data);
 ```
-2-inject it in the class in constructor
+2-inject it in the class in the constructor
 
 ```php
 private $createCarAction ;
@@ -298,7 +315,7 @@ public function doSomething()
     $this->createCarAction->execute($data);
 }
 ```
-3-inject the class in laravel controller function
+3-inject the class in Laravel controller function
 
 ```php
 public function doSomething(CreateCar $createCarAction)
@@ -354,7 +371,7 @@ class UserTypes extends Enum
 methods:
 ```php
 UserTypes::getAll() //get all types 
-UserTypes::isValid($value) //to check if this value exist in the enum
+UserTypes::isValid($value) //to check if this value exists in the enum
 UserTypes::toArray() //to get all enums as key and value
 ```
 

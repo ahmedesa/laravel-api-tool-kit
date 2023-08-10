@@ -111,10 +111,8 @@ class MediaHelperTest extends TestCase
     {
         Storage::fake();
 
-        // Upload an initial file
         $oldFilePath = MediaHelper::uploadFile($this->getUploadedFile(), 'uploads/images', null, true);
 
-        // Upload a new file with original name, replacing the old file
         $newFile = $this->getUploadedFile('test2.jpg');
         $newFilePath = MediaHelper::uploadFile($newFile, 'uploads/images', $oldFilePath, true);
 
@@ -128,10 +126,8 @@ class MediaHelperTest extends TestCase
     {
         Storage::fake();
 
-        // Upload an initial base64 image
         $oldFilePath = MediaHelper::uploadBase64Image('base64_encoded_image_data', 'uploads/images');
 
-        // Upload a new base64 image, replacing the old image
         $newFilePath = MediaHelper::uploadBase64Image('new_base64_encoded_image_data', 'uploads/images', $oldFilePath);
 
         Storage::assertExists($newFilePath);

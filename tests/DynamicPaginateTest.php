@@ -55,7 +55,7 @@ class DynamicPaginateTest extends TestCase
 
         TestModel::factory(30)->create();
 
-        $this->app->bind('request', fn () => new Request());
+        $this->app->bind('request', fn () => new Request);
 
         /** @var LengthAwarePaginator $paginatedRecords */
         $paginatedRecords = TestModel::dynamicPaginate();

@@ -43,4 +43,23 @@ class DynamicPaginateTest extends TestCase
 
         $this->assertCount(50, $paginatedRecords->all());
     }
+
+    /**
+     * @test
+     */
+    public function getRecordsWithDefaultPerPage()
+    {
+        $randomNumber = rand(1, 30);
+
+        $this->app['config']->set('api-tool-kit.default_pagination_number', $randomNumber);
+
+        TestModel::factory(30)->create();
+
+        $this->app->bind('request', fn () => new Request());
+
+        /** @var LengthAwarePaginator $paginatedRecords */
+        $paginatedRecords = TestModel::dynamicPaginate();
+
+        $this->assertCount($randomNumber, $paginatedRecords->all());
+    }
 }

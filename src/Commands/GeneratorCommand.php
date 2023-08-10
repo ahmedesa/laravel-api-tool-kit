@@ -2,7 +2,7 @@
 
 namespace Essa\APIToolKit\Commands;
 
-use Essa\APIToolKit\Generator\FileManger;
+use Essa\APIToolKit\Generator\StubParser;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Artisan;
@@ -10,8 +10,6 @@ use Illuminate\Support\Str;
 
 class GeneratorCommand extends Command
 {
-    use FileManger;
-
     protected array $allOptions = [
         'controller',
         'request',
@@ -111,6 +109,7 @@ class GeneratorCommand extends Command
 
     private string $model;
     private Filesystem $filesystem;
+    private StubParser $stubParser;
 
     public function __construct(Filesystem $filesystem)
     {
@@ -132,6 +131,8 @@ class GeneratorCommand extends Command
         $this->model = $model;
 
         $this->getUserChoices();
+
+        $this->stubParser = new StubParser($model, $this->options());
 
         $this->createModel();
 
@@ -183,12 +184,12 @@ class GeneratorCommand extends Command
             $this->filesystem->makeDirectory(app_path('/Http/Controllers/API'));
         }
 
-        file_put_contents(app_path("Http/Controllers/API/{$this->model}Controller.php"), $this->getTemplate('DummyController'));
+        file_put_contents(app_path("Http/Controllers/API/{$this->model}Controller.php"), $this->stubParser->parseStub('DummyController'));
     }
 
     private function createModel(): void
     {
-        file_put_contents(app_path("Models/{$this->model}.php"), $this->getTemplate('Dummy'));
+        file_put_contents(app_path("Models/{$this->model}.php"), $this->stubParser->parseStub('Dummy'));
     }
 
     private function createTest(): void
@@ -197,7 +198,7 @@ class GeneratorCommand extends Command
             $this->filesystem->makeDirectory(base_path('tests/Feature/'));
         }
 
-        file_put_contents(base_path("tests/Feature/{$this->model}Test.php"), $this->getTemplate('DummyTest'));
+        file_put_contents(base_path("tests/Feature/{$this->model}Test.php"), $this->stubParser->parseStub('DummyTest'));
     }
 
     private function createFilter(): void
@@ -206,7 +207,7 @@ class GeneratorCommand extends Command
             $this->filesystem->makeDirectory(app_path('/Filters'));
         }
 
-        file_put_contents(app_path("Filters/{$this->model}Filters.php"), $this->getTemplate('DummyFilters'));
+        file_put_contents(app_path("Filters/{$this->model}Filters.php"), $this->stubParser->parseStub('DummyFilters'));
     }
 
     private function createResources(): void
@@ -221,7 +222,7 @@ class GeneratorCommand extends Command
 
         file_put_contents(
             app_path("Http/Resources/{$this->model}/{$this->model}Resource.php"),
-            $this->getTemplate('DummyResource')
+            $this->stubParser->parseStub('DummyResource')
         );
     }
 
@@ -263,7 +264,7 @@ class GeneratorCommand extends Command
         if ($this->option('routes')) {
             $this->filesystem->append(
                 base_path('routes/api.php'),
-                $this->getTemplate('routes')
+                $this->stubParser->parseStub('routes')
             );
         }
     }

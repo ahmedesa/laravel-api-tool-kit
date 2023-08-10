@@ -191,10 +191,31 @@ public function option($term)
 }
 //usage : /cars?option=1
 ```
+### **DateFilter and TimeFilter**
 
+The `DateFilter` and `TimeFilter` traits simplify querying records within specific date or time ranges.
+
+To use these traits, include them in your filter class:
+
+```php
+use Essa\APIToolKit\Traits\DateFilter;
+use Essa\APIToolKit\Traits\TimeFilter;
+
+class TestModelFilters extends QueryFilters
+{
+    use DateFilter;
+    use TimeFilter;
+
+    // ...
+}
+```
+Example: Retrieve records created between '2023-08-01' and '2023-08-15' within a time range of '09:00:00' to '12:00:00':
+```php 
+/api/test-models?from_date=2023-08-01&to_date=2023-08-15&from_time=09:00:00&to_time=12:00:00
+```
+These traits enhance the flexibility of your API's querying capabilities and allow you to easily retrieve records based on date and time attributes.
 
 [🔝 Back to contents](#contents)
-
 ## **API Generator**
 Generate API-related files quickly and easily with the following command:
 

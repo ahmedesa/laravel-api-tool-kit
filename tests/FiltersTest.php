@@ -184,7 +184,6 @@ class FiltersTest extends TestCase
      */
     public function useFilterClassWithInclude()
     {
-        // Arrange
         $model = TestModel::factory()->create();
 
         SluggableTestModel::create([
@@ -196,10 +195,8 @@ class FiltersTest extends TestCase
             'includes' => 'sluggableTestModel',
         ]));
 
-        // Act
         $records = TestModel::useFilters()->get();
 
-        // Assert
         $this->assertCount(1, $records);
         $this->assertTrue($records->first()->relationLoaded('sluggableTestModel'));
     }

@@ -21,9 +21,9 @@ trait ApiResponse
         return $this->APIError(Response::HTTP_INTERNAL_SERVER_ERROR, $message, $details);
     }
 
-    public function responseWithCustomError($title, $details, $status_code): JsonResponse
+    public function responseWithCustomError($title, $details, $statusCode): JsonResponse
     {
-        return $this->APIError($status_code, $title, $details);
+        return $this->APIError($statusCode, $title, $details);
     }
 
     /**

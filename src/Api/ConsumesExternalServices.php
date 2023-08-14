@@ -13,7 +13,7 @@ trait ConsumesExternalServices
         array $formParams = [],
         array $headers = [],
         bool $isJsonRequest = false,
-        bool $decode_response = true
+        bool $decodeResponse = true
     ) {
         $client = new Client([
             'base_uri' => $this->baseUri,
@@ -29,8 +29,8 @@ trait ConsumesExternalServices
             'query' => $queryParams,
         ]);
 
-        $response_content = $response->getBody()->getContents();
+        $responseContent = $response->getBody()->getContents();
 
-        return $decode_response ? json_decode($response_content) : $response_content;
+        return $decodeResponse ? json_decode($responseContent) : $responseContent;
     }
 }

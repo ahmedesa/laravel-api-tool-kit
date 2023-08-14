@@ -25,10 +25,8 @@ class MakeFilterCommand extends GeneratorCommand
 
     /**
      * Get the stub file for the generator.
-     *
-     * @return string
      */
-    protected function getStub()
+    protected function getStub(): string
     {
         return file_exists(resource_path('stubs/DummyFilters.stub'))
             ? resource_path('stubs/DummyFilters.stub')
@@ -39,9 +37,8 @@ class MakeFilterCommand extends GeneratorCommand
      * Get the default namespace for the class.
      *
      * @param  string  $rootNamespace
-     * @return string
      */
-    protected function getDefaultNamespace($rootNamespace)
+    protected function getDefaultNamespace($rootNamespace): string
     {
         return $rootNamespace . '\Filters';
     }
@@ -53,7 +50,7 @@ class MakeFilterCommand extends GeneratorCommand
         return str_replace(['DummyFilters', '{{ class }}', '{{class}}'], $class, $stub);
     }
 
-    protected function replaceNamespace(&$stub, $name)
+    protected function replaceNamespace(&$stub, $name): MakeFilterCommand
     {
         $searches = [
             ['App\Filters'],
@@ -72,10 +69,8 @@ class MakeFilterCommand extends GeneratorCommand
 
     /**
      * Get the console command arguments.
-     *
-     * @return array
      */
-    protected function getArguments()
+    protected function getArguments(): array
     {
         return [
             ['name', InputArgument::REQUIRED, 'The name of the action.'],

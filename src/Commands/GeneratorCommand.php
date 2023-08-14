@@ -98,11 +98,13 @@ class GeneratorCommand extends Command
 
     private ComponentCreatorHandler $componentCreatorHandler;
 
-    public function __construct(UserChoicesHandler $userChoicesHandler, ComponentCreatorHandler $componentCreatorHandler)
-    {
-        $this->userChoicesHandler = $userChoicesHandler;
-
+    public function __construct(
+        UserChoicesHandler $userChoicesHandler,
+        ComponentCreatorHandler $componentCreatorHandler
+    ) {
         parent::__construct();
+
+        $this->userChoicesHandler = $userChoicesHandler;
         $this->componentCreatorHandler = $componentCreatorHandler;
     }
 

@@ -80,12 +80,12 @@ class QueryFilters
     protected function applySorts(): void
     {
         if ($this->getFiltersDTO()->getSorts() != null) {
-            $first_sort = explode(',', $this->getFiltersDTO()->getSorts())[0];
+            $firstSort = explode(',', $this->getFiltersDTO()->getSorts())[0];
 
-            $value = ltrim($first_sort, '-');
+            $value = ltrim($firstSort, '-');
 
             if (in_array($value, $this->allowedSorts)) {
-                $this->builder->orderBy($value, $this->getDirection($first_sort));
+                $this->builder->orderBy($value, $this->getDirection($firstSort));
             }
         }
     }

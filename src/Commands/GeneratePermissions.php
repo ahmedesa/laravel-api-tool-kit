@@ -20,7 +20,7 @@ class GeneratePermissions extends Command
         parent::__construct();
     }
 
-    public function handle()
+    public function handle(): void
     {
         if (! file_exists(database_path('permissions.csv'))) {
             file_put_contents(

@@ -1,12 +1,12 @@
 <?php
 
-namespace Essa\APIToolKit\Filters\Operations;
+namespace Essa\APIToolKit\Filters\Handlers;
 
 use Closure;
-use Essa\APIToolKit\Filters\Contracts\FilterOperationInterface;
+use Essa\APIToolKit\Filters\Contracts\QueryFiltersHandlerInterface;
 use Essa\APIToolKit\Filters\DTO\QueryFiltersOptionsDTO;
 
-class FilterOperation implements FilterOperationInterface
+class FiltersHandler implements QueryFiltersHandlerInterface
 {
     public function handle(QueryFiltersOptionsDTO $queryFiltersOptionsDTO, Closure $next): QueryFiltersOptionsDTO
     {

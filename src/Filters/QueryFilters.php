@@ -4,10 +4,6 @@ namespace Essa\APIToolKit\Filters;
 
 use Essa\APIToolKit\Filters\DTO\FiltersDTO;
 use Essa\APIToolKit\Filters\DTO\QueryFiltersOptionsDTO;
-use Essa\APIToolKit\Filters\Operations\FilterOperation;
-use Essa\APIToolKit\Filters\Operations\IncludeOperation;
-use Essa\APIToolKit\Filters\Operations\SearchOperation;
-use Essa\APIToolKit\Filters\Operations\SortOperation;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pipeline\Pipeline;
 
@@ -39,12 +35,7 @@ class QueryFilters
                 $this->columnSearch,
                 $this->relationSearch
             ))
-            ->through([
-                FilterOperation::class,
-                SortOperation::class,
-                IncludeOperation::class,
-                SearchOperation::class,
-            ])
+            ->through(config('api-tool-kit.filters.handlers'))
             ->thenReturn()
             ->getBuilder();
     }

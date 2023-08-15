@@ -2,7 +2,7 @@
 
 namespace Essa\APIToolKit\Tests;
 
-use Essa\APIToolKit\DTO\FiltersDTO;
+use Essa\APIToolKit\Filters\DTO\FiltersDTO;
 use Essa\APIToolKit\Tests\Mocks\Models\TestModel;
 use Illuminate\Http\Request;
 

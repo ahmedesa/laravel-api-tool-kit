@@ -2,7 +2,7 @@
 
 namespace Essa\APIToolKit\Filters;
 
-use Essa\APIToolKit\DTO\FiltersDTO;
+use Essa\APIToolKit\Filters\DTO\FiltersDTO;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -26,8 +26,8 @@ trait Filterable
         /** @var QueryFilters $class */
         $class = app($filterClass ?? $this->default_filters);
 
-        $class->setFiltersDTO($filteredDTO);
-
-        return $class->apply($query);
+        return $class->setFiltersDTO($filteredDTO)
+            ->setBuilder($query)
+            ->apply();
     }
 }

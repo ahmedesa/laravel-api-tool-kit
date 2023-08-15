@@ -1,6 +1,6 @@
 <?php
 
-namespace Essa\APIToolKit\DTO;
+namespace Essa\APIToolKit\Filters\DTO;
 
 use Illuminate\Http\Request;
 

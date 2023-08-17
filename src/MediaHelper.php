@@ -7,52 +7,53 @@ use Illuminate\Support\Facades\Storage;
 
 class MediaHelper
 {
-    /**
-     * @param  UploadedFile  $file [ file]
-     * @param  string|null  $oldFilePath delete old file if exist
-     * @param  bool  $withOriginalName if you want to save file with its original name
-     * @return string file full path after being uploaded
-     */
-    public static function uploadFile(UploadedFile $file, string $path, ?string $oldFilePath = null, bool $withOriginalName = false): string
-    {
-        if (! is_null($oldFilePath)) {
-            static::deleteFile($oldFilePath);
-        }
-
-        if ($withOriginalName) {
-            return Storage::putFileAs($path, $file, $file->getClientOriginalName());
-        }
+    public static function uploadFile(
+        UploadedFile $file,
+        string $path,
+        ?string $fileName = null,
+        bool $withOriginalName = false
+    ): string {
+        $fileName = $fileName ?: ($withOriginalName ? $file->getClientOriginalName() : $file->hashName());
 
         $fullFilePath = static::getBasePathPrefix() . $path;
 
-        return $file->store($fullFilePath);
+        return $file->storeAs($fullFilePath, $fileName);
     }
 
     /**
      * upload multiple files
      */
-    public static function uploadMultiple(array $files, string $path, bool $withOriginalNames = false): array
-    {
-        $filesNames = [];
+    public static function uploadMultiple(
+        array $files,
+        string $path,
+        ?array $filesNames = null, bool $withOriginalNames = false
+    ): array {
+        $filesPaths = [];
 
-        foreach ($files as $file) {
-            $filesNames[] = static::uploadFile($file, $path, $withOriginalNames);
+        foreach ($files as $index => $file) {
+            $fileName = $filesNames[$index] ?? null;
+
+            $filesPaths[] = static::uploadFile(
+                $file,
+                $path,
+                $fileName,
+                $withOriginalNames
+            );
         }
 
-        return $filesNames;
+        return $filesPaths;
     }
 
-    public static function uploadBase64Image(string $decodedFile, string $path, string $oldFilePath = null): string
-    {
-        if (! is_null($oldFilePath)) {
-            static::deleteFile($oldFilePath);
-        }
-
+    public static function uploadBase64Image(
+        string $decodedFile,
+        string $path,
+        ?string $fileName = null
+    ): string {
         @[$type, $fileData] = explode(';', $decodedFile);
 
         @[, $fileData] = explode(',', $fileData);
 
-        $fileName = time() . uniqid() . '.png';
+        $fileName = $fileName ?: time() . uniqid() . '.png';
 
         $fullFilePath = static::getBasePathPrefix() . $path . '/' . $fileName;
 

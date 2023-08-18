@@ -79,7 +79,7 @@ class ComponentCreatorHandler
     private function createComponent(ComponentInfo $component, StubParser $stubParser): void
     {
         if ( ! file_exists($component->folder)) {
-            $this->filesystem->makeDirectory($component->folder);
+            $this->filesystem->makeDirectory($component->folder, 0777, true, true);
         }
 
         file_put_contents($component->path, $stubParser->parseStub($component->stub));

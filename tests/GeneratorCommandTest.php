@@ -23,9 +23,8 @@ class GeneratorCommandTest extends TestCase
     {
         $this->artisan('api:generate', [
             'model' => 'GeneratedModel',
+            '--all' => true,
         ])
-            ->expectsQuestion('Select all default options ?', 'y')
-            ->expectsChoice('Do you want to use <options=bold>soft delete</> ?', 'y', ['Yes', 'No', 'n', 'y'])
             ->assertExitCode(0);
 
         $this->assertFileExists(app_path('Models/GeneratedModel.php'));
@@ -48,9 +47,9 @@ class GeneratorCommandTest extends TestCase
     {
         $this->artisan('api:generate', [
             'model' => 'CustomSoftDeleteModel',
+            '--all' => true,
+            '--soft-delete' => true
         ])
-            ->expectsQuestion('Select all default options ?', 'y')
-            ->expectsChoice('Do you want to use <options=bold>soft delete</> ?', 'y', ['Yes', 'No', 'n', 'y'])
             ->assertExitCode(0);
 
         $this->assertStringContainsString('SoftDeletes', file_get_contents(app_path('Models/CustomSoftDeleteModel.php')));
@@ -63,9 +62,8 @@ class GeneratorCommandTest extends TestCase
     {
         $this->artisan('api:generate', [
             'model' => 'CustomModel',
+            '--all' => true,
         ])
-            ->expectsQuestion('Select all default options ?', 'y')
-            ->expectsChoice('Do you want to use <options=bold>soft delete</> ?', 'n', ['Yes', 'No', 'n', 'y'])
             ->assertExitCode(0);
 
         $this->assertStringNotContainsString('SoftDeletes', file_get_contents(app_path('Models/CustomModel.php')));
@@ -81,18 +79,17 @@ class GeneratorCommandTest extends TestCase
     {
         $this->artisan('api:generate', [
             'model' => 'WithoutDefaultNewCustomModel',
+            '--soft-delete' => false,
+            '--controller' => false,
+            '--request' => false,
+            '--resource' => true,
+            '--migration' => true,
+            '--factory' => false,
+            '--seeder' => true,
+            '--filter' => false,
+            '--test' => true,
+            '--routes' => true,
         ])
-            ->expectsQuestion('Select all default options ?', 'n')
-            ->expectsChoice('Do you want to use <options=bold>soft delete</> ?', 'n', ['Yes', 'No', 'n', 'y'])
-            ->expectsChoice('Do you want to generate <options=bold>controller</> ?', 'n', ['Yes', 'No', 'n', 'y'])
-            ->expectsChoice('Do you want to generate <options=bold>request</> ?', 'n', ['Yes', 'No', 'n', 'y'])
-            ->expectsChoice('Do you want to generate <options=bold>resource</> ?', 'y', ['Yes', 'No', 'n', 'y'])
-            ->expectsChoice('Do you want to generate <options=bold>migration</> ?', 'y', ['Yes', 'No', 'n', 'y'])
-            ->expectsChoice('Do you want to generate <options=bold>factory</> ?', 'n', ['Yes', 'No', 'n', 'y'])
-            ->expectsChoice('Do you want to generate <options=bold>seeder</> ?', 'y', ['Yes', 'No', 'n', 'y'])
-            ->expectsChoice('Do you want to generate <options=bold>filter</> ?', 'n', ['Yes', 'No', 'n', 'y'])
-            ->expectsChoice('Do you want to generate <options=bold>test</> ?', 'y', ['Yes', 'No', 'n', 'y'])
-            ->expectsChoice('Do you want to generate <options=bold>routes</> ?', 'y', ['Yes', 'No', 'n', 'y'])
             ->assertExitCode(0);
 
         $this->assertFileExists(app_path('Models/WithoutDefaultNewCustomModel.php'));

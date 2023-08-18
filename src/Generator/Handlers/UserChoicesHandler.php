@@ -22,28 +22,13 @@ class UserChoicesHandler
 
     public function handel(): array
     {
-        $yesOrNo = [
-            'y' => 'Yes',
-            'n' => 'No',
-        ];
+        $allDefaultSelected = $this->command->option('all');
 
-        $allDefaultSelected = $this->command->choice(
-            'Select all default options ?',
-            $yesOrNo,
-            'y'
-        );
-
-        $useSoftDelete = $this->command->choice(
-            'Do you want to use <options=bold>soft delete</> ?',
-            $yesOrNo,
-            'y'
-        );
-
-        $userChoices = 'y' === $allDefaultSelected
+        $userChoices = $allDefaultSelected
             ? $this->setDefaultOptions()
             : $this->gatherUserOptions();
 
-        return $userChoices + ['soft-delete' => 'y' === $useSoftDelete];
+        return $userChoices + ['soft-delete' => $this->command->option('soft-delete')];
     }
 
     public function setCommand(GeneratorCommand $command): self
@@ -68,16 +53,6 @@ class UserChoicesHandler
 
     private function gatherUserOptions(): array
     {
-        $userChoices = [];
-        foreach ($this->allOptions as $option) {
-            $choice = $this->command->choice(
-                "Do you want to generate <options=bold>{$option}</> ?",
-                ['y' => 'Yes', 'n' => 'No'],
-                'y'
-            );
-            $userChoices[$option] = 'y' === $choice;
-        }
-
-        return $userChoices;
+        return $this->command->options();
     }
 }

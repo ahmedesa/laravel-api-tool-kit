@@ -17,6 +17,7 @@ class GeneratorCommand extends Command
                             {--f|factory}
                             {--F|filter}
                             {--t|test}
+                            {--all}
                             {--routes}
                             {--soft-delete}';
 

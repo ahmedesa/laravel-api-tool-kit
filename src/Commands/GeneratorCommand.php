@@ -4,7 +4,6 @@ namespace Essa\APIToolKit\Commands;
 
 use Essa\APIToolKit\Generator\Handlers\ComponentCreatorHandler;
 use Essa\APIToolKit\Generator\Handlers\UserChoicesHandler;
-use Essa\APIToolKit\Generator\StubParser;
 use Illuminate\Console\Command;
 
 class GeneratorCommand extends Command
@@ -125,7 +124,6 @@ class GeneratorCommand extends Command
         $this->componentCreatorHandler
             ->setModel($model)
             ->setUserChoices($userChoices)
-            ->setStubParser(new StubParser($model, $userChoices))
             ->handle();
 
         $this->info('Module created successfully!');

@@ -12,7 +12,6 @@ class ComponentCreatorHandler
     private Filesystem $filesystem;
     private string $model;
     private array $userChoices;
-    private StubParser $stubParser;
 
     public function __construct(Filesystem $filesystem)
     {
@@ -21,41 +20,9 @@ class ComponentCreatorHandler
 
     public function handle(): void
     {
-        $this->createModel();
+        $this->generateArtisanCommands();
 
-        if ($this->userChoices['controller']) {
-            $this->createController();
-        }
-
-        if ($this->userChoices['filter']) {
-            $this->createFilter();
-        }
-
-        if ($this->userChoices['resource']) {
-            $this->createResources();
-        }
-
-        if ($this->userChoices['test']) {
-            $this->createTest();
-        }
-
-        if ($this->userChoices['migration']) {
-            $this->createMigration();
-        }
-
-        if ($this->userChoices['factory']) {
-            $this->createFactory();
-        }
-
-        if ($this->userChoices['request']) {
-            $this->createRequest();
-        }
-
-        if ($this->userChoices['seeder']) {
-            $this->createSeeder();
-        }
-
-        $this->updateRoutes();
+        $this->generateTheComponents();
     }
 
     public function setModel(string $model): self
@@ -72,101 +39,126 @@ class ComponentCreatorHandler
         return $this;
     }
 
-    public function setStubParser(StubParser $stubParser): self
+    private function generateArtisanCommands(): void
     {
-        $this->stubParser = $stubParser;
+        $commandsToGenerate = $this->commandsToGenerate();
 
-        return $this;
+        foreach ($commandsToGenerate as $commands) {
+
+            if ($this->userChoices[$commands->type]) {
+                Artisan::call($commands->name, $commands->options);
+            }
+        }
     }
 
-    private function createController(): void
+    private function generateTheComponents(): void
     {
-        if ( ! file_exists(app_path('/Http/Controllers/API'))) {
-            $this->filesystem->makeDirectory(app_path('/Http/Controllers/API'));
+        $stubParser = new StubParser($this->model, $this->userChoices);
+
+        $componentsToGenerate = $this->componentsToGenerate();
+
+        foreach ($componentsToGenerate as $component) {
+            if ('model' === $component->type || $this->userChoices[$component->type]) {
+                $this->createComponent($component, $stubParser);
+            }
         }
 
-        file_put_contents(app_path("Http/Controllers/API/{$this->model}Controller.php"), $this->stubParser->parseStub('DummyController'));
+        if ($this->userChoices['routes']) {
+            $this->appendRoutes($stubParser);
+        }
     }
 
-    private function createModel(): void
+    private function appendRoutes(StubParser $stubParser): void
     {
-        file_put_contents(app_path("Models/{$this->model}.php"), $this->stubParser->parseStub('Dummy'));
-    }
-
-    private function createTest(): void
-    {
-        if ( ! file_exists(base_path('tests/Feature/'))) {
-            $this->filesystem->makeDirectory(base_path('tests/Feature/'));
-        }
-
-        file_put_contents(base_path("tests/Feature/{$this->model}Test.php"), $this->stubParser->parseStub('DummyTest'));
-    }
-
-    private function createFilter(): void
-    {
-        if ( ! file_exists(app_path('/Filters'))) {
-            $this->filesystem->makeDirectory(app_path('/Filters'));
-        }
-
-        file_put_contents(app_path("Filters/{$this->model}Filters.php"), $this->stubParser->parseStub('DummyFilters'));
-    }
-
-    private function createResources(): void
-    {
-        if ( ! file_exists(app_path('/Http/Resources'))) {
-            $this->filesystem->makeDirectory(app_path('/Http/Resources'));
-        }
-
-        if ( ! file_exists(app_path('/Http/Resources/' . $this->model))) {
-            $this->filesystem->makeDirectory(app_path('/Http/Resources/' . $this->model));
-        }
-
-        file_put_contents(
-            app_path("Http/Resources/{$this->model}/{$this->model}Resource.php"),
-            $this->stubParser->parseStub('DummyResource')
+        $this->filesystem->append(
+            base_path('routes/api.php'),
+            $stubParser->parseStub('routes')
         );
     }
 
-    private function createMigration(): void
+    private function createComponent(ComponentInfo $component, StubParser $stubParser): void
     {
-        Artisan::call('make:migration', [
-            'name' => 'create_' . Str::plural(Str::snake($this->model)) . '_table',
-        ]);
-    }
-
-    private function createFactory(): void
-    {
-        Artisan::call('make:factory', [
-            'name' => $this->model . 'Factory',
-            '--model' => $this->model,
-        ]);
-    }
-
-    private function createRequest(): void
-    {
-        Artisan::call('make:request', [
-            'name' => "{$this->model}\Create{$this->model}Request",
-        ]);
-
-        Artisan::call('make:request', [
-            'name' => "{$this->model}\Update{$this->model}Request",
-        ]);
-    }
-
-    private function createSeeder(): void
-    {
-        Artisan::call('make:seeder', [
-            'name' => $this->model . 'Seeder',
-        ]);
-    }
-
-    private function updateRoutes(): void
-    {
-        if ($this->userChoices['routes']) {
-            $this->filesystem->append(
-                base_path('routes/api.php'),
-                $this->stubParser->parseStub('routes')
-            );
+        if ( ! file_exists($component->folder)) {
+            $this->filesystem->makeDirectory($component->folder);
         }
+
+        file_put_contents($component->path, $stubParser->parseStub($component->stub));
+    }
+
+    private function commandsToGenerate(): array
+    {
+        return [
+            new CommandInfo(
+                'migration',
+                'make:migration',
+                [
+                    'name' => 'create_' . Str::plural(Str::snake($this->model)) . '_table',
+                ]
+            ),
+            new CommandInfo(
+                'factory',
+                'make:factory',
+                [
+                    'name' => "{$this->model}Factory",
+                    '--model' => $this->model,
+                ]
+            ),
+            new CommandInfo(
+                'seeder',
+                'make:seeder',
+                [
+                    'name' => "{$this->model}Seeder",
+                ]
+            ),
+            new CommandInfo(
+                'request',
+                'make:request',
+                [
+                    'name' => "{$this->model}\Create{$this->model}Request",
+                ]
+            ),
+            new CommandInfo(
+                'request',
+                'make:request',
+                [
+                    'name' => "{$this->model}\Update{$this->model}Request",
+                ]
+            ),
+        ];
+    }
+    private function componentsToGenerate(): array
+    {
+        return [
+            new ComponentInfo(
+                'controller',
+                app_path('/Http/Controllers/API'),
+                app_path("Http/Controllers/API/{$this->model}Controller.php"),
+                'DummyController'
+            ),
+            new ComponentInfo(
+                'test',
+                base_path('tests/Feature/'),
+                base_path("tests/Feature/{$this->model}Test.php"),
+                'DummyTest'
+            ),
+            new ComponentInfo(
+                'filter',
+                app_path('/Filters'),
+                app_path("Filters/{$this->model}Filters.php"),
+                'DummyFilters'
+            ),
+            new ComponentInfo(
+                'resource',
+                app_path('/Http/Resources/' . $this->model),
+                app_path("Http/Resources/{$this->model}/{$this->model}Resource.php"),
+                'DummyResource'
+            ),
+            new ComponentInfo(
+                'model',
+                app_path('/Models'),
+                app_path("Models/{$this->model}.php"),
+                'Dummy'
+            ),
+        ];
     }
 }

@@ -14,8 +14,7 @@ class ApiResponseTest extends TestCase
 
     public function setUp(): void
     {
-        $this->classThatImplementTheTrait = new class
-        {
+        $this->classThatImplementTheTrait = new class () {
             use ApiResponse;
         };
 
@@ -25,7 +24,7 @@ class ApiResponseTest extends TestCase
     /**
      * @test
      */
-    public function responseServerError()
+    public function responseServerError(): void
     {
         $response = $this->classThatImplementTheTrait->responseServerError('Server error details', 'Server error message');
 
@@ -36,7 +35,7 @@ class ApiResponseTest extends TestCase
     /**
      * @test
      */
-    public function responseSuccess()
+    public function responseSuccess(): void
     {
         $response = $this->classThatImplementTheTrait->responseSuccess('Success message', ['data' => 'value']);
 
@@ -47,7 +46,7 @@ class ApiResponseTest extends TestCase
         $this->assertEquals(['data' => 'value'], (array) $responseData->data);
     }
 
-    public function responseUnprocessable()
+    public function responseUnprocessable(): void
     {
         $response = $this->classThatImplementTheTrait->responseUnprocessable('Validation failed', 'Unprocessable entity');
 
@@ -60,7 +59,7 @@ class ApiResponseTest extends TestCase
     /**
      * @test
      */
-    public function responseBadRequest()
+    public function responseBadRequest(): void
     {
         $response = $this->classThatImplementTheTrait->responseBadRequest('Invalid request', 'Bad request');
 
@@ -73,7 +72,7 @@ class ApiResponseTest extends TestCase
     /**
      * @test
      */
-    public function responseDeleted()
+    public function responseDeleted(): void
     {
         $response = $this->classThatImplementTheTrait->responseDeleted();
 
@@ -85,7 +84,7 @@ class ApiResponseTest extends TestCase
     /**
      * @test
      */
-    public function responseNotFound()
+    public function responseNotFound(): void
     {
         $response = $this->classThatImplementTheTrait->responseNotFound('Resource not found', 'Not found');
 
@@ -98,7 +97,7 @@ class ApiResponseTest extends TestCase
     /**
      * @test
      */
-    public function responseUnAuthorized()
+    public function responseUnAuthorized(): void
     {
         $response = $this->classThatImplementTheTrait->responseUnAuthorized('Unauthorized', 'Unauthorized access');
 
@@ -111,7 +110,7 @@ class ApiResponseTest extends TestCase
     /**
      * @test
      */
-    public function responseUnAuthenticated()
+    public function responseUnAuthenticated(): void
     {
         $response = $this->classThatImplementTheTrait->responseUnAuthenticated('Unauthenticated', 'Authentication required');
 
@@ -124,7 +123,7 @@ class ApiResponseTest extends TestCase
     /**
      * @test
      */
-    public function responseConflictError()
+    public function responseConflictError(): void
     {
         $response = $this->classThatImplementTheTrait->responseConflictError('Conflict', 'Resource conflict');
 
@@ -137,7 +136,7 @@ class ApiResponseTest extends TestCase
     /**
      * @test
      */
-    public function responseValidationError()
+    public function responseValidationError(): void
     {
         $validator = Validator::make([], [
             'field' => 'required',

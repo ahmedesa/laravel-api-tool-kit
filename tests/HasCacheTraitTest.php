@@ -11,7 +11,7 @@ class HasCacheTraitTest extends TestCase
     /**
      * @test
      */
-    public function flushCacheIsCalledOnModelUpdate()
+    public function flushCacheIsCalledOnModelUpdate(): void
     {
         Cache::put(CacheKeys::DEFAULT_CACHE_KEY, 'cached data', 60);
 
@@ -23,7 +23,7 @@ class HasCacheTraitTest extends TestCase
     /**
      * @test
      */
-    public function flushCacheIsCalledOnModelCreate()
+    public function flushCacheIsCalledOnModelCreate(): void
     {
         Cache::put(CacheKeys::DEFAULT_CACHE_KEY, 'cached data', 60);
 
@@ -35,7 +35,7 @@ class HasCacheTraitTest extends TestCase
     /**
      * @test
      */
-    public function modelUpdateAndCache()
+    public function modelUpdateAndCache(): void
     {
         $model = TestModel::factory()->create();
 

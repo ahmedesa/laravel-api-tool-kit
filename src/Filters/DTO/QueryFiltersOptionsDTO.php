@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Builder;
 
 class QueryFiltersOptionsDTO
 {
-    protected array $allowedFilters = [];
-    protected array $allowedSorts = [];
-    protected array $allowedIncludes = [];
-    protected array $columnSearch = [];
-    protected array $relationSearch = [];
+    private array $allowedFilters = [];
+    private array $allowedSorts = [];
+    private array $allowedIncludes = [];
+    private array $columnSearch = [];
+    private array $relationSearch = [];
 
     private Builder $builder;
     private FiltersDTO $filtersDTO;

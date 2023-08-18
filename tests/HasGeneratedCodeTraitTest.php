@@ -10,7 +10,7 @@ class HasGeneratedCodeTraitTest extends TestCase
     /**
      * @test
      */
-    public function refreshCodeGeneratesNewCode()
+    public function refreshCodeGeneratesNewCode(): void
     {
         $model = TestModel::factory()->create();
 
@@ -24,7 +24,7 @@ class HasGeneratedCodeTraitTest extends TestCase
     /**
      * @test
      */
-    public function testGenerateCodeCreatesUniqueCodes()
+    public function testGenerateCodeCreatesUniqueCodes(): void
     {
         $model1 = TestModel::factory()->create();
         $model2 = TestModel::factory()->create();
@@ -38,7 +38,7 @@ class HasGeneratedCodeTraitTest extends TestCase
     /**
      * @test
      */
-    public function findByCodeScope()
+    public function findByCodeScope(): void
     {
         $model = TestModel::factory()->create();
 

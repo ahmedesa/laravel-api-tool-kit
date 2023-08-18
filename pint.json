@@ -1,0 +1,53 @@
+{
+  "preset": "psr12",
+  "rules": {
+    "align_multiline_comment": true,
+    "array_indentation": true,
+    "array_syntax": true,
+    "blank_line_after_namespace": true,
+    "blank_line_after_opening_tag": true,
+    "combine_consecutive_issets": true,
+    "combine_consecutive_unsets": true,
+    "concat_space": {
+      "spacing": "one"
+    },
+    "explicit_string_variable": true,
+    "fully_qualified_strict_types": true,
+    "global_namespace_import": {
+      "import_classes": true,
+      "import_constants": true,
+      "import_functions": true
+    },
+    "is_null": true,
+    "lambda_not_used_import": true,
+    "logical_operators": true,
+    "mb_str_functions": true,
+    "method_chaining_indentation": true,
+    "modernize_strpos": true,
+    "new_with_braces": true,
+    "no_empty_comment": true,
+    "not_operator_with_space": true,
+    "ordered_traits": true,
+    "protected_to_private": true,
+    "simplified_if_return": true,
+    "strict_comparison": true,
+    "ternary_to_null_coalescing": true,
+    "trim_array_spaces": true,
+    "use_arrow_functions": true,
+    "void_return": true,
+    "yoda_style": true,
+    "array_push": true,
+    "assign_null_coalescing_to_coalesce_equal": true,
+    "explicit_indirect_variable": true,
+    "method_argument_space": {
+      "on_multiline": "ensure_fully_multiline"
+    },
+    "modernize_types_casting": true,
+    "no_superfluous_elseif": true,
+    "no_useless_else": true,
+    "nullable_type_declaration_for_default_null_value": true,
+    "ordered_imports": {
+      "sort_algorithm": "alpha"
+    }
+  }
+}

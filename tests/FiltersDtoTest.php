@@ -11,7 +11,7 @@ class FiltersDtoTest extends TestCase
     /**
      * @test
      */
-    public function createFiltersDTOFromRequest()
+    public function createFiltersDTOFromRequest(): void
     {
         $request = new Request([
             'sorts' => 'created_at',
@@ -31,7 +31,7 @@ class FiltersDtoTest extends TestCase
     /**
      * @test
      */
-    public function useFilterClassWithCustomFiltersDTO()
+    public function useFilterClassWithCustomFiltersDTO(): void
     {
         TestModel::factory()->create([
             'name' => 'Car',

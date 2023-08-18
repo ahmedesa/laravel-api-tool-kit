@@ -9,7 +9,7 @@ class HasActivationTraitTest extends TestCase
     /**
      * @test
      */
-    public function activeScopeReturnsOnlyActiveRecords()
+    public function activeScopeReturnsOnlyActiveRecords(): void
     {
         TestModel::factory(3)->create([
             'is_active' => true,
@@ -27,7 +27,7 @@ class HasActivationTraitTest extends TestCase
     /**
      * @test
      */
-    public function toggleActivationChangesStatus()
+    public function toggleActivationChangesStatus(): void
     {
         $model = TestModel::factory()->create([
             'is_active' => true,

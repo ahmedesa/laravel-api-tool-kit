@@ -81,7 +81,7 @@ class ComponentCreatorHandler
 
     private function createController(): void
     {
-        if (! file_exists(app_path('/Http/Controllers/API'))) {
+        if ( ! file_exists(app_path('/Http/Controllers/API'))) {
             $this->filesystem->makeDirectory(app_path('/Http/Controllers/API'));
         }
 
@@ -95,7 +95,7 @@ class ComponentCreatorHandler
 
     private function createTest(): void
     {
-        if (! file_exists(base_path('tests/Feature/'))) {
+        if ( ! file_exists(base_path('tests/Feature/'))) {
             $this->filesystem->makeDirectory(base_path('tests/Feature/'));
         }
 
@@ -104,7 +104,7 @@ class ComponentCreatorHandler
 
     private function createFilter(): void
     {
-        if (! file_exists(app_path('/Filters'))) {
+        if ( ! file_exists(app_path('/Filters'))) {
             $this->filesystem->makeDirectory(app_path('/Filters'));
         }
 
@@ -113,11 +113,11 @@ class ComponentCreatorHandler
 
     private function createResources(): void
     {
-        if (! file_exists(app_path('/Http/Resources'))) {
+        if ( ! file_exists(app_path('/Http/Resources'))) {
             $this->filesystem->makeDirectory(app_path('/Http/Resources'));
         }
 
-        if (! file_exists(app_path('/Http/Resources/' . $this->model))) {
+        if ( ! file_exists(app_path('/Http/Resources/' . $this->model))) {
             $this->filesystem->makeDirectory(app_path('/Http/Resources/' . $this->model));
         }
 

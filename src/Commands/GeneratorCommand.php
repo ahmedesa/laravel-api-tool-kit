@@ -133,6 +133,6 @@ class GeneratorCommand extends Command
 
     private function isReservedName($name): bool
     {
-        return in_array(strtolower($name), $this->reservedNames);
+        return in_array(mb_strtolower($name), $this->reservedNames);
     }
 }

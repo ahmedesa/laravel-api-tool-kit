@@ -11,7 +11,7 @@ class DateFilterTest extends TestCase
     /**
      * @test
      */
-    public function useDateFilterToFilterFromDate()
+    public function useDateFilterToFilterFromDate(): void
     {
         TestModel::factory(5)->create([
             'created_at' => Carbon::parse('2023-08-01 12:00:00'),
@@ -32,7 +32,7 @@ class DateFilterTest extends TestCase
     /**
      * @test
      */
-    public function useDateFilterToFilterToDate()
+    public function useDateFilterToFilterToDate(): void
     {
         TestModel::factory(5)->create([
             'created_at' => Carbon::parse('2023-08-01 12:00:00'),
@@ -53,7 +53,7 @@ class DateFilterTest extends TestCase
     /**
      * @test
      */
-    public function useDateFilterWithBothFromDateAndToDate()
+    public function useDateFilterWithBothFromDateAndToDate(): void
     {
         // Arrange
         TestModel::factory(5)->create([
@@ -78,7 +78,7 @@ class DateFilterTest extends TestCase
     /**
      * @test
      */
-    public function useDateAndTimeFiltersTogether()
+    public function useDateAndTimeFiltersTogether(): void
     {
         TestModel::factory(5)->create([
             'created_at' => Carbon::parse('2023-08-01 12:00:00'),

@@ -75,7 +75,7 @@ class QueryFilters
     {
         foreach ($this->getFiltersDTO()->getFilters() as $name => $value) {
             if (method_exists($this, $name)) {
-                $this->$name($value);
+                $this->{$name}($value);
             }
         }
     }

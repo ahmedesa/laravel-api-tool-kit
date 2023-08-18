@@ -13,19 +13,18 @@ trait Sluggable
 {
     protected static function bootSluggable(): void
     {
-        static::creating(function (Model $model) {
+        static::creating(function (Model $model): void {
             if ($model->enableSluggableInCreating()) {
                 $model->generateSlug();
             }
         });
 
-        static::updating(function (Model $model) {
+        static::updating(function (Model $model): void {
             if ($model->enableSluggableInUpdating()) {
                 $model->generateSlug();
             }
         });
     }
-
     /**
      * find model by slug.
      */

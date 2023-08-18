@@ -39,11 +39,11 @@ class UserChoicesHandler
             'y'
         );
 
-        $userChoices = $allDefaultSelected == 'y'
+        $userChoices = 'y' === $allDefaultSelected
             ? $this->setDefaultOptions()
             : $this->gatherUserOptions();
 
-        return $userChoices + ['soft-delete' => $useSoftDelete == 'y'];
+        return $userChoices + ['soft-delete' => 'y' === $useSoftDelete];
     }
 
     public function setCommand(GeneratorCommand $command): self
@@ -75,7 +75,7 @@ class UserChoicesHandler
                 ['y' => 'Yes', 'n' => 'No'],
                 'y'
             );
-            $userChoices[$option] = $choice == 'y';
+            $userChoices[$option] = 'y' === $choice;
         }
 
         return $userChoices;

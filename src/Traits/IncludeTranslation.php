@@ -8,7 +8,7 @@ trait IncludeTranslation
     {
         $request = $this->validated();
 
-        if (! $this->has('translations')) {
+        if ( ! $this->has('translations')) {
             return $request;
         }
 

@@ -13,7 +13,7 @@ class SearchHandler implements QueryFiltersHandlerInterface
     {
         $searchValue = $queryFiltersOptionsDTO->getFiltersDTO()->getSearch();
 
-        if (is_null($searchValue)) {
+        if (null === $searchValue) {
             return $next($queryFiltersOptionsDTO);
         }
 
@@ -29,17 +29,17 @@ class SearchHandler implements QueryFiltersHandlerInterface
 
         $builder = $dataQueryOptionsDTO->getBuilder();
 
-        $builder->where(function (Builder $query) use ($searchValue, $columns, $relationColumns) {
+        $builder->where(function (Builder $query) use ($searchValue, $columns, $relationColumns): void {
             foreach ($columns as $key => $column) {
                 $clause = $this->getWhereFunction($key);
-                $query->$clause($column, 'LIKE', "%{$searchValue}%");
+                $query->{$clause}($column, 'LIKE', "%{$searchValue}%");
             }
 
             foreach ($relationColumns as $relationship => $relativeColumns) {
-                $query->orWhereHas($relationship, function (Builder $relationQuery) use ($searchValue, $relativeColumns) {
+                $query->orWhereHas($relationship, function (Builder $relationQuery) use ($searchValue, $relativeColumns): void {
                     foreach ($relativeColumns as $key => $column) {
                         $clause = $this->getWhereFunction($key);
-                        $relationQuery->$clause($column, 'LIKE', "%{$searchValue}%");
+                        $relationQuery->{$clause}($column, 'LIKE', "%{$searchValue}%");
                     }
                 });
             }
@@ -48,6 +48,6 @@ class SearchHandler implements QueryFiltersHandlerInterface
 
     private function getWhereFunction(int $key): string
     {
-        return $key == 0 ? 'where' : 'orWhere';
+        return 0 === $key ? 'where' : 'orWhere';
     }
 }

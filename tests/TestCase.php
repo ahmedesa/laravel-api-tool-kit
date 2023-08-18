@@ -30,9 +30,9 @@ abstract class TestCase extends OrchestraTestCase
         ];
     }
 
-    protected function setUpDatabase(Application $app)
+    protected function setUpDatabase(Application $app): void
     {
-        $app['db']->connection()->getSchemaBuilder()->create('test_models', function (Blueprint $table) {
+        $app['db']->connection()->getSchemaBuilder()->create('test_models', function (Blueprint $table): void {
             $table->increments('id');
             $table->timestamps();
             $table->string('name');
@@ -40,7 +40,7 @@ abstract class TestCase extends OrchestraTestCase
             $table->boolean('is_active')->default(true);
         });
 
-        $app['db']->connection()->getSchemaBuilder()->create('sluggable_test_models', function (Blueprint $table) {
+        $app['db']->connection()->getSchemaBuilder()->create('sluggable_test_models', function (Blueprint $table): void {
             $table->increments('id');
             $table->timestamps();
             $table->string('name');

@@ -17,7 +17,6 @@ trait HasGeneratedCode
             $model->refreshCode();
         });
     }
-
     public function scopeFindByCode(Builder $query, string $code): Model
     {
         return $query->where($this->codeField(), $code)

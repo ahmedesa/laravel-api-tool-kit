@@ -10,7 +10,7 @@ class SluggableTraitTest extends TestCase
     /**
      * @test
      */
-    public function generatesSlugOnCreating()
+    public function generatesSlugOnCreating(): void
     {
         $model = SluggableTestModel::create([
             'name' => 'Test Title',
@@ -22,7 +22,7 @@ class SluggableTraitTest extends TestCase
     /**
      * @test
      */
-    public function findBySlugScope()
+    public function findBySlugScope(): void
     {
         $model = SluggableTestModel::create([
             'name' => 'Test Title',

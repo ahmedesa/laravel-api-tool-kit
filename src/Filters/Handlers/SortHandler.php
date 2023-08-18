@@ -13,7 +13,7 @@ class SortHandler implements QueryFiltersHandlerInterface
         $sorts = $queryFiltersOptionsDTO->getFiltersDTO()->getSorts();
         $builder = $queryFiltersOptionsDTO->getBuilder();
 
-        if (is_null($sorts)) {
+        if (null === $sorts) {
             return $next($queryFiltersOptionsDTO);
         }
 
@@ -32,6 +32,6 @@ class SortHandler implements QueryFiltersHandlerInterface
 
     private function getDirection(string $sort): string
     {
-        return strpos($sort, '-') === 0 ? 'desc' : 'asc';
+        return str_starts_with($sort, '-') ? 'desc' : 'asc';
     }
 }

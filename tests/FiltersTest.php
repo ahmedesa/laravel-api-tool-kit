@@ -12,7 +12,7 @@ class FiltersTest extends TestCase
     /**
      * @test
      */
-    public function generateFiltersClass()
+    public function generateFiltersClass(): void
     {
         $name = 'TestFilters';
 
@@ -31,7 +31,7 @@ class FiltersTest extends TestCase
     /**
      * @test
      */
-    public function useFilterClassToSearchForColumn()
+    public function useFilterClassToSearchForColumn(): void
     {
         TestModel::factory(5)->create([
             'name' => 'aaa',
@@ -53,7 +53,7 @@ class FiltersTest extends TestCase
     /**
      * @test
      */
-    public function useFilterClassToFilterByColumn()
+    public function useFilterClassToFilterByColumn(): void
     {
         TestModel::factory(5)->create();
 
@@ -67,7 +67,7 @@ class FiltersTest extends TestCase
         $this->assertEquals(2, $records->first()->id);
     }
 
-    public function useFilterClassToSortDateAscending()
+    public function useFilterClassToSortDateAscending(): void
     {
         TestModel::factory()->create([
             'created_at' => Carbon::parse('2023-08-01'),
@@ -88,7 +88,7 @@ class FiltersTest extends TestCase
     /**
      * @test
      */
-    public function useFilterClassWithSortsAsc()
+    public function useFilterClassWithSortsAsc(): void
     {
         TestModel::factory()->create([
             'name' => 'Zebra',
@@ -109,7 +109,7 @@ class FiltersTest extends TestCase
     /**
      * @test
      */
-    public function useFilterClassWithSortsDesc()
+    public function useFilterClassWithSortsDesc(): void
     {
         TestModel::factory()->create([
             'name' => 'Zebra',
@@ -130,7 +130,7 @@ class FiltersTest extends TestCase
     /**
      * @test
      */
-    public function useFilterClassWithCustomFilter()
+    public function useFilterClassWithCustomFilter(): void
     {
         TestModel::factory(2)->create([
             'created_at' => '2023-01-01',
@@ -155,7 +155,7 @@ class FiltersTest extends TestCase
     /**
      * @test
      */
-    public function useFilterClassWithRelationSearch()
+    public function useFilterClassWithRelationSearch(): void
     {
         $modelWithOutRelation = TestModel::factory()->create([
             'name' => 'Parent Model',
@@ -182,7 +182,7 @@ class FiltersTest extends TestCase
     /**
      * @test
      */
-    public function useFilterClassWithInclude()
+    public function useFilterClassWithInclude(): void
     {
         $model = TestModel::factory()->create();
 

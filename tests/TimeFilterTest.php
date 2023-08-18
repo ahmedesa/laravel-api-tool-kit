@@ -11,7 +11,7 @@ class TimeFilterTest extends TestCase
     /**
      * @test
      */
-    public function useTimeFilterToFilterFromTime()
+    public function useTimeFilterToFilterFromTime(): void
     {
         TestModel::factory(5)->create([
             'created_at' => Carbon::parse('2023-08-01 12:00:00'),
@@ -32,7 +32,7 @@ class TimeFilterTest extends TestCase
     /**
      * @test
      */
-    public function useTimeFilterToFilterToTime()
+    public function useTimeFilterToFilterToTime(): void
     {
         TestModel::factory(5)->create([
             'created_at' => Carbon::parse('2023-08-01 12:00:00'),
@@ -53,7 +53,7 @@ class TimeFilterTest extends TestCase
     /**
      * @test
      */
-    public function useTimeFilterWithBothFromAndToTime()
+    public function useTimeFilterWithBothFromAndToTime(): void
     {
         TestModel::factory(5)->create([
             'created_at' => Carbon::parse('2023-08-01 12:00:00'),

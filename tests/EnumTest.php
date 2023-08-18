@@ -9,7 +9,7 @@ class EnumTest extends TestCase
     /**
      * @test
      */
-    public function generatesEnumClass()
+    public function generatesEnumClass(): void
     {
         $name = 'TestEnum';
 
@@ -26,7 +26,7 @@ class EnumTest extends TestCase
     }
 
     /** @test */
-    public function itProvidesEnumFunctionality()
+    public function itProvidesEnumFunctionality(): void
     {
         $this->assertEquals(['EXAMPLE' => 'example'], TestEnum::toArray());
         $this->assertEquals(['EXAMPLE'], TestEnum::getConst());

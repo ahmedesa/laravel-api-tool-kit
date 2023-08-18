@@ -15,7 +15,7 @@ trait HasOrder
 
     protected static function bootHasOrder(): void
     {
-        static::addGlobalScope('order', function (Builder $builder) {
+        static::addGlobalScope('order', function (Builder $builder): void {
             $builder->orderBy('order', 'asc');
         });
     }

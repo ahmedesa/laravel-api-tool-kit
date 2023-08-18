@@ -14,14 +14,14 @@ trait Filterable
 {
     public function scopeUseFilters(
         Builder $query,
-        string $filterClass = null,
+        ?string $filterClass = null,
         ?FiltersDTO $filteredDTO = null
     ): Builder {
-        if (! property_exists($this, 'default_filters') && is_null($filterClass)) {
+        if ( ! property_exists($this, 'default_filters') && null === $filterClass) {
             throw new Exception('please add default_filters property to the model');
         }
 
-        $filteredDTO = $filteredDTO ?? FiltersDTO::buildFromRequest(app(Request::class));
+        $filteredDTO ??= FiltersDTO::buildFromRequest(app(Request::class));
 
         /** @var QueryFilters $class */
         $class = app($filterClass ?? $this->default_filters);

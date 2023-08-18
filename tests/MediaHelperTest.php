@@ -8,12 +8,12 @@ use Illuminate\Support\Facades\Storage;
 
 class MediaHelperTest extends TestCase
 {
-    const BASE_64_IMAGE = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/w8AAwAB/AL+f4R4AAAAASUVORK5CYII=';
+    public const BASE_64_IMAGE = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/w8AAwAB/AL+f4R4AAAAASUVORK5CYII=';
 
     private string $testingImage = __DIR__ . '/Images/laravel-api-tool-kit.png';
 
     /** @test */
-    public function itUploadsFile()
+    public function itUploadsFile(): void
     {
         Storage::fake();
 
@@ -27,7 +27,7 @@ class MediaHelperTest extends TestCase
     }
 
     /** @test */
-    public function itUploadsFileWithOriginalName()
+    public function itUploadsFileWithOriginalName(): void
     {
         Storage::fake();
 
@@ -42,7 +42,7 @@ class MediaHelperTest extends TestCase
     }
 
     /** @test */
-    public function itUploadsFileWithCustomName()
+    public function itUploadsFileWithCustomName(): void
     {
         Storage::fake();
 
@@ -59,7 +59,7 @@ class MediaHelperTest extends TestCase
     }
 
     /** @test */
-    public function itUploadsMultipleFiles()
+    public function itUploadsMultipleFiles(): void
     {
         Storage::fake();
 
@@ -78,7 +78,7 @@ class MediaHelperTest extends TestCase
     }
 
     /** @test */
-    public function itUploadsMultipleFilesWithCustomNames()
+    public function itUploadsMultipleFilesWithCustomNames(): void
     {
         Storage::fake();
 
@@ -102,7 +102,7 @@ class MediaHelperTest extends TestCase
     }
 
     /** @test */
-    public function itUploadsBase64Image()
+    public function itUploadsBase64Image(): void
     {
         Storage::fake();
 
@@ -116,7 +116,7 @@ class MediaHelperTest extends TestCase
     }
 
     /** @test */
-    public function itUploadsBase64ImageWithCustomName()
+    public function itUploadsBase64ImageWithCustomName(): void
     {
         Storage::fake();
 
@@ -133,7 +133,7 @@ class MediaHelperTest extends TestCase
     }
 
     /** @test */
-    public function itDeletesFile()
+    public function itDeletesFile(): void
     {
         Storage::fake();
 
@@ -149,7 +149,7 @@ class MediaHelperTest extends TestCase
     }
 
     /** @test */
-    public function itGetsFileFullPath()
+    public function itGetsFileFullPath(): void
     {
         Storage::fake();
 
@@ -165,7 +165,7 @@ class MediaHelperTest extends TestCase
     }
 
     /** @test */
-    public function itGetsNullFileFullPathForNullFilePath()
+    public function itGetsNullFileFullPathForNullFilePath(): void
     {
         Storage::fake();
 
@@ -175,7 +175,7 @@ class MediaHelperTest extends TestCase
     }
 
     /** @test */
-    public function itUploadsAndDeletesBase64Images()
+    public function itUploadsAndDeletesBase64Images(): void
     {
         Storage::fake();
 

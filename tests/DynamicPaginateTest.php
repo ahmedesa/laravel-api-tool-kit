@@ -11,7 +11,7 @@ class DynamicPaginateTest extends TestCase
     /**
      * @test
      */
-    public function getAllRecordsWithDynamicPagination()
+    public function getAllRecordsWithDynamicPagination(): void
     {
         TestModel::factory(50)->create();
 
@@ -30,7 +30,7 @@ class DynamicPaginateTest extends TestCase
     /**
      * @test
      */
-    public function getAllRecordsWithoutPagination()
+    public function getAllRecordsWithoutPagination(): void
     {
         TestModel::factory(50)->create();
 
@@ -47,7 +47,7 @@ class DynamicPaginateTest extends TestCase
     /**
      * @test
      */
-    public function getRecordsWithDefaultPerPage()
+    public function getRecordsWithDefaultPerPage(): void
     {
         $randomNumber = rand(1, 30);
 
@@ -55,7 +55,7 @@ class DynamicPaginateTest extends TestCase
 
         TestModel::factory(30)->create();
 
-        $this->app->bind('request', fn () => new Request);
+        $this->app->bind('request', fn () => new Request());
 
         /** @var LengthAwarePaginator $paginatedRecords */
         $paginatedRecords = TestModel::dynamicPaginate();

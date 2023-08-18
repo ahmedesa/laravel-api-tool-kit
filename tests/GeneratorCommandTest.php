@@ -7,7 +7,7 @@ class GeneratorCommandTest extends TestCase
     /**
      * @test
      */
-    public function reservedNameValidation()
+    public function reservedNameValidation(): void
     {
         $this->artisan('api:generate', [
             'model' => 'class',
@@ -19,7 +19,7 @@ class GeneratorCommandTest extends TestCase
     /**
      * @test
      */
-    public function generateCommandWithAllDefaults()
+    public function generateCommandWithAllDefaults(): void
     {
         $this->artisan('api:generate', [
             'model' => 'GeneratedModel',
@@ -44,7 +44,7 @@ class GeneratorCommandTest extends TestCase
     /**
      * @test
      */
-    public function generateCommandWithoutDefaultOptionsButWithSoftDelete()
+    public function generateCommandWithoutDefaultOptionsButWithSoftDelete(): void
     {
         $this->artisan('api:generate', [
             'model' => 'CustomSoftDeleteModel',
@@ -59,7 +59,7 @@ class GeneratorCommandTest extends TestCase
         $this->assertStringContainsString('forceDelete', file_get_contents(app_path('Http/Controllers/API/CustomSoftDeleteModelController.php')));
     }
 
-    public function generateCommandWithoutDefaultOptionsButWithoutSoftDelete()
+    public function generateCommandWithoutDefaultOptionsButWithoutSoftDelete(): void
     {
         $this->artisan('api:generate', [
             'model' => 'CustomModel',
@@ -77,7 +77,7 @@ class GeneratorCommandTest extends TestCase
     /**
      * @test
      */
-    public function generateCommandWithoutDefaultOptions()
+    public function generateCommandWithoutDefaultOptions(): void
     {
         $this->artisan('api:generate', [
             'model' => 'WithoutDefaultNewCustomModel',

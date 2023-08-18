@@ -22,14 +22,14 @@ class GeneratePermissions extends Command
 
     public function handle(): void
     {
-        if (! file_exists(database_path('permissions.csv'))) {
+        if ( ! file_exists(database_path('permissions.csv'))) {
             file_put_contents(
                 database_path('permissions.csv'),
                 file_get_contents(__DIR__ . '/../permissions.csv')
             );
         }
 
-        if (! file_exists(config_path('permissions-map') . '.php')) {
+        if ( ! file_exists(config_path('permissions-map') . '.php')) {
             file_put_contents(
                 config_path('permissions-map') . '.php',
                 file_get_contents(__DIR__ . '/../../config/permissions-map.php')

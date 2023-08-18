@@ -7,7 +7,7 @@ class ActionTest extends TestCase
     /**
      * @test
      */
-    public function generateActionClass()
+    public function generateActionClass(): void
     {
         $name = 'TestAction';
 

@@ -13,11 +13,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class TestModel extends Model
 {
-    use HasFactory;
     use Filterable;
     use HasActivation;
-    use HasGeneratedCode;
     use HasCache;
+    use HasFactory;
+    use HasGeneratedCode;
 
     protected string $default_filters = TestModelFilters::class;
 

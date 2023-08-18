@@ -26,7 +26,8 @@ class MediaHelper
     public static function uploadMultiple(
         array $files,
         string $path,
-        ?array $filesNames = null, bool $withOriginalNames = false
+        ?array $filesNames = null,
+        bool $withOriginalNames = false
     ): array {
         $filesPaths = [];
 
@@ -74,7 +75,7 @@ class MediaHelper
 
     public static function getFileFullPath(?string $filePath): ?string
     {
-        return is_null($filePath) ? null : Storage::url($filePath);
+        return null === $filePath ? null : Storage::url($filePath);
     }
 
     protected static function getBasePathPrefix(): string

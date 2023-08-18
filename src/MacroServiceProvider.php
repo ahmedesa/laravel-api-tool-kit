@@ -10,7 +10,7 @@ use Illuminate\Support\ServiceProvider;
 
 class MacroServiceProvider extends ServiceProvider
 {
-    public function boot()
+    public function boot(): void
     {
         /** @var Application $request */
         $app = $this->app;
@@ -19,7 +19,7 @@ class MacroServiceProvider extends ServiceProvider
             /** @var Request $request */
             $request = $app->get('request');
 
-            if ($request->get('pagination') === 'none') {
+            if ('none' === $request->get('pagination')) {
                 return $this->get();
             }
 

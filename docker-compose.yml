@@ -1,8 +1,0 @@
-version: "3.9"
-
-services:
-  php:
-    build:
-      context: ./
-    volumes:
-      - ./:/var/www/app

@@ -94,23 +94,12 @@ class GeneratorCommand extends Command
         'yield',
     ];
 
-    private array $allOptions = [
-        'controller',
-        'request',
-        'resource',
-        'migration',
-        'factory',
-        'seeder',
-        'filter',
-        'test',
-        'routes',
-    ];
-
     private ComponentCreatorHandler $componentCreatorHandler;
 
     public function __construct(
         ComponentCreatorHandler $componentCreatorHandler
-    ) {
+    )
+    {
         parent::__construct();
 
         $this->componentCreatorHandler = $componentCreatorHandler;
@@ -143,26 +132,20 @@ class GeneratorCommand extends Command
 
     private function getUserChoices(): array
     {
-        $allDefaultSelected = $this->option('all');
-
-        $userChoices = $allDefaultSelected
-            ? $this->setDefaultOptions()
-            : $this->options();
-
-        return $userChoices + ['soft-delete' => $this->option('soft-delete')];
-    }
-
-    private function setDefaultOptions(): array
-    {
-        $userChoices = [];
-
-        foreach (config('api-tool-kit.default_generates') as $option) {
-            if (in_array($option, $this->allOptions)) {
-                $userChoices[$option] = true;
-            }
+        if ($this->option('all')) {
+            $this->setDefaultOptions();
         }
 
-        return $userChoices;
+        return $this->options() + ['soft-delete' => $this->option('soft-delete')];
+    }
+
+    private function setDefaultOptions(): void
+    {
+        $defaultOptions = config('api-tool-kit.default_generates');
+
+        foreach ($defaultOptions as $option) {
+            $this->input->setOption($option, true);
+        }
     }
 
     private function isReservedName($name): bool

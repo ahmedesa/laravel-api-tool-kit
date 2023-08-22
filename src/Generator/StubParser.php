@@ -28,7 +28,10 @@ class StubParser
         'filter',
     ];
 
-    public function __construct(private string $model, private array $options, private SchemaParserOutput $schemaParserOutput)
+    public function __construct(
+        private string $model,
+        private array $options,
+        private SchemaParserOutput $schemaParserOutput)
     {
     }
 
@@ -54,6 +57,7 @@ class StubParser
             $this->schemaParserOutput->factoryContent,
             $this->schemaParserOutput->createValidationRules,
             $this->schemaParserOutput->updateValidationRules,
+            $this->schemaParserOutput->modelRelations,
         ];
     }
 

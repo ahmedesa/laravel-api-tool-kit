@@ -13,7 +13,7 @@ class SchemaParser
 
     public function parse(): SchemaParserOutput
     {
-        if (!$this->schema) {
+        if ( ! $this->schema) {
             return new SchemaParserOutput();
         }
 
@@ -23,8 +23,25 @@ class SchemaParser
             fillableColumns: $this->generateFillableColumns($columnDefinitions),
             migrationContent: $this->generateMigrationContent($columnDefinitions),
             resourceContent: $this->generateResourceAttributes($columnDefinitions),
-            factoryContent: $this->generateFactoryColumns($columnDefinitions)
+            factoryContent: $this->generateFactoryColumns($columnDefinitions),
+            createValidationRules: $this->generateValidationRules($columnDefinitions),
+            updateValidationRules: $this->generateValidationRules($columnDefinitions, true),
         );
+    }
+
+    protected function generateValidationRules($columnDefinitions, $isUpdateRequest = false): string
+    {
+        $validationRules = '';
+
+        foreach ($columnDefinitions as $definition) {
+            list($columnName, $columnType) = explode(':', $definition);
+
+            $rules = $isUpdateRequest ? 'sometimes' : 'required';
+
+            $validationRules .= PHP_EOL . "\t\t\t\'{$columnName}' => '{$rules}',";
+        }
+
+        return $validationRules;
     }
 
     private function generateFillableColumns(array $columnDefinitions): string

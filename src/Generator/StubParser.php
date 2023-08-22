@@ -2,6 +2,7 @@
 
 namespace Essa\APIToolKit\Generator;
 
+use Essa\APIToolKit\Generator\DTOs\SchemaParserOutput;
 use Illuminate\Support\Str;
 
 class StubParser
@@ -11,6 +12,10 @@ class StubParser
         '/Dummies/',
         '/dummy/',
         '/dummies/',
+        '/fillableColumns/',
+        '/migrationContent/',
+        '/resourceContent/',
+        '/factoryContent/',
     ];
 
     private array $tags = [
@@ -20,7 +25,7 @@ class StubParser
         'filter',
     ];
 
-    public function __construct(private string $model, private array $options)
+    public function __construct(private string $model, private array $options, private SchemaParserOutput $schemaParserOutput)
     {
     }
 
@@ -40,6 +45,10 @@ class StubParser
             Str::plural($this->model),
             lcfirst($this->model),
             lcfirst(Str::plural($this->model)),
+            $this->schemaParserOutput->fillableColumns,
+            $this->schemaParserOutput->migrationContent,
+            $this->schemaParserOutput->resourceContent,
+            $this->schemaParserOutput->factoryContent,
         ];
     }
 

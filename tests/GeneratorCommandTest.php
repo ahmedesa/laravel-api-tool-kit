@@ -23,6 +23,7 @@ class GeneratorCommandTest extends TestCase
     {
         $this->artisan('api:generate', [
             'model' => 'GeneratedModel',
+            'schema' =>"username:string,email:string:unique,company_id:foreignId",
             '--all' => true,
         ])
             ->assertExitCode(0);

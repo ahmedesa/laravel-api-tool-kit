@@ -3,6 +3,7 @@
 namespace Essa\APIToolKit\Generator\Handlers;
 
 use Essa\APIToolKit\Generator\DTOs\ComponentInfo;
+use Essa\APIToolKit\Generator\DTOs\SchemaParserOutput;
 use Essa\APIToolKit\Generator\StubParser;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
@@ -11,6 +12,7 @@ class ComponentCreatorHandler
 {
     private string $model;
     private array $userChoices;
+    private SchemaParserOutput $schemaParserOutput;
 
     public function __construct(private Filesystem $filesystem)
     {
@@ -35,9 +37,21 @@ class ComponentCreatorHandler
         return $this;
     }
 
+    public function getSchemaParserOutput(): SchemaParserOutput
+    {
+        return $this->schemaParserOutput;
+    }
+
+    public function setSchemaParserOutput(SchemaParserOutput $schemaParserOutput): self
+    {
+        $this->schemaParserOutput = $schemaParserOutput;
+
+        return $this;
+    }
+
     private function generateTheComponents(): void
     {
-        $stubParser = new StubParser($this->model, $this->userChoices);
+        $stubParser = new StubParser($this->model, $this->userChoices, $this->schemaParserOutput);
 
         $componentsToGenerate = $this->componentsToGenerate();
 

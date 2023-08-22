@@ -130,6 +130,7 @@ class GeneratorCommand extends Command
         $this->componentCreatorHandler
             ->setModel($model)
             ->setUserChoices($userChoices)
+            ->setSchemaParserOutput($schemaParserOutput)
             ->handle();
 
         $this->info('Module created successfully!');

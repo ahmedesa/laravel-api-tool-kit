@@ -13,7 +13,7 @@ class SchemaParser
 
     public function parse(): SchemaParserOutput
     {
-        if ( ! $this->schema) {
+        if (!$this->schema) {
             return new SchemaParserOutput();
         }
 
@@ -33,7 +33,7 @@ class SchemaParser
 
         foreach ($columnDefinitions as $definition) {
             list($columnName) = explode(':', $definition);
-            $fillableColumns .= "'{$columnName}'," . PHP_EOL;
+            $fillableColumns .= "\t\t\t\'{$columnName}'," . PHP_EOL;
         }
 
         return $fillableColumns;
@@ -45,7 +45,7 @@ class SchemaParser
 
         foreach ($columnDefinitions as $definition) {
             list($columnName, $columnType) = explode(':', $definition);
-            $factoryColumns .= "'{$columnName}' => \$this->{$this->getFactoryMethod($columnType)}," . PHP_EOL;
+            $factoryColumns .= "\t\t\t\'{$columnName}' => \$this->{$this->getFactoryMethod($columnType)}," . PHP_EOL;
         }
 
         return $factoryColumns;
@@ -73,7 +73,7 @@ class SchemaParser
 
         foreach ($columnDefinitions as $definition) {
             list($columnName) = explode(':', $definition);
-            $attributes .= "\n\t\t\t'{$columnName}' => \$this->{$columnName},";
+            $attributes .= "\t\t\t'{$columnName}' => \$this->{$columnName}," . PHP_EOL;
         }
 
         return $attributes;

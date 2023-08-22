@@ -9,7 +9,7 @@ class DummyFactory extends Factory
     public function definition()
     {
         return [
-            //
+            factoryContent
         ];
     }
 }

@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('dummies', function (Blueprint $table) {
             $table->id();
+            migrationContent
             @if('soft-delete')
             $table->softDeletes();
             @endif('soft-delete')

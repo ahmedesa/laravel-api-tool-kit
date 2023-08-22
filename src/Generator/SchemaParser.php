@@ -29,43 +29,91 @@ class SchemaParser
         );
     }
 
-    protected function generateValidationRules($columnDefinitions, $isUpdateRequest = false): string
-    {
-        $validationRules = '';
-
-        foreach ($columnDefinitions as $definition) {
-            list($columnName, $columnType) = explode(':', $definition);
-
-            $rules = $isUpdateRequest ? 'sometimes' : 'required';
-
-            $validationRules .= PHP_EOL . "\t\t\t'{$columnName}' => '{$rules}',";
-        }
-
-        return $validationRules;
-    }
 
     private function generateFillableColumns(array $columnDefinitions): string
     {
-        $fillableColumns = '';
-
-        foreach ($columnDefinitions as $definition) {
-            list($columnName) = explode(':', $definition);
-            $fillableColumns .= PHP_EOL . "\t\t'{$columnName}',";
-        }
-
-        return $fillableColumns;
+        return collect($columnDefinitions)
+            ->map(fn ($definition) => "'{$this->getColumnName($definition)}',")
+            ->implode(PHP_EOL . "\t\t");
     }
 
     private function generateFactoryColumns(array $columnDefinitions): string
     {
-        $factoryColumns = '';
+        return collect($columnDefinitions)
+            ->map(fn ($definition) => "'{$this->getColumnName($definition)}' => \$this->faker->{$this->getFactoryMethod($definition)},")
+            ->implode(PHP_EOL . "\t\t\t");
+    }
 
-        foreach ($columnDefinitions as $definition) {
-            list($columnName, $columnType) = explode(':', $definition);
-            $factoryColumns .= PHP_EOL . "\t\t\t'{$columnName}' => \$this->faker->{$this->getFactoryMethod($columnType)},";
+    private function generateResourceAttributes(array $columnDefinitions): string
+    {
+        return collect($columnDefinitions)
+            ->map(fn ($definition) => "'{$this->getColumnName($definition)}' => \$this->{$this->getColumnName($definition)},")
+            ->implode(PHP_EOL . "\t\t\t");
+    }
+
+    private function generateValidationRules($columnDefinitions, $isUpdateRequest = false): string
+    {
+        $ruleType = $isUpdateRequest ? 'sometimes' : 'required';
+
+        return collect($columnDefinitions)
+            ->map(fn ($definition) => "'{$this->getColumnName($definition)}' => '{$ruleType}',")
+            ->implode(PHP_EOL . "\t\t\t");
+    }
+
+
+    private function generateMigrationContent(array $columnDefinitions): string
+    {
+        return collect($columnDefinitions)
+            ->map(fn ($definition) => $this->generateColumnDefinition($definition))
+            ->implode(PHP_EOL);
+    }
+
+    private function generateColumnDefinition(string $definition): string
+    {
+        $parsedColumn = $this->parseColumnDefinition($definition);
+        $columnName = $parsedColumn['columnName'];
+        $columnType = $parsedColumn['columnType'];
+        $options = $parsedColumn['options'];
+
+        if ($this->isForeignKey($columnType)) {
+            $columnDefinition = $this->getForeignKeyColumnDefinition($columnName);
+        } else {
+            $columnDefinition = "\$table->{$columnType}('{$columnName}')";
         }
 
-        return $factoryColumns;
+        $optionsString = collect($options)
+            ->map(fn ($option) => $this->addOption($option))
+            ->implode('');
+
+        return "\t\t\t" . $columnDefinition . $optionsString . ';';
+    }
+
+    private function getForeignKeyColumnDefinition(string $columnName): string
+    {
+        $relatedTable = Str::plural(Str::beforeLast($columnName, '_id'));
+
+        return "\$table->foreignId('{$columnName}')->constrained('{$relatedTable}')";
+    }
+
+    private function isForeignKey(string $columnType): bool
+    {
+        return 'foreignId' === $columnType;
+    }
+
+
+    private function parseColumnDefinition(string $definition): array
+    {
+        $parts = explode(':', $definition);
+        $columnName = array_shift($parts);
+        $columnType = count($parts) > 0 ? $parts[0] : 'string';
+        $options = array_slice($parts, 1); // Rest of the parts are options
+
+        return compact('columnName', 'columnType', 'options');
+    }
+
+    private function getColumnName(string $definition): string
+    {
+        return explode(':', $definition)[0];
     }
 
     private function getFactoryMethod(string $columnType): string
@@ -84,44 +132,8 @@ class SchemaParser
         };
     }
 
-    private function generateResourceAttributes(array $columnDefinitions): string
+    private function addOption(string $option): string
     {
-        $attributes = '';
-
-        foreach ($columnDefinitions as $definition) {
-            list($columnName) = explode(':', $definition);
-            $attributes .= PHP_EOL . "\t\t\t'{$columnName}' => \$this->{$columnName},";
-        }
-
-        return $attributes;
-    }
-
-    private function generateMigrationContent(array $columnDefinitions): string
-    {
-        $migrationContent = '';
-
-        foreach ($columnDefinitions as $definition) {
-            list($columnName, $columnType) = explode(':', $definition);
-
-            if ($this->isForeignKey($columnType)) {
-                $migrationContent .= $this->generateForeignKey($columnName);
-            }else{
-                $migrationContent .= PHP_EOL . "\t\t\t" . "\$table->{$columnType}('{$columnName}');";
-            }
-        }
-
-        return $migrationContent;
-    }
-
-    private function isForeignKey(string $columnType): bool
-    {
-        return 'foreignId' === $columnType;
-    }
-
-    private function generateForeignKey(string $columnName): string
-    {
-        $relatedTable = Str::plural(Str::beforeLast($columnName, '_id'));
-
-        return PHP_EOL . "\t\t\t\$table->foreignId('{$columnName}')->constrained('{$relatedTable}')->cascadeOnDelete();";
+        return preg_match('/\(/', $option) ? "->{$option}" : "->{$option}()";
     }
 }

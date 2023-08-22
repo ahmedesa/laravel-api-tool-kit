@@ -8,7 +8,8 @@ class UpdateDummyRequest extends FormRequest
 {
     public function rules(): array
     {
-        return [updateValidationRules
+        return [
+            updateValidationRules
         ];
     }
 }

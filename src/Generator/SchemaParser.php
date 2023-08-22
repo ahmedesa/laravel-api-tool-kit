@@ -41,7 +41,7 @@ class SchemaParser
     private function generateFactoryColumns(array $columnDefinitions): string
     {
         return collect($columnDefinitions)
-            ->map(fn ($definition) => "'{$this->getColumnName($definition)}' => \$this->faker->{$this->getFactoryMethod($definition)},")
+            ->map(fn ($definition) => "'{$this->getColumnName($definition)}' => \$this->faker->{$this->getFactoryMethod($this->getColumnType($definition))},")
             ->implode(PHP_EOL . "\t\t\t");
     }
 
@@ -73,9 +73,10 @@ class SchemaParser
     {
         $parsedColumn = $this->parseColumnDefinition($definition);
         $columnName = $parsedColumn['columnName'];
-        $relatedModel = Str::camel(Str::beforeLast($columnName, '_id'));
+        $relatedName = Str::camel(Str::beforeLast($columnName, '_id'));
+        $relatedModel = Str::studly(Str::beforeLast($columnName, '_id'));
 
-        return "\tpublic function {$relatedModel}(): \Illuminate\Database\Eloquent\Relations\BelongsTo\n\t{\n\t\treturn \$this->belongsTo(\App\Models\\{$relatedModel}::class);\n\t}\n";
+        return "\tpublic function {$relatedName}(): \Illuminate\Database\Eloquent\Relations\BelongsTo\n\t{\n\t\treturn \$this->belongsTo(\App\Models\\{$relatedModel}::class);\n\t}\n";
     }
 
     private function generateMigrationContent(array $columnDefinitions): string
@@ -131,6 +132,11 @@ class SchemaParser
     private function getColumnName(string $definition): string
     {
         return explode(':', $definition)[0];
+    }
+
+    private function getColumnType(string $definition): string
+    {
+        return explode(':', $definition)[1];
     }
 
     private function getFactoryMethod(string $columnType): string

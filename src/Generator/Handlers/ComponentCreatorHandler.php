@@ -10,6 +10,10 @@ use Illuminate\Support\Str;
 
 class ComponentCreatorHandler
 {
+    private const DEFAULT_VALUES = [
+        'model',
+    ];
+
     private string $model;
     private array $userChoices;
     private SchemaParserOutput $schemaParserOutput;
@@ -17,10 +21,25 @@ class ComponentCreatorHandler
     public function __construct(private Filesystem $filesystem)
     {
     }
-
     public function handle(): void
     {
-        $this->generateTheComponents();
+        $stubParser = new StubParser(
+            model: $this->model,
+            options: $this->userChoices,
+            schemaParserOutput: $this->schemaParserOutput
+        );
+
+        $componentsToGenerate = $this->componentsToGenerate();
+
+        foreach ($componentsToGenerate as $component) {
+            if (in_array($component->type, self::DEFAULT_VALUES) || $this->userChoices[$component->type]) {
+                $this->createComponent($component, $stubParser);
+            }
+        }
+
+        if ($this->userChoices['routes']) {
+            $this->appendRoutes($stubParser);
+        }
     }
 
     public function setModel(string $model): self
@@ -47,23 +66,6 @@ class ComponentCreatorHandler
         $this->schemaParserOutput = $schemaParserOutput;
 
         return $this;
-    }
-
-    private function generateTheComponents(): void
-    {
-        $stubParser = new StubParser($this->model, $this->userChoices, $this->schemaParserOutput);
-
-        $componentsToGenerate = $this->componentsToGenerate();
-
-        foreach ($componentsToGenerate as $component) {
-            if ('model' === $component->type || $this->userChoices[$component->type]) {
-                $this->createComponent($component, $stubParser);
-            }
-        }
-
-        if ($this->userChoices['routes']) {
-            $this->appendRoutes($stubParser);
-        }
     }
 
     private function appendRoutes(StubParser $stubParser): void

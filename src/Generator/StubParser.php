@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 
 class StubParser
 {
-    private array $patterns = [
+    private const PATTERNS = [
         '/Dummy/',
         '/Dummies/',
         '/dummy/',
@@ -21,7 +21,7 @@ class StubParser
         '/modelRelations/',
     ];
 
-    private array $tags = [
+    private const TAGS = [
         'soft-delete',
         'request',
         'resource',
@@ -31,8 +31,8 @@ class StubParser
     public function __construct(
         private string $model,
         private array $options,
-        private SchemaParserOutput $schemaParserOutput)
-    {
+        private SchemaParserOutput $schemaParserOutput
+    ) {
     }
 
     public function parseStub(string $type): string
@@ -64,7 +64,7 @@ class StubParser
     private function replacePatternsInTheStub(array $replacements, string $type): array|string|null
     {
         return preg_replace(
-            $this->patterns,
+            self::PATTERNS,
             $replacements,
             $this->getStubContent($type)
         );
@@ -79,7 +79,7 @@ class StubParser
     {
         $result = $string;
 
-        foreach ($this->tags as $option) {
+        foreach (self::TAGS as $option) {
             $result = $this->removeTag(
                 $result,
                 $this->options[$option],

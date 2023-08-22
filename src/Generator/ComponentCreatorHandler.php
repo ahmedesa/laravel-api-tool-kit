@@ -1,10 +1,9 @@
 <?php
 
-namespace Essa\APIToolKit\Generator\Handlers;
+namespace Essa\APIToolKit\Generator;
 
 use Essa\APIToolKit\Generator\DTOs\ComponentInfo;
 use Essa\APIToolKit\Generator\DTOs\SchemaParserOutput;
-use Essa\APIToolKit\Generator\StubParser;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
 

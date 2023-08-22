@@ -2,7 +2,7 @@
 
 namespace Essa\APIToolKit\Commands;
 
-use Essa\APIToolKit\Generator\Handlers\ComponentCreatorHandler;
+use Essa\APIToolKit\Generator\ComponentCreatorHandler;
 use Essa\APIToolKit\Generator\SchemaParser;
 use Illuminate\Console\Command;
 
@@ -136,7 +136,7 @@ class GeneratorCommand extends Command
             $this->setDefaultOptions();
         }
 
-        return $this->options() + ['soft-delete' => $this->option('soft-delete')];
+        return $this->options();
     }
 
     private function setDefaultOptions(): void

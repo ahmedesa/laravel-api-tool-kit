@@ -38,7 +38,7 @@ class SchemaParser
 
             $rules = $isUpdateRequest ? 'sometimes' : 'required';
 
-            $validationRules .= PHP_EOL . "\t\t\t\'{$columnName}' => '{$rules}',";
+            $validationRules .= PHP_EOL . "\t\t\t'{$columnName}' => '{$rules}',";
         }
 
         return $validationRules;

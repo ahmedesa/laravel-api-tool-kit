@@ -33,7 +33,10 @@ class SchemaParserTest extends TestCase
             'email',
         ";
 
-        $this->assertStringContainsString($this->normalizeWhitespaceAndNewlines($expectedFillableColumns), $this->normalizeWhitespaceAndNewlines($fillableColumns));
+        $this->assertStringContainsString(
+            $this->normalizeWhitespaceAndNewlines($expectedFillableColumns),
+            $this->normalizeWhitespaceAndNewlines($fillableColumns)
+        );
     }
 
     public function testParseGeneratesMigrationContent(): void
@@ -173,14 +176,9 @@ class SchemaParserTest extends TestCase
         \$table->foreignId('author_id')->constrained('authors')->cascadeOnDelete();
     ";
 
-        $this->assertStringContainsString($this->normalizeWhitespaceAndNewlines($expectedMigrationContent), $this->normalizeWhitespaceAndNewlines($output->migrationContent));
-    }
-
-    private function normalizeWhitespaceAndNewlines(string $content): string
-    {
-        $content = preg_replace('/\s+/', ' ', $content);
-        $content = str_replace(["\r\n", "\r"], "\n", $content);
-
-        return trim($content);
+        $this->assertStringContainsString(
+            $this->normalizeWhitespaceAndNewlines($expectedMigrationContent),
+            $this->normalizeWhitespaceAndNewlines($output->migrationContent)
+        );
     }
 }

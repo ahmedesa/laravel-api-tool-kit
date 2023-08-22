@@ -48,4 +48,13 @@ abstract class TestCase extends OrchestraTestCase
             $table->foreignId('test_model_id')->nullable();
         });
     }
+
+
+    protected function normalizeWhitespaceAndNewlines(string $content): string
+    {
+        $content = preg_replace('/\s+/', ' ', $content);
+        $content = str_replace(["\r\n", "\r"], "\n", $content);
+
+        return trim($content);
+    }
 }

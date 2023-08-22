@@ -10,7 +10,8 @@ class SchemaParserOutput
         public string $resourceContent = '',
         public string $factoryContent = '',
         public string $createValidationRules = '',
-        public string $updateValidationRules = ''
+        public string $updateValidationRules = '',
+        public string $modelRelations = ''
     ) {
     }
 }

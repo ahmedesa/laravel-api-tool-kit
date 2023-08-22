@@ -18,6 +18,7 @@ class StubParser
         '/factoryContent/',
         '/createValidationRules/',
         '/updateValidationRules/',
+        '/modelRelations/',
     ];
 
     private array $tags = [

@@ -26,6 +26,7 @@ class SchemaParser
             factoryContent: $this->generateFactoryColumns($columnDefinitions),
             createValidationRules: $this->generateValidationRules($columnDefinitions),
             updateValidationRules: $this->generateValidationRules($columnDefinitions, true),
+            modelRelations: $this->generateRelationshipMethods($columnDefinitions, true),
         );
     }
 
@@ -60,6 +61,25 @@ class SchemaParser
             ->implode(PHP_EOL . "\t\t\t");
     }
 
+    private function generateRelationshipMethods(array $columnDefinitions): string
+    {
+        return collect($columnDefinitions)
+            ->filter(function ($definition) {
+                return $this->isForeignKey($this->parseColumnDefinition($definition)['columnType']);
+            })
+            ->map(function ($definition) {
+                return $this->generateRelationshipMethod($definition);
+            })
+            ->implode(PHP_EOL);
+    }
+
+    private function generateRelationshipMethod(string $definition): string
+    {
+        $parsedColumn = $this->parseColumnDefinition($definition);
+        $columnName = $parsedColumn['columnName'];
+        $relatedModel = Str::camel(Str::beforeLast($columnName, '_id'));
+        return "\tpublic function {$relatedModel}(): \Illuminate\Database\Eloquent\Relations\BelongsTo\n\t{\n\t\treturn \$this->belongsTo(\App\Models\\{$relatedModel}::class);\n\t}\n";
+    }
 
     private function generateMigrationContent(array $columnDefinitions): string
     {

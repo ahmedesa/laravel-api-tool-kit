@@ -22,4 +22,6 @@ class Dummy extends Model
     protected $fillable = [
         fillableColumns
     ];
+
+modelRelations
 }

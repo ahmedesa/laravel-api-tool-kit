@@ -8,8 +8,7 @@ class DummyResource extends JsonResource
 {
     public function toArray($request): array
     {
-        return [
-            resourceContent
+        return [resourceContent
         ];
     }
 }

@@ -13,7 +13,7 @@ class SchemaParser
 
     public function parse(): SchemaParserOutput
     {
-        if ( ! $this->schema) {
+        if (!$this->schema) {
             return new SchemaParserOutput();
         }
 
@@ -33,7 +33,7 @@ class SchemaParser
 
         foreach ($columnDefinitions as $definition) {
             list($columnName) = explode(':', $definition);
-            $fillableColumns .= "\t\t\t\'{$columnName}'," . PHP_EOL;
+            $fillableColumns .= PHP_EOL . "\t\t\t'{$columnName}',";
         }
 
         return $fillableColumns;
@@ -45,7 +45,7 @@ class SchemaParser
 
         foreach ($columnDefinitions as $definition) {
             list($columnName, $columnType) = explode(':', $definition);
-            $factoryColumns .= "\t\t\t\'{$columnName}' => \$this->{$this->getFactoryMethod($columnType)}," . PHP_EOL;
+            $factoryColumns .= PHP_EOL . "\t\t\t'{$columnName}' => \$this->faker->{$this->getFactoryMethod($columnType)},";
         }
 
         return $factoryColumns;
@@ -73,7 +73,7 @@ class SchemaParser
 
         foreach ($columnDefinitions as $definition) {
             list($columnName) = explode(':', $definition);
-            $attributes .= "\t\t\t'{$columnName}' => \$this->{$columnName}," . PHP_EOL;
+            $attributes .= PHP_EOL . "\t\t\t'{$columnName}' => \$this->{$columnName},";
         }
 
         return $attributes;
@@ -85,7 +85,7 @@ class SchemaParser
 
         foreach ($columnDefinitions as $definition) {
             list($columnName, $columnType) = explode(':', $definition);
-            $migrationContent .= "\t\t\t" . "\$table->{$columnType}('{$columnName}');" . PHP_EOL;
+            $migrationContent .= PHP_EOL . "\t\t\t" . "\$table->{$columnType}('{$columnName}');";
 
             if ($this->isForeignKey($columnType)) {
                 $migrationContent .= $this->generateForeignKey($columnName);
@@ -104,6 +104,6 @@ class SchemaParser
     {
         $relatedTable = Str::plural(Str::beforeLast($columnName, '_id'));
 
-        return "\t\t\t\$table->foreignId('{$columnName}')->constrained('{$relatedTable}')->cascadeOnDelete();" . PHP_EOL;
+        return PHP_EOL . "\t\t\t\$table->foreignId('{$columnName}')->constrained('{$relatedTable}')->cascadeOnDelete();";
     }
 }

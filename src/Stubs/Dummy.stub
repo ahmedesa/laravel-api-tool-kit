@@ -19,7 +19,6 @@ class Dummy extends Model
      *
      * @var array
      */
-    protected $fillable = [
-        fillableColumns
+    protected $fillable = [fillableColumns
     ];
 }

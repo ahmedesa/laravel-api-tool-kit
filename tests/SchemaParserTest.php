@@ -16,6 +16,26 @@ class SchemaParserTest extends TestCase
         $this->assertEmpty($output->migrationContent);
     }
 
+    /**
+     * @test
+     */
+    public function testGenerateFillableColumns(): void
+    {
+        $schema = 'name:string,age:integer,email:string:unique';
+        $schemaParser = new SchemaParser($schema);
+        $output = $schemaParser->parse();
+
+        $fillableColumns = $output->fillableColumns;
+
+        $expectedFillableColumns = "
+            'name',
+            'age',
+            'email',
+        ";
+
+        $this->assertStringContainsString($this->normalizeWhitespaceAndNewlines($expectedFillableColumns), $this->normalizeWhitespaceAndNewlines($fillableColumns));
+    }
+
     public function testParseGeneratesMigrationContent(): void
     {
         $schema = 'name:string,age:integer';

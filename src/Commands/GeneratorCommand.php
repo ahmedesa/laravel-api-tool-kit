@@ -3,7 +3,6 @@
 namespace Essa\APIToolKit\Commands;
 
 use Essa\APIToolKit\Generator\Handlers\ComponentCreatorHandler;
-use Essa\APIToolKit\Generator\Handlers\UserChoicesHandler;
 use Essa\APIToolKit\Generator\SchemaParser;
 use Illuminate\Console\Command;
 
@@ -95,17 +94,25 @@ class GeneratorCommand extends Command
         'yield',
     ];
 
-    private UserChoicesHandler $userChoicesHandler;
+    private array $allOptions = [
+        'controller',
+        'request',
+        'resource',
+        'migration',
+        'factory',
+        'seeder',
+        'filter',
+        'test',
+        'routes',
+    ];
 
     private ComponentCreatorHandler $componentCreatorHandler;
 
     public function __construct(
-        UserChoicesHandler $userChoicesHandler,
         ComponentCreatorHandler $componentCreatorHandler
     ) {
         parent::__construct();
 
-        $this->userChoicesHandler = $userChoicesHandler;
         $this->componentCreatorHandler = $componentCreatorHandler;
     }
 
@@ -119,9 +126,7 @@ class GeneratorCommand extends Command
             return false;
         }
 
-        $userChoices = $this->userChoicesHandler
-            ->setCommand($this)
-            ->handel();
+        $userChoices = $this->getUserChoices();
 
         $schemaParser = new SchemaParser($this->argument('schema'));
 
@@ -134,6 +139,30 @@ class GeneratorCommand extends Command
             ->handle();
 
         $this->info('Module created successfully!');
+    }
+
+    private function getUserChoices(): array
+    {
+        $allDefaultSelected = $this->option('all');
+
+        $userChoices = $allDefaultSelected
+            ? $this->setDefaultOptions()
+            : $this->options();
+
+        return $userChoices + ['soft-delete' => $this->option('soft-delete')];
+    }
+
+    private function setDefaultOptions(): array
+    {
+        $userChoices = [];
+
+        foreach (config('api-tool-kit.default_generates') as $option) {
+            if (in_array($option, $this->allOptions)) {
+                $userChoices[$option] = true;
+            }
+        }
+
+        return $userChoices;
     }
 
     private function isReservedName($name): bool

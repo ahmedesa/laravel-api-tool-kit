@@ -50,7 +50,7 @@ class SchemaParser
 
         foreach ($columnDefinitions as $definition) {
             list($columnName) = explode(':', $definition);
-            $fillableColumns .= PHP_EOL . "\t\t\t'{$columnName}',";
+            $fillableColumns .= PHP_EOL . "\t\t'{$columnName}',";
         }
 
         return $fillableColumns;
@@ -102,10 +102,11 @@ class SchemaParser
 
         foreach ($columnDefinitions as $definition) {
             list($columnName, $columnType) = explode(':', $definition);
-            $migrationContent .= PHP_EOL . "\t\t\t" . "\$table->{$columnType}('{$columnName}');";
 
             if ($this->isForeignKey($columnType)) {
                 $migrationContent .= $this->generateForeignKey($columnName);
+            }else{
+                $migrationContent .= PHP_EOL . "\t\t\t" . "\$table->{$columnType}('{$columnName}');";
             }
         }
 

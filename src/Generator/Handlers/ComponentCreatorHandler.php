@@ -2,6 +2,7 @@
 
 namespace Essa\APIToolKit\Generator\Handlers;
 
+use Essa\APIToolKit\Generator\DTOs\ComponentInfo;
 use Essa\APIToolKit\Generator\StubParser;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;

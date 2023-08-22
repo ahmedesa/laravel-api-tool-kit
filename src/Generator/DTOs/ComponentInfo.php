@@ -1,6 +1,6 @@
 <?php
 
-namespace Essa\APIToolKit\Generator\Handlers;
+namespace Essa\APIToolKit\Generator\DTOs;
 
 class ComponentInfo
 {

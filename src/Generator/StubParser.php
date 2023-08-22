@@ -6,9 +6,6 @@ use Illuminate\Support\Str;
 
 class StubParser
 {
-    private string $model;
-    private array $options;
-
     private array $patterns = [
         '/Dummy/',
         '/Dummies/',
@@ -23,10 +20,8 @@ class StubParser
         'filter',
     ];
 
-    public function __construct(string $model, array $options)
+    public function __construct(private string $model, private array $options)
     {
-        $this->model = $model;
-        $this->options = $options;
     }
 
     public function parseStub(string $type): string

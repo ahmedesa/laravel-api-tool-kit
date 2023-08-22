@@ -4,11 +4,12 @@ namespace Essa\APIToolKit\Commands;
 
 use Essa\APIToolKit\Generator\Handlers\ComponentCreatorHandler;
 use Essa\APIToolKit\Generator\Handlers\UserChoicesHandler;
+use Essa\APIToolKit\Generator\SchemaParser;
 use Illuminate\Console\Command;
 
 class GeneratorCommand extends Command
 {
-    protected $signature = 'api:generate {model}
+    protected $signature = 'api:generate {model} {schema?}
                             {--m|migration}
                             {--c|controller}
                             {--R|request}
@@ -121,6 +122,10 @@ class GeneratorCommand extends Command
         $userChoices = $this->userChoicesHandler
             ->setCommand($this)
             ->handel();
+
+        $schemaParser = new SchemaParser($this->argument('schema'));
+
+        $schemaParserOutput = $schemaParser->parse();
 
         $this->componentCreatorHandler
             ->setModel($model)

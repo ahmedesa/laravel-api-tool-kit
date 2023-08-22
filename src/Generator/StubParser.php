@@ -51,6 +51,8 @@ class StubParser
             $this->schemaParserOutput->migrationContent,
             $this->schemaParserOutput->resourceContent,
             $this->schemaParserOutput->factoryContent,
+            $this->schemaParserOutput->createValidationRules,
+            $this->schemaParserOutput->updateValidationRules,
         ];
     }
 

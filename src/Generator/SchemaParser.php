@@ -13,7 +13,7 @@ class SchemaParser
 
     public function parse(): SchemaParserOutput
     {
-        if (!$this->schema) {
+        if ( ! $this->schema) {
             return new SchemaParserOutput();
         }
 

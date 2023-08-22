@@ -34,10 +34,7 @@ abstract class Enum
         return in_array($value, static::getConst());
     }
 
-    /**
-     * @return mixed
-     */
-    final public static function getValue($const)
+    final public static function getValue($const): mixed
     {
         return static::toArray()[$const];
     }

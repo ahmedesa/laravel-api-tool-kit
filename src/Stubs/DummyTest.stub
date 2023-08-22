@@ -12,13 +12,11 @@ class DummyTest extends TestCase
     use  RefreshDatabase;
 
     protected $endpoint = '/api/dummies';
-    protected $table_name = 'dummies';
+    protected $tableName = 'dummies';
 
     public function setUp(): void
     {
         parent::setUp();
-
-        $this->withoutExceptionHandling();
     }
 
     public function testCreateDummy(): void
@@ -33,7 +31,7 @@ class DummyTest extends TestCase
              ->assertStatus(201)
              ->assertSee($payload['name']);
 
-        $this->assertDatabaseHas($this->table_name, ['id' => 1]);
+        $this->assertDatabaseHas($this->tableName, ['id' => 1]);
     }
 
     public function testViewAllDummiesSuccessfully(): void
@@ -99,7 +97,7 @@ class DummyTest extends TestCase
         Dummy::factory()->create();
 
         $payload = [
-
+            'name' => 'Random'
         ];
 
         $this->json('PUT', $this->endpoint.'/1', $payload)
@@ -135,7 +133,7 @@ class DummyTest extends TestCase
         $this->json('GET', $this->endpoint.'/1/restore')
              ->assertStatus(200);
 
-        $this->assertDatabaseHas($this->table_name, [
+        $this->assertDatabaseHas($this->tableName, [
             'id'         => 1,
             'deleted_at' => null,
         ]);
@@ -155,6 +153,6 @@ class DummyTest extends TestCase
         $this->json('DELETE', $this->endpoint.'/1/permanent-delete')
              ->assertStatus(204);
 
-        $this->assertDatabaseMissing($this->table_name, ['id' => 1]);
+        $this->assertDatabaseMissing($this->tableName, ['id' => 1]);
     }@endif('soft-delete')
 }

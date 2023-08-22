@@ -9,13 +9,11 @@ use Illuminate\Support\Str;
 
 class ComponentCreatorHandler
 {
-    private Filesystem $filesystem;
     private string $model;
     private array $userChoices;
 
-    public function __construct(Filesystem $filesystem)
+    public function __construct(private Filesystem $filesystem)
     {
-        $this->filesystem = $filesystem;
     }
 
     public function handle(): void
@@ -89,38 +87,38 @@ class ComponentCreatorHandler
     {
         return [
             new CommandInfo(
-                'migration',
-                'make:migration',
-                [
+                type: 'migration',
+                name: 'make:migration',
+                options: [
                     'name' => 'create_' . Str::plural(Str::snake($this->model)) . '_table',
                 ]
             ),
             new CommandInfo(
-                'factory',
-                'make:factory',
-                [
+                type: 'factory',
+                name: 'make:factory',
+                options: [
                     'name' => "{$this->model}Factory",
                     '--model' => $this->model,
                 ]
             ),
             new CommandInfo(
-                'seeder',
-                'make:seeder',
-                [
+                type: 'seeder',
+                name: 'make:seeder',
+                options: [
                     'name' => "{$this->model}Seeder",
                 ]
             ),
             new CommandInfo(
-                'request',
-                'make:request',
-                [
+                type: 'request',
+                name: 'make:request',
+                options: [
                     'name' => "{$this->model}\Create{$this->model}Request",
                 ]
             ),
             new CommandInfo(
-                'request',
-                'make:request',
-                [
+                type: 'request',
+                name: 'make:request',
+                options: [
                     'name' => "{$this->model}\Update{$this->model}Request",
                 ]
             ),
@@ -130,34 +128,34 @@ class ComponentCreatorHandler
     {
         return [
             new ComponentInfo(
-                'controller',
-                app_path('/Http/Controllers/API'),
-                app_path("Http/Controllers/API/{$this->model}Controller.php"),
-                'DummyController'
+                type: 'controller',
+                folder: app_path('/Http/Controllers/API'),
+                path: app_path("Http/Controllers/API/{$this->model}Controller.php"),
+                stub: 'DummyController'
             ),
             new ComponentInfo(
-                'test',
-                base_path('tests/Feature/'),
-                base_path("tests/Feature/{$this->model}Test.php"),
-                'DummyTest'
+                type: 'test',
+                folder: base_path('tests/Feature/'),
+                path: base_path("tests/Feature/{$this->model}Test.php"),
+                stub: 'DummyTest'
             ),
             new ComponentInfo(
-                'filter',
-                app_path('/Filters'),
-                app_path("Filters/{$this->model}Filters.php"),
-                'DummyFilters'
+                type: 'filter',
+                folder: app_path('/Filters'),
+                path: app_path("Filters/{$this->model}Filters.php"),
+                stub: 'DummyFilters'
             ),
             new ComponentInfo(
-                'resource',
-                app_path('/Http/Resources/' . $this->model),
-                app_path("Http/Resources/{$this->model}/{$this->model}Resource.php"),
-                'DummyResource'
+                type: 'resource',
+                folder: app_path('/Http/Resources/' . $this->model),
+                path: app_path("Http/Resources/{$this->model}/{$this->model}Resource.php"),
+                stub: 'DummyResource'
             ),
             new ComponentInfo(
-                'model',
-                app_path('/Models'),
-                app_path("Models/{$this->model}.php"),
-                'Dummy'
+                type: 'model',
+                folder: app_path('/Models'),
+                path: app_path("Models/{$this->model}.php"),
+                stub: 'Dummy'
             ),
         ];
     }

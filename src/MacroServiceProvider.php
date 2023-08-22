@@ -2,7 +2,6 @@
 
 namespace Essa\APIToolKit;
 
-use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
@@ -12,7 +11,6 @@ class MacroServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
-        /** @var Application $request */
         $app = $this->app;
 
         Builder::macro('dynamicPaginate', function () use ($app) {

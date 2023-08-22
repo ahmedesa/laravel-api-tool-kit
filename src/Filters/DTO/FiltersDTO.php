@@ -6,21 +6,12 @@ use Illuminate\Http\Request;
 
 class FiltersDTO
 {
-    private ?string $sorts;
-    private ?array $filters;
-    private ?array $includes;
-    private ?string $search;
-
     public function __construct(
-        ?string $sorts = null,
-        ?array $filters = null,
-        ?array $includes = null,
-        ?string $search = null
+        private ?string $sorts = null,
+        private ?array  $filters = null,
+        private ?array  $includes = null,
+        private ?string $search = null
     ) {
-        $this->sorts = $sorts;
-        $this->filters = $filters;
-        $this->includes = $includes;
-        $this->search = $search;
     }
 
     public static function buildFromRequest(Request $request): FiltersDTO
@@ -73,7 +64,7 @@ class FiltersDTO
         $this->search = $search;
     }
 
-    public function getFilter(string $key)
+    public function getFilter(string $key): ?string
     {
         if ( ! array_key_exists($key, $this->filters)) {
             return null;

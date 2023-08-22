@@ -27,13 +27,13 @@ class QueryFilters
 
         return app(Pipeline::class)
             ->send(new QueryFiltersOptionsDTO(
-                $this->builder,
-                $this->filtersDTO,
-                $this->allowedFilters,
-                $this->allowedSorts,
-                $this->allowedIncludes,
-                $this->columnSearch,
-                $this->relationSearch
+                builder: $this->builder,
+                filtersDTO: $this->filtersDTO,
+                allowedFilters: $this->allowedFilters,
+                allowedSorts: $this->allowedSorts,
+                allowedIncludes: $this->allowedIncludes,
+                columnSearch: $this->columnSearch,
+                relationSearch: $this->relationSearch
             ))
             ->through(config('api-tool-kit.filters.handlers'))
             ->thenReturn()

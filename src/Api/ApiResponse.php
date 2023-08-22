@@ -7,47 +7,29 @@ use Illuminate\Support\Collection;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * handle json response.
- */
 trait ApiResponse
 {
-    /**
-     * @param  null  $message
-     * @param  null  $details
-     */
-    public function responseServerError($details = null, $message = null): JsonResponse
+    public function responseServerError(mixed $details = null, ?string $message = null): JsonResponse
     {
         return $this->APIError(Response::HTTP_INTERNAL_SERVER_ERROR, $message, $details);
     }
 
-    public function responseWithCustomError($title, $details, $statusCode): JsonResponse
+    public function responseWithCustomError(mixed $title, $details, int $statusCode): JsonResponse
     {
         return $this->APIError($statusCode, $title, $details);
     }
 
-    /**
-     * @param  null  $message
-     * @param  null  $details
-     */
-    public function responseUnprocessable($details = null, $message = null): JsonResponse
+    public function responseUnprocessable(mixed $details = null, ?string $message = null): JsonResponse
     {
         return $this->APIError(Response::HTTP_UNPROCESSABLE_ENTITY, $message, $details);
     }
 
-    /**
-     * @param  null  $message
-     * @param  null  $details
-     */
-    public function responseBadRequest($details = null, $message = null): JsonResponse
+    public function responseBadRequest(mixed $details = null, ?string $message = null): JsonResponse
     {
         return $this->APIError(Response::HTTP_BAD_REQUEST, $message, $details);
     }
 
-    /**
-     * @param  null  $details
-     */
-    public function responseNotFound($details = null, ?string $message = 'Record not found!'): JsonResponse
+    public function responseNotFound(mixed $details = null, ?string $message = 'Record not found!'): JsonResponse
     {
         return $this->APIError(Response::HTTP_NOT_FOUND, $message, $details);
     }
@@ -73,11 +55,7 @@ trait ApiResponse
         return $this->APIError(Response::HTTP_CONFLICT, $message, $details);
     }
 
-    /**
-     * @param  null  $message
-     * @param  null  $data
-     */
-    public function responseSuccess($message = null, $data = null): JsonResponse
+    public function responseSuccess(?string $message = null, mixed $data = null): JsonResponse
     {
         return new JsonResponse([
             'message' => $message,
@@ -88,7 +66,7 @@ trait ApiResponse
     /**
      * @param  null  $data
      */
-    public function responseCreated(?string $message = 'Record created successfully', $data = null): JsonResponse
+    public function responseCreated(?string $message = 'Record created successfully', mixed $data = null): JsonResponse
     {
         return new JsonResponse([
             'message' => $message,
@@ -127,13 +105,10 @@ trait ApiResponse
         );
     }
 
-    /**
-     * @param  null  $details
-     */
     private function APIError(
         int $code,
         ?string $title,
-        $details = null
+        mixed $details = null
     ): JsonResponse {
         return new JsonResponse(
             [

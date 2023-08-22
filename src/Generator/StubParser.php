@@ -48,7 +48,7 @@ class StubParser
         ];
     }
 
-    private function replacePatternsInTheStub(array $replacements, string $type)
+    private function replacePatternsInTheStub(array $replacements, string $type): array|string|null
     {
         return preg_replace(
             $this->patterns,

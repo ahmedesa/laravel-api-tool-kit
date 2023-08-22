@@ -6,31 +6,15 @@ use Illuminate\Database\Eloquent\Builder;
 
 class QueryFiltersOptionsDTO
 {
-    private array $allowedFilters = [];
-    private array $allowedSorts = [];
-    private array $allowedIncludes = [];
-    private array $columnSearch = [];
-    private array $relationSearch = [];
-
-    private Builder $builder;
-    private FiltersDTO $filtersDTO;
-
     public function __construct(
-        Builder $builder,
-        FiltersDTO $filtersDTO,
-        array $allowedFilters,
-        array $allowedSorts,
-        array $allowedIncludes,
-        array $columnSearch,
-        array $relationSearch
+        private Builder    $builder,
+        private FiltersDTO $filtersDTO,
+        private array      $allowedFilters = [],
+        private array      $allowedSorts = [],
+        private array      $allowedIncludes = [],
+        private array      $columnSearch = [],
+        private array      $relationSearch = []
     ) {
-        $this->allowedFilters = $allowedFilters;
-        $this->allowedSorts = $allowedSorts;
-        $this->allowedIncludes = $allowedIncludes;
-        $this->columnSearch = $columnSearch;
-        $this->relationSearch = $relationSearch;
-        $this->builder = $builder;
-        $this->filtersDTO = $filtersDTO;
     }
 
     public function getAllowedFilters(): array

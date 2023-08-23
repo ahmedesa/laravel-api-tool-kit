@@ -16,7 +16,7 @@ class FactoryColumnsParser extends SchemaParser
         $columnName = $this->getColumnName($definition);
         $factoryMethod = $this->getFactoryMethod($this->getColumnType($definition));
 
-        return "'{$columnName}' => \$this->faker->{$factoryMethod},";
+        return "'{$columnName}' => \$this->faker->{$factoryMethod}(),";
     }
 
     private function getFactoryMethod(string $columnType): string
@@ -27,7 +27,7 @@ class FactoryColumnsParser extends SchemaParser
             'mediumInteger', 'tinyInteger', 'smallInteger' => 'randomNumber',
             'boolean' => 'boolean',
             'decimal', 'double', 'float' => 'randomFloat',
-            'date', 'dateTime', 'dateTimeTz', 'timestamp', 'timestampTz' => 'dateTime',
+            'date', 'dateTime', 'dateTimeTz', 'timestamp', 'timestampTz','datetime' => 'dateTime',
             'time', 'timeTz' => 'time',
             'uuid' => 'uuid',
             'foreignId' => 'smallInteger',

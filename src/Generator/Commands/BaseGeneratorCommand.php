@@ -1,6 +1,6 @@
 <?php
 
-namespace Essa\APIToolKit\Generator;
+namespace Essa\APIToolKit\Generator\Commands;
 
 use Essa\APIToolKit\Generator\Contracts\SchemaReplacementDataProvider;
 use Illuminate\Filesystem\Filesystem;
@@ -23,7 +23,7 @@ abstract class BaseGeneratorCommand
     {
     }
 
-    public function handle(): void
+    public function run(): void
     {
         if ( ! file_exists($this->getOutputFolder())) {
             $this->createFolder();
@@ -112,7 +112,7 @@ abstract class BaseGeneratorCommand
 
     protected function getStubContent(string $stubName): string
     {
-        return file_get_contents(__DIR__ . "/../Stubs/{$stubName}.stub");
+        return file_get_contents(__DIR__ . "/../../Stubs/{$stubName}.stub");
     }
 
     protected function removeTagBlock(string $string, $condition, string $tag): string

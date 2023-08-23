@@ -2,7 +2,6 @@
 
 namespace Essa\APIToolKit\Generator\Commands;
 
-use Essa\APIToolKit\Generator\BaseGeneratorCommand;
 use Illuminate\Filesystem\Filesystem;
 
 class RoutesGeneratorCommand extends BaseGeneratorCommand

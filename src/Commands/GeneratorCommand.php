@@ -2,17 +2,7 @@
 
 namespace Essa\APIToolKit\Commands;
 
-use Essa\APIToolKit\Generator\Commands\ControllerGeneratorCommand;
-use Essa\APIToolKit\Generator\Commands\CreateFormRequestGeneratorCommand;
-use Essa\APIToolKit\Generator\Commands\FactoryGeneratorCommand;
-use Essa\APIToolKit\Generator\Commands\FilterGeneratorCommand;
-use Essa\APIToolKit\Generator\Commands\MigrationGeneratorCommand;
-use Essa\APIToolKit\Generator\Commands\ModelGeneratorCommand;
-use Essa\APIToolKit\Generator\Commands\ResourceGeneratorCommand;
-use Essa\APIToolKit\Generator\Commands\RoutesGeneratorCommand;
-use Essa\APIToolKit\Generator\Commands\SeederGeneratorCommand;
-use Essa\APIToolKit\Generator\Commands\TestGeneratorCommand;
-use Essa\APIToolKit\Generator\Commands\UpdateFormRequestGeneratorCommand;
+use Essa\APIToolKit\Generator\CommandLineExecutor;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
@@ -94,7 +84,7 @@ class GeneratorCommand extends Command
         'yield',
     ];
 
-    public function __construct()
+    public function __construct(private CommandLineExecutor $commandLineExecutor)
     {
         parent::__construct();
     }
@@ -113,7 +103,7 @@ class GeneratorCommand extends Command
 
         $schema = $this->getSchema();
 
-        $this->generateModules($model, $userChoices, $schema);
+        $this->commandLineExecutor->executeCommands($model, $userChoices, $schema);
 
         $this->info('Module created successfully!');
     }
@@ -172,92 +162,5 @@ class GeneratorCommand extends Command
             return null;
         }
         return explode(',', $this->argument('schema'));
-    }
-
-    private function generateModules(string $model, array $userChoices, ?array $schema): void
-    {
-        app(ModelGeneratorCommand::class)
-            ->setModel($model)
-            ->setOptions($userChoices)
-            ->setSchema($schema)
-            ->handle();
-
-        if ($this->option('factory')) {
-            app(FactoryGeneratorCommand::class)
-                ->setModel($model)
-                ->setOptions($userChoices)
-                ->setSchema($schema)
-                ->handle();
-        }
-
-        if ($this->option('seeder')) {
-            app(SeederGeneratorCommand::class)
-                ->setModel($model)
-                ->setOptions($userChoices)
-                ->setSchema($schema)
-                ->handle();
-        }
-
-        if ($this->option('controller')) {
-            app(ControllerGeneratorCommand::class)
-                ->setModel($model)
-                ->setOptions($userChoices)
-                ->setSchema($schema)
-                ->handle();
-        }
-
-        if ($this->option('test')) {
-            app(TestGeneratorCommand::class)
-                ->setModel($model)
-                ->setOptions($userChoices)
-                ->setSchema($schema)
-                ->handle();
-        }
-
-        if ($this->option('resource')) {
-            app(ResourceGeneratorCommand::class)
-                ->setModel($model)
-                ->setOptions($userChoices)
-                ->setSchema($schema)
-                ->handle();
-        }
-
-        if ($this->option('request')) {
-            app(CreateFormRequestGeneratorCommand::class)
-                ->setModel($model)
-                ->setOptions($userChoices)
-                ->setSchema($schema)
-                ->handle();
-
-            app(UpdateFormRequestGeneratorCommand::class)
-                ->setModel($model)
-                ->setOptions($userChoices)
-                ->setSchema($schema)
-                ->handle();
-        }
-
-        if ($this->option('filter')) {
-            app(FilterGeneratorCommand::class)
-                ->setModel($model)
-                ->setOptions($userChoices)
-                ->setSchema($schema)
-                ->handle();
-        }
-
-        if ($this->option('migration')) {
-            app(MigrationGeneratorCommand::class)
-                ->setModel($model)
-                ->setOptions($userChoices)
-                ->setSchema($schema)
-                ->handle();
-        }
-
-        if ($this->option('routes')) {
-            app(RoutesGeneratorCommand::class)
-                ->setModel($model)
-                ->setOptions($userChoices)
-                ->setSchema($schema)
-                ->handle();
-        }
     }
 }

@@ -2,8 +2,6 @@
 
 namespace Essa\APIToolKit\Generator\Commands;
 
-use Essa\APIToolKit\Generator\BaseGeneratorCommand;
-
 class FilterGeneratorCommand extends BaseGeneratorCommand
 {
     protected function getStubName(): string

@@ -2,8 +2,6 @@
 
 namespace Essa\APIToolKit\Generator\Commands;
 
-use Essa\APIToolKit\Generator\BaseGeneratorCommand;
-
 class SeederGeneratorCommand extends BaseGeneratorCommand
 {
     protected function getStubName(): string

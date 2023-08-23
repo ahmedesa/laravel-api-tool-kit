@@ -7,22 +7,22 @@ use Illuminate\Filesystem\Filesystem;
 
 class GeneratorRoutesCommand extends BaseGeneratorCommand
 {
-    protected function getStub(): string
+    protected function getStubName(): string
     {
         return 'routes'; // Replace with the name of your controller stub
     }
 
-    protected function getFolder(): string
+    protected function getOutputFolder(): string
     {
         return base_path('routes/api.php');
     }
 
-    protected function getFullPath(): string
+    protected function getOutputFilePath(): string
     {
         return base_path('routes/api.php');
     }
 
-    protected function saveContentInTheFilePath(): void
+    protected function saveContentToFile(): void
     {
         app(Filesystem::class)->append(
             base_path('routes/api.php'),

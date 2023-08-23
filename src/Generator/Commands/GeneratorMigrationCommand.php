@@ -3,28 +3,13 @@
 namespace Essa\APIToolKit\Generator\Commands;
 
 use Essa\APIToolKit\Generator\BaseGeneratorCommand;
+use Essa\APIToolKit\Generator\Contracts\SchemaReplacementDataProvider;
 use Essa\APIToolKit\Generator\SchemaParsers\MigrationContentParser;
 use Illuminate\Support\Str;
 
-class GeneratorMigrationCommand extends BaseGeneratorCommand
+class GeneratorMigrationCommand extends BaseGeneratorCommand implements SchemaReplacementDataProvider
 {
-    protected function getStub(): string
-    {
-        return 'dummy_migration'; // Replace with the name of your migration stub
-    }
-
-    protected function getFolder(): string
-    {
-        return database_path('migrations');
-    }
-
-    protected function getFullPath(): string
-    {
-        $migrationFileName = $this->getMigrationTableName();
-        return database_path("migrations/{$migrationFileName}");
-    }
-
-    protected function schemaReplacements(): array
+    public function getSchemaReplacements(): array
     {
         $schemaParser = new MigrationContentParser();
         $output = $schemaParser->parse($this->schema);
@@ -32,6 +17,21 @@ class GeneratorMigrationCommand extends BaseGeneratorCommand
         return [
             'migrationContent' => $output,
         ];
+    }
+    protected function getStubName(): string
+    {
+        return 'dummy_migration'; // Replace with the name of your migration stub
+    }
+
+    protected function getOutputFolder(): string
+    {
+        return database_path('migrations');
+    }
+
+    protected function getOutputFilePath(): string
+    {
+        $migrationFileName = $this->getMigrationTableName();
+        return database_path("migrations/{$migrationFileName}");
     }
 
     private function getMigrationTableName(): string

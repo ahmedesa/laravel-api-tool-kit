@@ -3,27 +3,12 @@
 namespace Essa\APIToolKit\Generator\Commands;
 
 use Essa\APIToolKit\Generator\BaseGeneratorCommand;
+use Essa\APIToolKit\Generator\Contracts\SchemaReplacementDataProvider;
 use Essa\APIToolKit\Generator\SchemaParsers\FactoryColumnsParser;
 
-class GeneratorFactoryCommand extends BaseGeneratorCommand
+class GeneratorFactoryCommand extends BaseGeneratorCommand implements SchemaReplacementDataProvider
 {
-    protected function getStub(): string
-    {
-        return 'DummyFactory'; // Replace with the name of your factory stub
-    }
-
-    protected function getFolder(): string
-    {
-        return database_path('/factories');
-    }
-
-    protected function getFullPath(): string
-    {
-        return database_path("factories/{$this->model}Factory.php");
-    }
-
-
-    protected function schemaReplacements(): array
+    public function getSchemaReplacements(): array
     {
         $schemaParser = new FactoryColumnsParser();
         $output = $schemaParser->parse($this->schema);
@@ -31,5 +16,19 @@ class GeneratorFactoryCommand extends BaseGeneratorCommand
         return [
             'factoryContent' => $output,
         ];
+    }
+    protected function getStubName(): string
+    {
+        return 'DummyFactory'; // Replace with the name of your factory stub
+    }
+
+    protected function getOutputFolder(): string
+    {
+        return database_path('/factories');
+    }
+
+    protected function getOutputFilePath(): string
+    {
+        return database_path("factories/{$this->model}Factory.php");
     }
 }

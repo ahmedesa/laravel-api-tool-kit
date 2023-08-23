@@ -6,17 +6,17 @@ use Essa\APIToolKit\Generator\BaseGeneratorCommand;
 
 class GeneratorControllerCommand extends BaseGeneratorCommand
 {
-    protected function getStub(): string
+    protected function getStubName(): string
     {
         return 'DummyController'; // Replace with the name of your controller stub
     }
 
-    protected function getFolder(): string
+    protected function getOutputFolder(): string
     {
         return app_path('Http/Controllers/API');
     }
 
-    protected function getFullPath(): string
+    protected function getOutputFilePath(): string
     {
         return app_path("Http/Controllers/API/{$this->model}Controller.php");
     }

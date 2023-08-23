@@ -6,17 +6,17 @@ use Essa\APIToolKit\Generator\BaseGeneratorCommand;
 
 class GeneratorFilterCommand extends BaseGeneratorCommand
 {
-    protected function getStub(): string
+    protected function getStubName(): string
     {
         return 'DummyFilters'; // Replace with the name of your filter stub
     }
 
-    protected function getFolder(): string
+    protected function getOutputFolder(): string
     {
         return app_path('Filters');
     }
 
-    protected function getFullPath(): string
+    protected function getOutputFilePath(): string
     {
         return app_path("Filters/{$this->model}Filters.php");
     }

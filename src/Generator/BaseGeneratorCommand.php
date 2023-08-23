@@ -2,6 +2,7 @@
 
 namespace Essa\APIToolKit\Generator;
 
+use Essa\APIToolKit\Generator\Contracts\SchemaReplacementDataProvider;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
 
@@ -23,33 +24,33 @@ abstract class BaseGeneratorCommand
 
     public function handle(): void
     {
-        if ( ! file_exists($this->getFolder())) {
-            $this->createDirectory();
+        if ( ! file_exists($this->getOutputFolder())) {
+            $this->createFolder();
         }
 
-        $this->saveContentInTheFilePath();
+        $this->saveContentToFile();
     }
 
-    abstract protected function getStub(): string;
+    abstract protected function getStubName(): string;
 
-    abstract protected function getFolder(): string;
+    abstract protected function getOutputFolder(): string;
 
-    abstract protected function getFullPath(): string;
+    abstract protected function getOutputFilePath(): string;
 
-    protected function createDirectory(): void
+    protected function createFolder(): void
     {
         app(Filesystem::class)
             ->makeDirectory(
-                path: $this->getFolder(),
+                path: $this->getOutputFolder(),
                 mode: 0777,
                 recursive: true,
                 force: true
             );
     }
 
-    protected function saveContentInTheFilePath(): void
+    protected function saveContentToFile(): void
     {
-        file_put_contents($this->getFullPath(), $this->parseStub($this->getStub()));
+        file_put_contents($this->getOutputFilePath(), $this->parseStub($this->getStubName()));
     }
 
     protected function parseStub(string $type): string
@@ -61,10 +62,10 @@ abstract class BaseGeneratorCommand
 
     protected function replacePatternsInTheStub(string $type): array|string|null
     {
-        $replacements = $this->replacementPatterns();
+        $replacements = $this->getPlaceholderReplacements();
 
-        if (method_exists($this, 'schemaReplacements') && $this->schema) {
-            $replacements = array_merge($replacements, $this->schemaReplacements());
+        if ($this instanceof SchemaReplacementDataProvider && $this->schema) {
+            $replacements = array_merge($replacements, $this->getSchemaReplacements());
         }
 
         return strtr(
@@ -73,19 +74,19 @@ abstract class BaseGeneratorCommand
         );
     }
 
-    protected function removeTags(string $string): string
+    protected function removeTags(string $content): string
     {
-        $result = $string;
+        $processedContent = $content;
 
         foreach (self::TAGS as $option) {
-            $result = $this->removeTag(
-                $result,
+            $processedContent = $this->removeTagBlock(
+                $processedContent,
                 $this->options[$option],
                 $option
             );
         }
 
-        return $result;
+        return $processedContent;
     }
 
     protected function getStubContent(string $stubName): string
@@ -93,7 +94,7 @@ abstract class BaseGeneratorCommand
         return file_get_contents(__DIR__ . "/../Stubs/{$stubName}.stub");
     }
 
-    protected function removeTag(string $string, $condition, string $tag): string
+    protected function removeTagBlock(string $string, $condition, string $tag): string
     {
         $pattern = $condition
             ? "/@if\(\'{$tag}\'\)|@endif\(\'{$tag}\'\)/"
@@ -102,7 +103,7 @@ abstract class BaseGeneratorCommand
         return preg_replace($pattern, '', $string);
     }
 
-    protected function replacementPatterns(): array
+    protected function getPlaceholderReplacements(): array
     {
         return [
             'Dummy' => $this->model,

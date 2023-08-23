@@ -3,26 +3,12 @@
 namespace Essa\APIToolKit\Generator\Commands;
 
 use Essa\APIToolKit\Generator\BaseGeneratorCommand;
+use Essa\APIToolKit\Generator\Contracts\SchemaReplacementDataProvider;
 use Essa\APIToolKit\Generator\SchemaParsers\UpdateValidationRulesParser;
 
-class GeneratorUpdateRequestCommand extends BaseGeneratorCommand
+class GeneratorUpdateRequestCommand extends BaseGeneratorCommand implements SchemaReplacementDataProvider
 {
-    protected function getStub(): string
-    {
-        return 'UpdateDummyRequest'; // Replace with the name of your update request stub
-    }
-
-    protected function getFolder(): string
-    {
-        return app_path("Http/Requests/{$this->model}");
-    }
-
-    protected function getFullPath(): string
-    {
-        return app_path("Http/Requests/{$this->model}/Update{$this->model}Request.php");
-    }
-
-    protected function schemaReplacements(): array
+    public function getSchemaReplacements(): array
     {
         $schemaParser = new UpdateValidationRulesParser();
         $output = $schemaParser->parse($this->schema);
@@ -30,5 +16,19 @@ class GeneratorUpdateRequestCommand extends BaseGeneratorCommand
         return [
             'updateValidationRules' => $output,
         ];
+    }
+    protected function getStubName(): string
+    {
+        return 'UpdateDummyRequest'; // Replace with the name of your update request stub
+    }
+
+    protected function getOutputFolder(): string
+    {
+        return app_path("Http/Requests/{$this->model}");
+    }
+
+    protected function getOutputFilePath(): string
+    {
+        return app_path("Http/Requests/{$this->model}/Update{$this->model}Request.php");
     }
 }

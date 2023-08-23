@@ -3,26 +3,12 @@
 namespace Essa\APIToolKit\Generator\Commands;
 
 use Essa\APIToolKit\Generator\BaseGeneratorCommand;
+use Essa\APIToolKit\Generator\Contracts\SchemaReplacementDataProvider;
 use Essa\APIToolKit\Generator\SchemaParsers\ResourceAttributesParser;
 
-class GeneratorResourceCommand extends BaseGeneratorCommand
+class GeneratorResourceCommand extends BaseGeneratorCommand implements SchemaReplacementDataProvider
 {
-    protected function getStub(): string
-    {
-        return 'DummyResource'; // Replace with the name of your resource stub
-    }
-
-    protected function getFolder(): string
-    {
-        return app_path("Http/Resources/{$this->model}");
-    }
-
-    protected function getFullPath(): string
-    {
-        return app_path("Http/Resources/{$this->model}/{$this->model}Resource.php");
-    }
-
-    protected function schemaReplacements(): array
+    public function getSchemaReplacements(): array
     {
         $schemaParser = new ResourceAttributesParser();
         $output = $schemaParser->parse($this->schema);
@@ -30,5 +16,19 @@ class GeneratorResourceCommand extends BaseGeneratorCommand
         return [
             'resourceContent' => $output,
         ];
+    }
+    protected function getStubName(): string
+    {
+        return 'DummyResource'; // Replace with the name of your resource stub
+    }
+
+    protected function getOutputFolder(): string
+    {
+        return app_path("Http/Resources/{$this->model}");
+    }
+
+    protected function getOutputFilePath(): string
+    {
+        return app_path("Http/Resources/{$this->model}/{$this->model}Resource.php");
     }
 }

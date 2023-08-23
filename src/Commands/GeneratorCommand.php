@@ -14,22 +14,12 @@ use Essa\APIToolKit\Generator\Commands\GeneratorSeederCommand;
 use Essa\APIToolKit\Generator\Commands\GeneratorTestCommand;
 use Essa\APIToolKit\Generator\Commands\GeneratorUpdateRequestCommand;
 use Illuminate\Console\Command;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 
 class GeneratorCommand extends Command
 {
-    protected $signature = 'api:generate {model} {schema?}
-                            {--m|migration}
-                            {--c|controller}
-                            {--R|request}
-                            {--r|resource}
-                            {--s|seeder}
-                            {--f|factory}
-                            {--F|filter}
-                            {--t|test}
-                            {--all}
-                            {--routes}
-                            {--soft-delete}';
-
+    protected $name = 'api:generate';
 
     protected $description = 'This command generate api crud.';
 
@@ -120,6 +110,31 @@ class GeneratorCommand extends Command
         $this->generateModules($model, $userChoices, $schema);
 
         $this->info('Module created successfully!');
+    }
+
+    protected function getArguments(): array
+    {
+        return [
+            ['model', InputArgument::REQUIRED, 'The model.'],
+            ['schema', InputArgument::OPTIONAL, 'The schema.'],
+        ];
+    }
+
+    protected function getOptions(): array
+    {
+        return [
+            ['all', null, InputOption::VALUE_NONE, 'Generate a migration, seeder, factory, policy, resource controller, and form request classes for the model'],
+            ['routes', null, InputOption::VALUE_NONE, 'Generate a migration, seeder, factory, policy, resource controller, and form request classes for the model'],
+            ['soft-delete', null, InputOption::VALUE_NONE, 'Generate a migration, seeder, factory, policy, resource controller, and form request classes for the model'],
+            ['controller', 'c', InputOption::VALUE_NONE, 'Create a new controller for the model'],
+            ['factory', 'f', InputOption::VALUE_NONE, 'Create a new factory for the model'],
+            ['filter', 'F', InputOption::VALUE_NONE, 'Create a new factory for the model'],
+            ['test', 't', InputOption::VALUE_NONE, 'Create a new factory for the model'],
+            ['migration', 'm', InputOption::VALUE_NONE, 'Create a new migration file for the model'],
+            ['seeder', 's', InputOption::VALUE_NONE, 'Create a new seeder for the model'],
+            ['resource', 'r', InputOption::VALUE_NONE, 'Indicates if the generated controller should be a resource controller'],
+            ['request', 'R', InputOption::VALUE_NONE, 'Create new form request classes and use them in the resource controller'],
+        ];
     }
 
     private function getUserChoices(): array

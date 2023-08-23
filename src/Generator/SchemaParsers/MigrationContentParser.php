@@ -10,7 +10,7 @@ class MigrationContentParser extends BaseSchemaParser implements SchemaParserInt
     public function parse(array $columnDefinitions): string
     {
         return collect($columnDefinitions)
-            ->map(fn($definition) => $this->generateColumnDefinition($definition))
+            ->map(fn ($definition) => $this->generateColumnDefinition($definition))
             ->implode(PHP_EOL);
     }
 
@@ -46,7 +46,7 @@ class MigrationContentParser extends BaseSchemaParser implements SchemaParserInt
     private function getOptionString(array $options): string
     {
         return collect($options)
-            ->map(fn($option) => $this->addOption($option))
+            ->map(fn ($option) => $this->addOption($option))
             ->implode('');
     }
 

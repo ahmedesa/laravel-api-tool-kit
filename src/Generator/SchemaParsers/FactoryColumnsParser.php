@@ -9,7 +9,7 @@ class FactoryColumnsParser extends BaseSchemaParser implements SchemaParserInter
     public function parse(array $columnDefinitions): string
     {
         return collect($columnDefinitions)
-            ->map(fn($definition) => $this->generateFactoryColumnDefinition($definition))
+            ->map(fn ($definition) => $this->generateFactoryColumnDefinition($definition))
             ->implode(PHP_EOL . "\t\t\t");
     }
 

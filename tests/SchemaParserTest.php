@@ -18,7 +18,7 @@ class SchemaParserTest extends TestCase
     public function testGenerateFillableColumns(): void
     {
         $schema = 'name:string,age:integer,email:string:unique';
-        $schemaParser = new FillableColumnsParser($this->getSchema($schema));
+        $schemaParser = new FillableColumnsParser($schema);
         $output = $schemaParser->parse();
 
         $expectedFillableColumns = "
@@ -36,7 +36,7 @@ class SchemaParserTest extends TestCase
     public function testParseGeneratesMigrationContent(): void
     {
         $schema = 'name:string,age:integer';
-        $schemaParser = new MigrationContentParser($this->getSchema($schema));
+        $schemaParser = new MigrationContentParser($schema);
         $output = $schemaParser->parse();
 
         $expectedMigrationContent = "
@@ -53,7 +53,7 @@ class SchemaParserTest extends TestCase
     public function testGenerateRelationshipMethod(): void
     {
         $schema = 'author_id:foreignId,category_id:foreignId';
-        $schemaParser = new RelationshipMethodsParser($this->getSchema($schema));
+        $schemaParser = new RelationshipMethodsParser($schema);
         $output = $schemaParser->parse();
 
         $expectedMethod = "
@@ -76,7 +76,7 @@ class SchemaParserTest extends TestCase
     public function testParseGeneratesFactoryColumns(): void
     {
         $schema = 'name:string,age:integer,price:decimal';
-        $schemaParser = new FactoryColumnsParser($this->getSchema($schema));
+        $schemaParser = new FactoryColumnsParser($schema);
         $output = $schemaParser->parse();
 
         $expectedFactoryContent = "
@@ -94,7 +94,7 @@ class SchemaParserTest extends TestCase
     public function testParseGeneratesColumnDefinitions(): void
     {
         $schema = 'name:string,age:integer,price:decimal';
-        $schemaParser = new MigrationContentParser($this->getSchema($schema));
+        $schemaParser = new MigrationContentParser($schema);
         $output = $schemaParser->parse();
 
         $expectedMigrationContent = "
@@ -112,7 +112,7 @@ class SchemaParserTest extends TestCase
     public function testParseGeneratesResourceAttributes(): void
     {
         $schema = 'name:string,age:integer,price:decimal';
-        $schemaParser = new ResourceAttributesParser($this->getSchema($schema));
+        $schemaParser = new ResourceAttributesParser($schema);
         $output = $schemaParser->parse();
 
         $expectedResourceContent = "
@@ -130,7 +130,7 @@ class SchemaParserTest extends TestCase
     public function testParseGeneratesCreateValidationRules(): void
     {
         $schema = 'name:string,age:integer,price:decimal';
-        $schemaParser = new CreateValidationRulesParser($this->getSchema($schema));
+        $schemaParser = new CreateValidationRulesParser($schema);
         $output = $schemaParser->parse();
 
         $expectedValidationRulesForCreate = "
@@ -148,7 +148,7 @@ class SchemaParserTest extends TestCase
     public function testParseGeneratesUpdateValidationRules(): void
     {
         $schema = 'name:string,age:integer,price:decimal';
-        $schemaParser = new UpdateValidationRulesParser($this->getSchema($schema));
+        $schemaParser = new UpdateValidationRulesParser($schema);
         $output = $schemaParser->parse();
 
         $expectedValidationRulesForUpdate = "
@@ -166,7 +166,7 @@ class SchemaParserTest extends TestCase
     public function testParseGeneratesForeignKeyWithCascadeOption(): void
     {
         $schema = 'author_id:foreignId:cascadeOnDelete';
-        $schemaParser = new MigrationContentParser($this->getSchema($schema));
+        $schemaParser = new MigrationContentParser($schema);
         $output = $schemaParser->parse();
 
         $expectedMigrationContent = "

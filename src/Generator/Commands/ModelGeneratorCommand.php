@@ -6,7 +6,7 @@ use Essa\APIToolKit\Generator\Contracts\SchemaReplacementDataProvider;
 use Essa\APIToolKit\Generator\SchemaParsers\FillableColumnsParser;
 use Essa\APIToolKit\Generator\SchemaParsers\RelationshipMethodsParser;
 
-class ModelGeneratorCommand extends BaseGeneratorCommand implements SchemaReplacementDataProvider
+class ModelGeneratorCommand extends GeneratorCommand implements SchemaReplacementDataProvider
 {
     public function getSchemaReplacements(): array
     {

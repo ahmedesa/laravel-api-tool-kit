@@ -6,7 +6,7 @@ use Essa\APIToolKit\Generator\Contracts\SchemaReplacementDataProvider;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
 
-abstract class BaseGeneratorCommand
+abstract class GeneratorCommand
 {
     protected const TAGS = [
         'soft-delete',
@@ -14,7 +14,7 @@ abstract class BaseGeneratorCommand
         'resource',
         'filter',
     ];
-    protected ?array $schema;
+    protected ?string $schema;
 
     protected array $options;
     protected string $model;
@@ -46,7 +46,7 @@ abstract class BaseGeneratorCommand
         return $this;
     }
 
-    public function setSchema(?array $schema): self
+    public function setSchema(?string $schema): self
     {
         $this->schema = $schema;
 
@@ -85,7 +85,7 @@ abstract class BaseGeneratorCommand
     {
         $replacements = $this->getPlaceholderReplacements();
 
-        if ($this instanceof SchemaReplacementDataProvider && $this->schema) {
+        if ($this instanceof SchemaReplacementDataProvider) {
             $replacements = array_merge($replacements, $this->getSchemaReplacements());
         }
 

@@ -4,7 +4,7 @@ namespace Essa\APIToolKit\Generator\Commands;
 
 use Illuminate\Filesystem\Filesystem;
 
-class RoutesGeneratorCommand extends BaseGeneratorCommand
+class RoutesGeneratorCommand extends GeneratorCommand
 {
     protected function getStubName(): string
     {

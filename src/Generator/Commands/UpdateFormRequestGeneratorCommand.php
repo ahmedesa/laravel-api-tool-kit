@@ -5,7 +5,7 @@ namespace Essa\APIToolKit\Generator\Commands;
 use Essa\APIToolKit\Generator\Contracts\SchemaReplacementDataProvider;
 use Essa\APIToolKit\Generator\SchemaParsers\UpdateValidationRulesParser;
 
-class UpdateFormRequestGeneratorCommand extends BaseGeneratorCommand implements SchemaReplacementDataProvider
+class UpdateFormRequestGeneratorCommand extends GeneratorCommand implements SchemaReplacementDataProvider
 {
     public function getSchemaReplacements(): array
     {

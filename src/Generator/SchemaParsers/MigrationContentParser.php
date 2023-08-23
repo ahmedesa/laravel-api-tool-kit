@@ -2,14 +2,13 @@
 
 namespace Essa\APIToolKit\Generator\SchemaParsers;
 
-use Essa\APIToolKit\Generator\Contracts\SchemaParserInterface;
 use Illuminate\Support\Str;
 
-class MigrationContentParser extends BaseSchemaParser implements SchemaParserInterface
+class MigrationContentParser extends SchemaParser
 {
-    public function parse(): string
+    protected function getParsedSchema(array $columnDefinitions): string
     {
-        return collect($this->columnDefinitions)
+        return collect($columnDefinitions)
             ->map(fn ($definition) => $this->generateColumnDefinition($definition))
             ->implode(PHP_EOL);
     }

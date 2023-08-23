@@ -32,7 +32,7 @@ class CommandLineExecutor
         'routes' => RoutesGeneratorCommand::class,
     ];
 
-    public function executeCommands(string $model, array $userChoices, ?array $schema): void
+    public function executeCommands(string $model, array $userChoices, ?string $schema): void
     {
         foreach ($this->commands as $option => $commandClasses) {
             if ( ! $this->shouldExecute($option, $userChoices)) {
@@ -49,7 +49,7 @@ class CommandLineExecutor
     {
         return 'model' === $option || $userChoices[$option];
     }
-    private function executeCommand(mixed $commandClass, string $model, array $userChoices, ?array $schema): void
+    private function executeCommand(mixed $commandClass, string $model, array $userChoices, ?string $schema): void
     {
         app($commandClass)
             ->setModel($model)

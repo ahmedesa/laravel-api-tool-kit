@@ -2,13 +2,11 @@
 
 namespace Essa\APIToolKit\Generator\SchemaParsers;
 
-use Essa\APIToolKit\Generator\Contracts\SchemaParserInterface;
-
-class UpdateValidationRulesParser extends BaseSchemaParser implements SchemaParserInterface
+class UpdateValidationRulesParser extends SchemaParser
 {
-    public function parse(): string
+    protected function getParsedSchema(array $columnDefinitions): string
     {
-        return collect($this->columnDefinitions)
+        return collect($columnDefinitions)
             ->map(fn ($definition) => "'{$this->getColumnName($definition)}' => 'sometimes',")
             ->implode(PHP_EOL . "\t\t\t");
     }

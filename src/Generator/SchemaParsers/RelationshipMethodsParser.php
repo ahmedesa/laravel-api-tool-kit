@@ -2,14 +2,13 @@
 
 namespace Essa\APIToolKit\Generator\SchemaParsers;
 
-use Essa\APIToolKit\Generator\Contracts\SchemaParserInterface;
 use Illuminate\Support\Str;
 
-class RelationshipMethodsParser extends BaseSchemaParser implements SchemaParserInterface
+class RelationshipMethodsParser extends SchemaParser
 {
-    public function parse(): string
+    protected function getParsedSchema(array $columnDefinitions): string
     {
-        return collect($this->columnDefinitions)
+        return collect($columnDefinitions)
             ->filter(fn ($definition) => $this->isForeignKey($this->parseColumnDefinition($definition)['columnType']))
             ->map(fn ($definition) => $this->generateRelationshipMethod($definition))
             ->implode(PHP_EOL);

@@ -2,7 +2,7 @@
 
 namespace Essa\APIToolKit\Generator\Commands;
 
-class FilterGeneratorCommand extends BaseGeneratorCommand
+class FilterGeneratorCommand extends GeneratorCommand
 {
     protected function getStubName(): string
     {

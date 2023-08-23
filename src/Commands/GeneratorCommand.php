@@ -101,9 +101,11 @@ class GeneratorCommand extends Command
 
         $userChoices = $this->getUserChoices();
 
-        $schema = $this->getSchema();
-
-        $this->commandLineExecutor->executeCommands($model, $userChoices, $schema);
+        $this->commandLineExecutor->executeCommands(
+            model: $model,
+            userChoices: $userChoices,
+            schema: $this->argument('schema')
+        );
 
         $this->info('Module created successfully!');
     }
@@ -154,13 +156,5 @@ class GeneratorCommand extends Command
     private function isReservedName($name): bool
     {
         return in_array(mb_strtolower($name), $this->reservedNames);
-    }
-
-    private function getSchema(): ?array
-    {
-        if ( ! $this->argument('schema')) {
-            return null;
-        }
-        return explode(',', $this->argument('schema'));
     }
 }

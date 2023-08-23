@@ -2,11 +2,22 @@
 
 namespace Essa\APIToolKit\Generator\SchemaParsers;
 
-class BaseSchemaParser
+abstract class SchemaParser
 {
-    public function __construct(protected array $columnDefinitions)
+    public function __construct(private ?string $schema)
     {
     }
+
+    public function parse(): string
+    {
+        if ( ! $this->schema) {
+            return '';
+        }
+
+        return $this->getParsedSchema(explode(',', $this->schema));
+    }
+
+    abstract protected function getParsedSchema(array $columnDefinitions): string;
 
     protected function getColumnName(string $definition): string
     {

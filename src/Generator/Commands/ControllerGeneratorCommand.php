@@ -2,7 +2,7 @@
 
 namespace Essa\APIToolKit\Generator\Commands;
 
-class ControllerGeneratorCommand extends BaseGeneratorCommand
+class ControllerGeneratorCommand extends GeneratorCommand
 {
     protected function getStubName(): string
     {

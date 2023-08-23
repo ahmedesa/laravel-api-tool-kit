@@ -93,6 +93,12 @@ class GeneratorCommand extends Command
         'xor',
         'yield',
     ];
+
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
     public function handle()
     {
         $model = ucfirst($this->argument('model'));
@@ -170,110 +176,88 @@ class GeneratorCommand extends Command
 
     private function generateModules(string $model, array $userChoices, ?array $schema): void
     {
-        $generator = new ModelGeneratorCommand(
-            model: $model,
-            options: $userChoices,
-            schema: $schema
-        );
-
-        $generator->handle();
+        app(ModelGeneratorCommand::class)
+            ->setModel($model)
+            ->setOptions($userChoices)
+            ->setSchema($schema)
+            ->handle();
 
         if ($this->option('factory')) {
-            $generator = new FactoryGeneratorCommand(
-                model: $model,
-                options: $userChoices,
-                schema: $schema
-            );
-
-            $generator->handle();
+            app(FactoryGeneratorCommand::class)
+                ->setModel($model)
+                ->setOptions($userChoices)
+                ->setSchema($schema)
+                ->handle();
         }
 
         if ($this->option('seeder')) {
-            $generator = new SeederGeneratorCommand(
-                model: $model,
-                options: $userChoices,
-                schema: $schema
-            );
-
-            $generator->handle();
+            app(SeederGeneratorCommand::class)
+                ->setModel($model)
+                ->setOptions($userChoices)
+                ->setSchema($schema)
+                ->handle();
         }
 
         if ($this->option('controller')) {
-            $generator = new ControllerGeneratorCommand(
-                model: $model,
-                options: $userChoices,
-                schema: $schema
-            );
-
-            $generator->handle();
+            app(ControllerGeneratorCommand::class)
+                ->setModel($model)
+                ->setOptions($userChoices)
+                ->setSchema($schema)
+                ->handle();
         }
 
         if ($this->option('test')) {
-            $generator = new TestGeneratorCommand(
-                model: $model,
-                options: $userChoices,
-                schema: $schema
-            );
-
-            $generator->handle();
+            app(TestGeneratorCommand::class)
+                ->setModel($model)
+                ->setOptions($userChoices)
+                ->setSchema($schema)
+                ->handle();
         }
 
         if ($this->option('resource')) {
-            $generator = new ResourceGeneratorCommand(
-                model: $model,
-                options: $userChoices,
-                schema: $schema
-            );
-
-            $generator->handle();
+            app(ResourceGeneratorCommand::class)
+                ->setModel($model)
+                ->setOptions($userChoices)
+                ->setSchema($schema)
+                ->handle();
         }
 
         if ($this->option('request')) {
-            $generator = new CreateFormRequestGeneratorCommand(
-                model: $model,
-                options: $userChoices,
-                schema: $schema
-            );
+            app(CreateFormRequestGeneratorCommand::class)
+                ->setModel($model)
+                ->setOptions($userChoices)
+                ->setSchema($schema)
+                ->handle();
 
-            $generator->handle();
-
-            $generator = new UpdateFormRequestGeneratorCommand(
-                model: $model,
-                options: $userChoices,
-                schema: $schema
-            );
-
-            $generator->handle();
+            app(UpdateFormRequestGeneratorCommand::class)
+                ->setModel($model)
+                ->setOptions($userChoices)
+                ->setSchema($schema)
+                ->handle();
         }
 
         if ($this->option('filter')) {
-            $generator = new FilterGeneratorCommand(
-                model: $model,
-                options: $userChoices,
-                schema: $schema
-            );
-
-            $generator->handle();
+            app(FilterGeneratorCommand::class)
+                ->setModel($model)
+                ->setOptions($userChoices)
+                ->setSchema($schema)
+                ->handle();
         }
 
         if ($this->option('migration')) {
-            $generator = new MigrationGeneratorCommand(
-                model: $model,
-                options: $userChoices,
-                schema: $schema
-            );
-
-            $generator->handle();
+            app(MigrationGeneratorCommand::class)
+                ->setModel($model)
+                ->setOptions($userChoices)
+                ->setSchema($schema)
+                ->handle();
         }
 
         if ($this->option('routes')) {
-            $generator = new RoutesGeneratorCommand(
-                model: $model,
-                options: $userChoices,
-                schema: $schema
-            );
-
-            $generator->handle();
+            app(RoutesGeneratorCommand::class)
+                ->setModel($model)
+                ->setOptions($userChoices)
+                ->setSchema($schema)
+                ->handle();
         }
     }
 }

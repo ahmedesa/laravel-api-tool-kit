@@ -14,12 +14,13 @@ abstract class BaseGeneratorCommand
         'resource',
         'filter',
     ];
+    protected ?array $schema;
 
-    public function __construct(
-        protected string $model,
-        protected array  $options,
-        protected ?array $schema = null
-    ) {
+    protected array $options;
+    protected string $model;
+
+    public function __construct(private Filesystem $filesystem)
+    {
     }
 
     public function handle(): void
@@ -31,6 +32,26 @@ abstract class BaseGeneratorCommand
         $this->saveContentToFile();
     }
 
+    public function setModel(string $model): self
+    {
+        $this->model = $model;
+
+        return $this;
+    }
+
+    public function setOptions(array $options): self
+    {
+        $this->options = $options;
+
+        return $this;
+    }
+
+    public function setSchema(?array $schema): self
+    {
+        $this->schema = $schema;
+
+        return $this;
+    }
     abstract protected function getStubName(): string;
 
     abstract protected function getOutputFolder(): string;
@@ -39,7 +60,7 @@ abstract class BaseGeneratorCommand
 
     protected function createFolder(): void
     {
-        app(Filesystem::class)
+        $this->filesystem
             ->makeDirectory(
                 path: $this->getOutputFolder(),
                 mode: 0777,

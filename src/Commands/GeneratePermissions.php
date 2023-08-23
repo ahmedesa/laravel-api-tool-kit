@@ -44,13 +44,13 @@ class GeneratePermissions extends Command
             'update' => 'update',
         ];
 
-        $soft_delete_permission = [
+        $softDeletePermission = [
             'restore' => 'force-delete',
             'permanentDelete' => 'force-delete',
         ];
 
         if (config('api-tool-kit.use_soft_delete')) {
-            $permissions = $permissions + $soft_delete_permission;
+            $permissions = $permissions + $softDeletePermission;
         }
 
         $this->addPermissionsToConfigFile($permissions);
@@ -64,17 +64,17 @@ class GeneratePermissions extends Command
     {
         $model = $this->argument('model');
 
-        $new_value[$model] = $permissions;
+        $newValue[$model] = $permissions;
 
         if (config('permissions-map')) {
-            $new_value = $new_value + config('permissions-map');
+            $newValue = $newValue + config('permissions-map');
         }
 
-        $conf_file = config_path('permissions-map') . '.php';
+        $confFile = config_path('permissions-map') . '.php';
 
         file_put_contents(
-            $conf_file,
-            "<?php \n return " . var_export($new_value, true) . ';'
+            $confFile,
+            "<?php \n return " . var_export($newValue, true) . ';'
         );
     }
 

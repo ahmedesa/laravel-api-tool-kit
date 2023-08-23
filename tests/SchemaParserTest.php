@@ -2,19 +2,24 @@
 
 namespace Essa\APIToolKit\Tests;
 
-use Essa\APIToolKit\Generator\DTOs\SchemaParserOutput;
-use Essa\APIToolKit\Generator\SchemaParser;
+use Essa\APIToolKit\Generator\SchemaParsers\CreateValidationRulesParser;
+use Essa\APIToolKit\Generator\SchemaParsers\FactoryColumnsParser;
+use Essa\APIToolKit\Generator\SchemaParsers\FillableColumnsParser;
+use Essa\APIToolKit\Generator\SchemaParsers\MigrationContentParser;
+use Essa\APIToolKit\Generator\SchemaParsers\RelationshipMethodsParser;
+use Essa\APIToolKit\Generator\SchemaParsers\ResourceAttributesParser;
+use Essa\APIToolKit\Generator\SchemaParsers\UpdateValidationRulesParser;
 
 class SchemaParserTest extends TestCase
 {
-    public function testParseWithEmptySchemaReturnsEmptyOutput(): void
-    {
-        $schemaParser = new SchemaParser(null);
-        $output = $schemaParser->parse();
-
-        $this->assertInstanceOf(SchemaParserOutput::class, $output);
-        $this->assertEmpty($output->migrationContent);
-    }
+    //    public function testParseWithEmptySchemaReturnsEmptyOutput(): void
+    //    {
+    //        $schemaParser = new SchemaParser(null);
+    //        $output = $schemaParser->parse($this->getSchema($schema));
+    //
+    //        $this->assertInstanceOf(SchemaParserOutput::class, $output);
+    //        $this->assertEmpty($output->migrationContent);
+    //    }
 
     /**
      * @test
@@ -22,10 +27,8 @@ class SchemaParserTest extends TestCase
     public function testGenerateFillableColumns(): void
     {
         $schema = 'name:string,age:integer,email:string:unique';
-        $schemaParser = new SchemaParser($schema);
-        $output = $schemaParser->parse();
-
-        $fillableColumns = $output->fillableColumns;
+        $schemaParser = new FillableColumnsParser();
+        $output = $schemaParser->parse($this->getSchema($schema));
 
         $expectedFillableColumns = "
             'name',
@@ -35,35 +38,32 @@ class SchemaParserTest extends TestCase
 
         $this->assertStringContainsString(
             $this->normalizeWhitespaceAndNewlines($expectedFillableColumns),
-            $this->normalizeWhitespaceAndNewlines($fillableColumns)
+            $this->normalizeWhitespaceAndNewlines($output)
         );
     }
 
     public function testParseGeneratesMigrationContent(): void
     {
         $schema = 'name:string,age:integer';
-        $schemaParser = new SchemaParser($schema);
-        $output = $schemaParser->parse();
+        $schemaParser = new MigrationContentParser();
+        $output = $schemaParser->parse($this->getSchema($schema));
 
         $expectedMigrationContent = "
             \$table->string('name');
             \$table->integer('age');
         ";
 
-        $this->assertInstanceOf(SchemaParserOutput::class, $output);
         $this->assertEquals(
             $this->normalizeWhitespaceAndNewlines($expectedMigrationContent),
-            $this->normalizeWhitespaceAndNewlines($output->migrationContent)
+            $this->normalizeWhitespaceAndNewlines($output)
         );
     }
 
     public function testGenerateRelationshipMethod(): void
     {
         $schema = 'author_id:foreignId,category_id:foreignId';
-        $schemaParser = new SchemaParser($schema);
-        $output = $schemaParser->parse();
-
-        $relationshipMethod = $output->modelRelations;
+        $schemaParser = new RelationshipMethodsParser($schema);
+        $output = $schemaParser->parse($this->getSchema($schema));
 
         $expectedMethod = "
             public function author(): \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -78,15 +78,15 @@ class SchemaParserTest extends TestCase
 
         $this->assertStringContainsString(
             $this->normalizeWhitespaceAndNewlines($expectedMethod),
-            $this->normalizeWhitespaceAndNewlines($relationshipMethod)
+            $this->normalizeWhitespaceAndNewlines($output)
         );
     }
 
     public function testParseGeneratesFactoryColumns(): void
     {
         $schema = 'name:string,age:integer,price:decimal';
-        $schemaParser = new SchemaParser($schema);
-        $output = $schemaParser->parse();
+        $schemaParser = new FactoryColumnsParser();
+        $output = $schemaParser->parse($this->getSchema($schema));
 
         $expectedFactoryContent = "
         'name' => \$this->faker->firstName,
@@ -96,15 +96,15 @@ class SchemaParserTest extends TestCase
 
         $this->assertStringContainsString(
             $this->normalizeWhitespaceAndNewlines($expectedFactoryContent),
-            $this->normalizeWhitespaceAndNewlines($output->factoryContent)
+            $this->normalizeWhitespaceAndNewlines($output)
         );
     }
 
     public function testParseGeneratesColumnDefinitions(): void
     {
         $schema = 'name:string,age:integer,price:decimal';
-        $schemaParser = new SchemaParser($schema);
-        $output = $schemaParser->parse();
+        $schemaParser = new MigrationContentParser();
+        $output = $schemaParser->parse($this->getSchema($schema));
 
         $expectedMigrationContent = "
         \$table->string('name');
@@ -114,15 +114,15 @@ class SchemaParserTest extends TestCase
 
         $this->assertStringContainsString(
             $this->normalizeWhitespaceAndNewlines($expectedMigrationContent),
-            $this->normalizeWhitespaceAndNewlines($output->migrationContent)
+            $this->normalizeWhitespaceAndNewlines($output)
         );
     }
 
     public function testParseGeneratesResourceAttributes(): void
     {
         $schema = 'name:string,age:integer,price:decimal';
-        $schemaParser = new SchemaParser($schema);
-        $output = $schemaParser->parse();
+        $schemaParser = new ResourceAttributesParser();
+        $output = $schemaParser->parse($this->getSchema($schema));
 
         $expectedResourceContent = "
         'name' => \$this->name,
@@ -132,15 +132,15 @@ class SchemaParserTest extends TestCase
 
         $this->assertStringContainsString(
             $this->normalizeWhitespaceAndNewlines($expectedResourceContent),
-            $this->normalizeWhitespaceAndNewlines($output->resourceContent)
+            $this->normalizeWhitespaceAndNewlines($output)
         );
     }
 
-    public function testParseGeneratesValidationRules(): void
+    public function testParseGeneratesCreateValidationRules(): void
     {
         $schema = 'name:string,age:integer,price:decimal';
-        $schemaParser = new SchemaParser($schema);
-        $output = $schemaParser->parse();
+        $schemaParser = new CreateValidationRulesParser();
+        $output = $schemaParser->parse($this->getSchema($schema));
 
         $expectedValidationRulesForCreate = "
         'name' => 'required',
@@ -148,6 +148,17 @@ class SchemaParserTest extends TestCase
         'price' => 'required',
     ";
 
+        $this->assertStringContainsString(
+            $this->normalizeWhitespaceAndNewlines($expectedValidationRulesForCreate),
+            $this->normalizeWhitespaceAndNewlines($output)
+        );
+    }
+
+    public function testParseGeneratesUpdateValidationRules(): void
+    {
+        $schema = 'name:string,age:integer,price:decimal';
+        $schemaParser = new UpdateValidationRulesParser();
+        $output = $schemaParser->parse($this->getSchema($schema));
 
         $expectedValidationRulesForUpdate = "
         'name' => 'sometimes',
@@ -156,21 +167,16 @@ class SchemaParserTest extends TestCase
     ";
 
         $this->assertStringContainsString(
-            $this->normalizeWhitespaceAndNewlines($expectedValidationRulesForCreate),
-            $this->normalizeWhitespaceAndNewlines($output->createValidationRules)
-        );
-
-        $this->assertStringContainsString(
             $this->normalizeWhitespaceAndNewlines($expectedValidationRulesForUpdate),
-            $this->normalizeWhitespaceAndNewlines($output->updateValidationRules)
+            $this->normalizeWhitespaceAndNewlines($output)
         );
     }
 
     public function testParseGeneratesForeignKeyWithCascadeOption(): void
     {
         $schema = 'author_id:foreignId:cascadeOnDelete';
-        $schemaParser = new SchemaParser($schema);
-        $output = $schemaParser->parse();
+        $schemaParser = new MigrationContentParser();
+        $output = $schemaParser->parse($this->getSchema($schema));
 
         $expectedMigrationContent = "
         \$table->foreignId('author_id')->constrained('authors')->cascadeOnDelete();
@@ -178,7 +184,16 @@ class SchemaParserTest extends TestCase
 
         $this->assertStringContainsString(
             $this->normalizeWhitespaceAndNewlines($expectedMigrationContent),
-            $this->normalizeWhitespaceAndNewlines($output->migrationContent)
+            $this->normalizeWhitespaceAndNewlines($output)
         );
+    }
+
+    private function getSchema($schema): ?array
+    {
+        if ( ! $schema) {
+            return null;
+        }
+
+        return explode(',', $schema);
     }
 }

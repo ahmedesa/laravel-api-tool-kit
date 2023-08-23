@@ -2,7 +2,6 @@
 
 namespace Essa\APIToolKit\Generator;
 
-use Essa\APIToolKit\Generator\DTOs\SchemaParserOutput;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
 
@@ -16,17 +15,15 @@ abstract class BaseGeneratorCommand
     ];
 
     public function __construct(
-        protected string             $model,
-        protected array              $options,
-        protected SchemaParserOutput $schemaParserOutput,
-        protected ?string            $schema = null
-    )
-    {
+        protected string $model,
+        protected array  $options,
+        protected ?array $schema = null
+    ) {
     }
 
     public function handle(): void
     {
-        if (!file_exists($this->getFolder())) {
+        if ( ! file_exists($this->getFolder())) {
             $this->createDirectory();
         }
 
@@ -64,10 +61,15 @@ abstract class BaseGeneratorCommand
 
     protected function replacePatternsInTheStub(string $type): array|string|null
     {
-        return preg_replace(
-            $this->getAllPatternsToReplace(),
-            $this->getModelReplacements(),
-            $this->getStubContent($type)
+        $replacements = $this->replacementPatterns();
+
+        if (method_exists($this, 'schemaReplacements') && $this->schema) {
+            $replacements = array_merge($replacements, $this->schemaReplacements());
+        }
+
+        return strtr(
+            $this->getStubContent($type),
+            $replacements
         );
     }
 
@@ -86,23 +88,6 @@ abstract class BaseGeneratorCommand
         return $result;
     }
 
-    protected function getModelReplacements(): array
-    {
-        return [
-            $this->model,
-            Str::plural($this->model),
-            lcfirst($this->model),
-            lcfirst(Str::plural($this->model)),
-            $this->schemaParserOutput->fillableColumns,
-            $this->schemaParserOutput->migrationContent,
-            $this->schemaParserOutput->resourceContent,
-            $this->schemaParserOutput->factoryContent,
-            $this->schemaParserOutput->createValidationRules,
-            $this->schemaParserOutput->updateValidationRules,
-            $this->schemaParserOutput->modelRelations,
-        ];
-    }
-
     protected function getStubContent(string $stubName): string
     {
         return file_get_contents(__DIR__ . "/../Stubs/{$stubName}.stub");
@@ -117,20 +102,13 @@ abstract class BaseGeneratorCommand
         return preg_replace($pattern, '', $string);
     }
 
-    protected function getAllPatternsToReplace(): array
+    protected function replacementPatterns(): array
     {
         return [
-            '/Dummy/',
-            '/Dummies/',
-            '/dummy/',
-            '/dummies/',
-            '/fillableColumns/',
-            '/migrationContent/',
-            '/resourceContent/',
-            '/factoryContent/',
-            '/createValidationRules/',
-            '/updateValidationRules/',
-            '/modelRelations/',
+            'Dummy' => $this->model,
+            'Dummies' => Str::plural($this->model),
+            'dummy' => lcfirst($this->model),
+            'dummies' => lcfirst(Str::plural($this->model)),
         ];
     }
 }

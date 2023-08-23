@@ -3,8 +3,9 @@
 namespace Essa\APIToolKit\Generator\Commands;
 
 use Essa\APIToolKit\Generator\BaseGeneratorCommand;
+use Essa\APIToolKit\Generator\SchemaParsers\CreateValidationRulesParser;
 
-class GeneratorRequestCommand extends BaseGeneratorCommand
+class GeneratorCreateRequestCommand extends BaseGeneratorCommand
 {
     protected function getStub(): string
     {
@@ -19,5 +20,15 @@ class GeneratorRequestCommand extends BaseGeneratorCommand
     protected function getFullPath(): string
     {
         return app_path("Http/Requests/{$this->model}/Create{$this->model}Request.php");
+    }
+
+    protected function schemaReplacements(): array
+    {
+        $schemaParser = new CreateValidationRulesParser();
+        $output = $schemaParser->parse($this->schema);
+
+        return [
+            'createValidationRules' => $output,
+        ];
     }
 }

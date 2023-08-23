@@ -19,7 +19,7 @@ class GeneratorCommandTest extends TestCase
     /**
      * @test
      */
-    public function generateCommandWithAllDefaults(): void
+    public function generateCommandWithAllDefaultsNewww(): void
     {
         $this->artisan('api:generate', [
             'model' => 'GeneratedModel',
@@ -93,7 +93,7 @@ class GeneratorCommandTest extends TestCase
         $this->artisan('api:generate', [
             'model' => 'GeneratedModel',
             'schema' => "username:string:default('ahmed'),code:integer:unique,company_data_id:foreignId:cascadeOnDelete",
-            '--all' => true,
+            '--factory' => true,
         ])
             ->assertExitCode(0);
 

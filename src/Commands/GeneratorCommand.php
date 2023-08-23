@@ -3,17 +3,16 @@
 namespace Essa\APIToolKit\Commands;
 
 use Essa\APIToolKit\Generator\Commands\GeneratorControllerCommand;
+use Essa\APIToolKit\Generator\Commands\GeneratorCreateRequestCommand;
 use Essa\APIToolKit\Generator\Commands\GeneratorFactoryCommand;
 use Essa\APIToolKit\Generator\Commands\GeneratorFilterCommand;
 use Essa\APIToolKit\Generator\Commands\GeneratorMigrationCommand;
 use Essa\APIToolKit\Generator\Commands\GeneratorModelCommand;
-use Essa\APIToolKit\Generator\Commands\GeneratorRequestCommand;
 use Essa\APIToolKit\Generator\Commands\GeneratorResourceCommand;
 use Essa\APIToolKit\Generator\Commands\GeneratorRoutesCommand;
 use Essa\APIToolKit\Generator\Commands\GeneratorSeederCommand;
 use Essa\APIToolKit\Generator\Commands\GeneratorTestCommand;
 use Essa\APIToolKit\Generator\Commands\GeneratorUpdateRequestCommand;
-use Essa\APIToolKit\Generator\SchemaParser;
 use Illuminate\Console\Command;
 
 class GeneratorCommand extends Command
@@ -118,14 +117,12 @@ class GeneratorCommand extends Command
 
         $userChoices = $this->getUserChoices();
 
-        $schemaParser = new SchemaParser($this->argument('schema'));
-
-        $schemaParserOutput = $schemaParser->parse();
+        $schema = $this->getSchema();
 
         $generator = new GeneratorModelCommand(
             model: $model,
             options: $userChoices,
-            schemaParserOutput: $schemaParserOutput
+            schema: $schema
         );
 
         $generator->handle();
@@ -134,7 +131,7 @@ class GeneratorCommand extends Command
             $generator = new GeneratorFactoryCommand(
                 model: $model,
                 options: $userChoices,
-                schemaParserOutput: $schemaParserOutput
+                schema: $schema
             );
 
             $generator->handle();
@@ -144,7 +141,7 @@ class GeneratorCommand extends Command
             $generator = new GeneratorSeederCommand(
                 model: $model,
                 options: $userChoices,
-                schemaParserOutput: $schemaParserOutput
+                schema: $schema
             );
 
             $generator->handle();
@@ -154,7 +151,7 @@ class GeneratorCommand extends Command
             $generator = new GeneratorControllerCommand(
                 model: $model,
                 options: $userChoices,
-                schemaParserOutput: $schemaParserOutput
+                schema: $schema
             );
 
             $generator->handle();
@@ -164,7 +161,7 @@ class GeneratorCommand extends Command
             $generator = new GeneratorTestCommand(
                 model: $model,
                 options: $userChoices,
-                schemaParserOutput: $schemaParserOutput
+                schema: $schema
             );
 
             $generator->handle();
@@ -174,17 +171,17 @@ class GeneratorCommand extends Command
             $generator = new GeneratorResourceCommand(
                 model: $model,
                 options: $userChoices,
-                schemaParserOutput: $schemaParserOutput
+                schema: $schema
             );
 
             $generator->handle();
         }
 
         if ($this->option('request')) {
-            $generator = new GeneratorRequestCommand(
+            $generator = new GeneratorCreateRequestCommand(
                 model: $model,
                 options: $userChoices,
-                schemaParserOutput: $schemaParserOutput
+                schema: $schema
             );
 
             $generator->handle();
@@ -192,7 +189,7 @@ class GeneratorCommand extends Command
             $generator = new GeneratorUpdateRequestCommand(
                 model: $model,
                 options: $userChoices,
-                schemaParserOutput: $schemaParserOutput
+                schema: $schema
             );
 
             $generator->handle();
@@ -202,7 +199,7 @@ class GeneratorCommand extends Command
             $generator = new GeneratorFilterCommand(
                 model: $model,
                 options: $userChoices,
-                schemaParserOutput: $schemaParserOutput
+                schema: $schema
             );
 
             $generator->handle();
@@ -212,7 +209,7 @@ class GeneratorCommand extends Command
             $generator = new GeneratorMigrationCommand(
                 model: $model,
                 options: $userChoices,
-                schemaParserOutput: $schemaParserOutput
+                schema: $schema
             );
 
             $generator->handle();
@@ -222,7 +219,7 @@ class GeneratorCommand extends Command
             $generator = new GeneratorRoutesCommand(
                 model: $model,
                 options: $userChoices,
-                schemaParserOutput: $schemaParserOutput
+                schema: $schema
             );
 
             $generator->handle();
@@ -252,5 +249,13 @@ class GeneratorCommand extends Command
     private function isReservedName($name): bool
     {
         return in_array(mb_strtolower($name), $this->reservedNames);
+    }
+
+    private function getSchema(): ?array
+    {
+        if ( ! $this->argument('schema')) {
+            return null;
+        }
+        return explode(',', $this->argument('schema'));
     }
 }

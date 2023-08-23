@@ -3,6 +3,7 @@
 namespace Essa\APIToolKit\Generator\Commands;
 
 use Essa\APIToolKit\Generator\BaseGeneratorCommand;
+use Essa\APIToolKit\Generator\SchemaParsers\MigrationContentParser;
 use Illuminate\Support\Str;
 
 class GeneratorMigrationCommand extends BaseGeneratorCommand
@@ -21,6 +22,16 @@ class GeneratorMigrationCommand extends BaseGeneratorCommand
     {
         $migrationFileName = $this->getMigrationTableName();
         return database_path("migrations/{$migrationFileName}");
+    }
+
+    protected function schemaReplacements(): array
+    {
+        $schemaParser = new MigrationContentParser();
+        $output = $schemaParser->parse($this->schema);
+
+        return [
+            'migrationContent' => $output,
+        ];
     }
 
     private function getMigrationTableName(): string

@@ -3,6 +3,7 @@
 namespace Essa\APIToolKit\Generator\Commands;
 
 use Essa\APIToolKit\Generator\BaseGeneratorCommand;
+use Essa\APIToolKit\Generator\SchemaParsers\FactoryColumnsParser;
 
 class GeneratorFactoryCommand extends BaseGeneratorCommand
 {
@@ -19,5 +20,16 @@ class GeneratorFactoryCommand extends BaseGeneratorCommand
     protected function getFullPath(): string
     {
         return database_path("factories/{$this->model}Factory.php");
+    }
+
+
+    protected function schemaReplacements(): array
+    {
+        $schemaParser = new FactoryColumnsParser();
+        $output = $schemaParser->parse($this->schema);
+
+        return [
+            'factoryContent' => $output,
+        ];
     }
 }

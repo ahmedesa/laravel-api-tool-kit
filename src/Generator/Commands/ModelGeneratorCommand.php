@@ -11,15 +11,9 @@ class ModelGeneratorCommand extends BaseGeneratorCommand implements SchemaReplac
 {
     public function getSchemaReplacements(): array
     {
-        $schemaParser = new FillableColumnsParser();
-        $output1 = $schemaParser->parse($this->schema);
-
-        $schemaParser = new RelationshipMethodsParser();
-        $output = $schemaParser->parse($this->schema);
-
         return [
-            'fillableColumns' => $output1,
-            'modelRelations' => $output,
+            'fillableColumns' =>  (new FillableColumnsParser($this->schema))->parse(),
+            'modelRelations' => (new RelationshipMethodsParser($this->schema))->parse(),
         ];
     }
     protected function getStubName(): string

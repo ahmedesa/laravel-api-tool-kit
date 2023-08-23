@@ -11,11 +11,8 @@ class MigrationGeneratorCommand extends BaseGeneratorCommand implements SchemaRe
 {
     public function getSchemaReplacements(): array
     {
-        $schemaParser = new MigrationContentParser();
-        $output = $schemaParser->parse($this->schema);
-
         return [
-            'migrationContent' => $output,
+            'migrationContent' => (new MigrationContentParser($this->schema))->parse(),
         ];
     }
     protected function getStubName(): string

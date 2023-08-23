@@ -4,6 +4,10 @@ namespace Essa\APIToolKit\Generator\SchemaParsers;
 
 class BaseSchemaParser
 {
+    public function __construct(protected array $columnDefinitions)
+    {
+    }
+
     protected function getColumnName(string $definition): string
     {
         return explode(':', $definition)[0];

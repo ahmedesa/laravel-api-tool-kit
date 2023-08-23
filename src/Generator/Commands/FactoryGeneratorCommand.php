@@ -10,11 +10,8 @@ class FactoryGeneratorCommand extends BaseGeneratorCommand implements SchemaRepl
 {
     public function getSchemaReplacements(): array
     {
-        $schemaParser = new FactoryColumnsParser();
-        $output = $schemaParser->parse($this->schema);
-
         return [
-            'factoryContent' => $output,
+            'factoryContent' => (new FactoryColumnsParser($this->schema))->parse(),
         ];
     }
     protected function getStubName(): string

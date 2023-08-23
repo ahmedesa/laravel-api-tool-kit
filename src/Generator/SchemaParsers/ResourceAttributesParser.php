@@ -6,9 +6,9 @@ use Essa\APIToolKit\Generator\Contracts\SchemaParserInterface;
 
 class ResourceAttributesParser extends BaseSchemaParser implements SchemaParserInterface
 {
-    public function parse(array $columnDefinitions): string
+    public function parse(): string
     {
-        return collect($columnDefinitions)
+        return collect($this->columnDefinitions)
             ->map(fn ($definition) => "'{$this->getColumnName($definition)}' => \$this->{$this->getColumnName($definition)},")
             ->implode(PHP_EOL . "\t\t\t");
     }

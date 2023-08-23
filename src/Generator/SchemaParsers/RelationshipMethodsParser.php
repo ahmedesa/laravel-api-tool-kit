@@ -7,9 +7,9 @@ use Illuminate\Support\Str;
 
 class RelationshipMethodsParser extends BaseSchemaParser implements SchemaParserInterface
 {
-    public function parse(array $columnDefinitions): string
+    public function parse(): string
     {
-        return collect($columnDefinitions)
+        return collect($this->columnDefinitions)
             ->filter(fn ($definition) => $this->isForeignKey($this->parseColumnDefinition($definition)['columnType']))
             ->map(fn ($definition) => $this->generateRelationshipMethod($definition))
             ->implode(PHP_EOL);

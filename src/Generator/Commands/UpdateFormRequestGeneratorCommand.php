@@ -10,11 +10,8 @@ class UpdateFormRequestGeneratorCommand extends BaseGeneratorCommand implements 
 {
     public function getSchemaReplacements(): array
     {
-        $schemaParser = new UpdateValidationRulesParser();
-        $output = $schemaParser->parse($this->schema);
-
         return [
-            'updateValidationRules' => $output,
+            'updateValidationRules' => (new UpdateValidationRulesParser($this->schema))->parse(),
         ];
     }
     protected function getStubName(): string

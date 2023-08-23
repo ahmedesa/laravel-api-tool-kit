@@ -10,11 +10,8 @@ class ResourceGeneratorCommand extends BaseGeneratorCommand implements SchemaRep
 {
     public function getSchemaReplacements(): array
     {
-        $schemaParser = new ResourceAttributesParser();
-        $output = $schemaParser->parse($this->schema);
-
         return [
-            'resourceContent' => $output,
+            'resourceContent' => (new ResourceAttributesParser($this->schema))->parse(),
         ];
     }
     protected function getStubName(): string

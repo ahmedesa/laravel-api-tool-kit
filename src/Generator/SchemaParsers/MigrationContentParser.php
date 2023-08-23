@@ -7,9 +7,9 @@ use Illuminate\Support\Str;
 
 class MigrationContentParser extends BaseSchemaParser implements SchemaParserInterface
 {
-    public function parse(array $columnDefinitions): string
+    public function parse(): string
     {
-        return collect($columnDefinitions)
+        return collect($this->columnDefinitions)
             ->map(fn ($definition) => $this->generateColumnDefinition($definition))
             ->implode(PHP_EOL);
     }

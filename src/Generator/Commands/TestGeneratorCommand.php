@@ -4,7 +4,7 @@ namespace Essa\APIToolKit\Generator\Commands;
 
 use Essa\APIToolKit\Generator\BaseGeneratorCommand;
 
-class GeneratorTestCommand extends BaseGeneratorCommand
+class TestGeneratorCommand extends BaseGeneratorCommand
 {
     protected function getStubName(): string
     {

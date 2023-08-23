@@ -4,22 +4,22 @@ namespace Essa\APIToolKit\Generator\Commands;
 
 use Essa\APIToolKit\Generator\BaseGeneratorCommand;
 use Essa\APIToolKit\Generator\Contracts\SchemaReplacementDataProvider;
-use Essa\APIToolKit\Generator\SchemaParsers\UpdateValidationRulesParser;
+use Essa\APIToolKit\Generator\SchemaParsers\CreateValidationRulesParser;
 
-class GeneratorUpdateRequestCommand extends BaseGeneratorCommand implements SchemaReplacementDataProvider
+class CreateFormRequestGeneratorCommand extends BaseGeneratorCommand implements SchemaReplacementDataProvider
 {
     public function getSchemaReplacements(): array
     {
-        $schemaParser = new UpdateValidationRulesParser();
+        $schemaParser = new CreateValidationRulesParser();
         $output = $schemaParser->parse($this->schema);
 
         return [
-            'updateValidationRules' => $output,
+            'createValidationRules' => $output,
         ];
     }
     protected function getStubName(): string
     {
-        return 'UpdateDummyRequest';
+        return 'CreateDummyRequest';
     }
 
     protected function getOutputFolder(): string
@@ -29,6 +29,6 @@ class GeneratorUpdateRequestCommand extends BaseGeneratorCommand implements Sche
 
     protected function getOutputFilePath(): string
     {
-        return app_path("Http/Requests/{$this->model}/Update{$this->model}Request.php");
+        return app_path("Http/Requests/{$this->model}/Create{$this->model}Request.php");
     }
 }

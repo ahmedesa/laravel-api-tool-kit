@@ -7,7 +7,7 @@ use Essa\APIToolKit\Generator\Contracts\SchemaReplacementDataProvider;
 use Essa\APIToolKit\Generator\SchemaParsers\MigrationContentParser;
 use Illuminate\Support\Str;
 
-class GeneratorMigrationCommand extends BaseGeneratorCommand implements SchemaReplacementDataProvider
+class MigrationGeneratorCommand extends BaseGeneratorCommand implements SchemaReplacementDataProvider
 {
     public function getSchemaReplacements(): array
     {

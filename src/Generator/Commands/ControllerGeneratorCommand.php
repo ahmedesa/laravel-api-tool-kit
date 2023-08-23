@@ -4,20 +4,20 @@ namespace Essa\APIToolKit\Generator\Commands;
 
 use Essa\APIToolKit\Generator\BaseGeneratorCommand;
 
-class GeneratorSeederCommand extends BaseGeneratorCommand
+class ControllerGeneratorCommand extends BaseGeneratorCommand
 {
     protected function getStubName(): string
     {
-        return 'DummySeeder';
+        return 'DummyController';
     }
 
     protected function getOutputFolder(): string
     {
-        return database_path('/seeders');
+        return app_path('Http/Controllers/API');
     }
 
     protected function getOutputFilePath(): string
     {
-        return database_path("seeders/{$this->model}Seeder.php");
+        return app_path("Http/Controllers/API/{$this->model}Controller.php");
     }
 }

@@ -2,17 +2,17 @@
 
 namespace Essa\APIToolKit\Commands;
 
-use Essa\APIToolKit\Generator\Commands\GeneratorControllerCommand;
-use Essa\APIToolKit\Generator\Commands\GeneratorCreateRequestCommand;
-use Essa\APIToolKit\Generator\Commands\GeneratorFactoryCommand;
-use Essa\APIToolKit\Generator\Commands\GeneratorFilterCommand;
-use Essa\APIToolKit\Generator\Commands\GeneratorMigrationCommand;
-use Essa\APIToolKit\Generator\Commands\GeneratorModelCommand;
-use Essa\APIToolKit\Generator\Commands\GeneratorResourceCommand;
-use Essa\APIToolKit\Generator\Commands\GeneratorRoutesCommand;
-use Essa\APIToolKit\Generator\Commands\GeneratorSeederCommand;
-use Essa\APIToolKit\Generator\Commands\GeneratorTestCommand;
-use Essa\APIToolKit\Generator\Commands\GeneratorUpdateRequestCommand;
+use Essa\APIToolKit\Generator\Commands\ControllerGeneratorCommand;
+use Essa\APIToolKit\Generator\Commands\CreateFormRequestGeneratorCommand;
+use Essa\APIToolKit\Generator\Commands\FactoryGeneratorCommand;
+use Essa\APIToolKit\Generator\Commands\FilterGeneratorCommand;
+use Essa\APIToolKit\Generator\Commands\MigrationGeneratorCommand;
+use Essa\APIToolKit\Generator\Commands\ModelGeneratorCommand;
+use Essa\APIToolKit\Generator\Commands\ResourceGeneratorCommand;
+use Essa\APIToolKit\Generator\Commands\RoutesGeneratorCommand;
+use Essa\APIToolKit\Generator\Commands\SeederGeneratorCommand;
+use Essa\APIToolKit\Generator\Commands\TestGeneratorCommand;
+use Essa\APIToolKit\Generator\Commands\UpdateFormRequestGeneratorCommand;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
@@ -170,7 +170,7 @@ class GeneratorCommand extends Command
 
     private function generateModules(string $model, array $userChoices, ?array $schema): void
     {
-        $generator = new GeneratorModelCommand(
+        $generator = new ModelGeneratorCommand(
             model: $model,
             options: $userChoices,
             schema: $schema
@@ -179,7 +179,7 @@ class GeneratorCommand extends Command
         $generator->handle();
 
         if ($this->option('factory')) {
-            $generator = new GeneratorFactoryCommand(
+            $generator = new FactoryGeneratorCommand(
                 model: $model,
                 options: $userChoices,
                 schema: $schema
@@ -189,7 +189,7 @@ class GeneratorCommand extends Command
         }
 
         if ($this->option('seeder')) {
-            $generator = new GeneratorSeederCommand(
+            $generator = new SeederGeneratorCommand(
                 model: $model,
                 options: $userChoices,
                 schema: $schema
@@ -199,7 +199,7 @@ class GeneratorCommand extends Command
         }
 
         if ($this->option('controller')) {
-            $generator = new GeneratorControllerCommand(
+            $generator = new ControllerGeneratorCommand(
                 model: $model,
                 options: $userChoices,
                 schema: $schema
@@ -209,7 +209,7 @@ class GeneratorCommand extends Command
         }
 
         if ($this->option('test')) {
-            $generator = new GeneratorTestCommand(
+            $generator = new TestGeneratorCommand(
                 model: $model,
                 options: $userChoices,
                 schema: $schema
@@ -219,7 +219,7 @@ class GeneratorCommand extends Command
         }
 
         if ($this->option('resource')) {
-            $generator = new GeneratorResourceCommand(
+            $generator = new ResourceGeneratorCommand(
                 model: $model,
                 options: $userChoices,
                 schema: $schema
@@ -229,7 +229,7 @@ class GeneratorCommand extends Command
         }
 
         if ($this->option('request')) {
-            $generator = new GeneratorCreateRequestCommand(
+            $generator = new CreateFormRequestGeneratorCommand(
                 model: $model,
                 options: $userChoices,
                 schema: $schema
@@ -237,7 +237,7 @@ class GeneratorCommand extends Command
 
             $generator->handle();
 
-            $generator = new GeneratorUpdateRequestCommand(
+            $generator = new UpdateFormRequestGeneratorCommand(
                 model: $model,
                 options: $userChoices,
                 schema: $schema
@@ -247,7 +247,7 @@ class GeneratorCommand extends Command
         }
 
         if ($this->option('filter')) {
-            $generator = new GeneratorFilterCommand(
+            $generator = new FilterGeneratorCommand(
                 model: $model,
                 options: $userChoices,
                 schema: $schema
@@ -257,7 +257,7 @@ class GeneratorCommand extends Command
         }
 
         if ($this->option('migration')) {
-            $generator = new GeneratorMigrationCommand(
+            $generator = new MigrationGeneratorCommand(
                 model: $model,
                 options: $userChoices,
                 schema: $schema
@@ -267,7 +267,7 @@ class GeneratorCommand extends Command
         }
 
         if ($this->option('routes')) {
-            $generator = new GeneratorRoutesCommand(
+            $generator = new RoutesGeneratorCommand(
                 model: $model,
                 options: $userChoices,
                 schema: $schema

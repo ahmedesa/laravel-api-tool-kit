@@ -6,7 +6,7 @@ use Essa\APIToolKit\Generator\BaseGeneratorCommand;
 use Essa\APIToolKit\Generator\Contracts\SchemaReplacementDataProvider;
 use Essa\APIToolKit\Generator\SchemaParsers\ResourceAttributesParser;
 
-class GeneratorResourceCommand extends BaseGeneratorCommand implements SchemaReplacementDataProvider
+class ResourceGeneratorCommand extends BaseGeneratorCommand implements SchemaReplacementDataProvider
 {
     public function getSchemaReplacements(): array
     {

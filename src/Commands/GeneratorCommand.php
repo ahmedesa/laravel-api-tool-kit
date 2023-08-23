@@ -2,12 +2,20 @@
 
 namespace Essa\APIToolKit\Commands;
 
-use Essa\APIToolKit\Generator\DTOs\ComponentInfo;
+use Essa\APIToolKit\Generator\Commands\GeneratorControllerCommand;
+use Essa\APIToolKit\Generator\Commands\GeneratorFactoryCommand;
+use Essa\APIToolKit\Generator\Commands\GeneratorFilterCommand;
+use Essa\APIToolKit\Generator\Commands\GeneratorMigrationCommand;
+use Essa\APIToolKit\Generator\Commands\GeneratorModelCommand;
+use Essa\APIToolKit\Generator\Commands\GeneratorRequestCommand;
+use Essa\APIToolKit\Generator\Commands\GeneratorResourceCommand;
+use Essa\APIToolKit\Generator\Commands\GeneratorRoutesCommand;
+use Essa\APIToolKit\Generator\Commands\GeneratorSeederCommand;
+use Essa\APIToolKit\Generator\Commands\GeneratorTestCommand;
+use Essa\APIToolKit\Generator\Commands\GeneratorUpdateRequestCommand;
 use Essa\APIToolKit\Generator\SchemaParser;
-use Essa\APIToolKit\Generator\StubParser;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Str;
 
 class GeneratorCommand extends Command
 {
@@ -23,6 +31,7 @@ class GeneratorCommand extends Command
                             {--all}
                             {--routes}
                             {--soft-delete}';
+
 
     protected $description = 'This command generate api crud.';
 
@@ -96,18 +105,6 @@ class GeneratorCommand extends Command
         'xor',
         'yield',
     ];
-
-    private const DEFAULT_VALUES = [
-        'model',
-    ];
-
-    public function __construct(
-        private Filesystem $filesystem,
-    )
-    {
-        parent::__construct();
-    }
-
     public function handle()
     {
         $model = ucfirst($this->argument('model'));
@@ -126,22 +123,110 @@ class GeneratorCommand extends Command
 
         $schemaParserOutput = $schemaParser->parse();
 
-        $stubParser = new StubParser(
+        $generator = new GeneratorModelCommand(
             model: $model,
             options: $userChoices,
             schemaParserOutput: $schemaParserOutput
         );
 
-        $componentsToGenerate = $this->componentsToGenerate();
+        $generator->handle();
 
-        foreach ($componentsToGenerate as $component) {
-            if (in_array($component->type, self::DEFAULT_VALUES) || $userChoices[$component->type]) {
-                $this->createComponent($component, $stubParser);
-            }
+        if ($this->option('factory')) {
+            $generator = new GeneratorFactoryCommand(
+                model: $model,
+                options: $userChoices,
+                schemaParserOutput: $schemaParserOutput
+            );
+
+            $generator->handle();
+        }
+
+        if ($this->option('seeder')) {
+            $generator = new GeneratorSeederCommand(
+                model: $model,
+                options: $userChoices,
+                schemaParserOutput: $schemaParserOutput
+            );
+
+            $generator->handle();
+        }
+
+        if ($this->option('controller')) {
+            $generator = new GeneratorControllerCommand(
+                model: $model,
+                options: $userChoices,
+                schemaParserOutput: $schemaParserOutput
+            );
+
+            $generator->handle();
+        }
+
+        if ($this->option('test')) {
+            $generator = new GeneratorTestCommand(
+                model: $model,
+                options: $userChoices,
+                schemaParserOutput: $schemaParserOutput
+            );
+
+            $generator->handle();
+        }
+
+        if ($this->option('resource')) {
+            $generator = new GeneratorResourceCommand(
+                model: $model,
+                options: $userChoices,
+                schemaParserOutput: $schemaParserOutput
+            );
+
+            $generator->handle();
+        }
+
+        if ($this->option('request')) {
+            $generator = new GeneratorRequestCommand(
+                model: $model,
+                options: $userChoices,
+                schemaParserOutput: $schemaParserOutput
+            );
+
+            $generator->handle();
+
+            $generator = new GeneratorUpdateRequestCommand(
+                model: $model,
+                options: $userChoices,
+                schemaParserOutput: $schemaParserOutput
+            );
+
+            $generator->handle();
+        }
+
+        if ($this->option('filter')) {
+            $generator = new GeneratorFilterCommand(
+                model: $model,
+                options: $userChoices,
+                schemaParserOutput: $schemaParserOutput
+            );
+
+            $generator->handle();
+        }
+
+        if ($this->option('migration')) {
+            $generator = new GeneratorMigrationCommand(
+                model: $model,
+                options: $userChoices,
+                schemaParserOutput: $schemaParserOutput
+            );
+
+            $generator->handle();
         }
 
         if ($this->option('routes')) {
-            $this->appendRoutes($stubParser);
+            $generator = new GeneratorRoutesCommand(
+                model: $model,
+                options: $userChoices,
+                schemaParserOutput: $schemaParserOutput
+            );
+
+            $generator->handle();
         }
 
         $this->info('Module created successfully!');
@@ -168,97 +253,5 @@ class GeneratorCommand extends Command
     private function isReservedName($name): bool
     {
         return in_array(mb_strtolower($name), $this->reservedNames);
-    }
-
-    private function appendRoutes(StubParser $stubParser): void
-    {
-        $this->filesystem->append(
-            base_path('routes/api.php'),
-            $stubParser->parseStub('routes')
-        );
-    }
-
-    private function createComponent(ComponentInfo $component, StubParser $stubParser): void
-    {
-        if (!file_exists($component->folder)) {
-            $this->filesystem->makeDirectory($component->folder, 0777, true, true);
-        }
-
-        file_put_contents($component->path, $stubParser->parseStub($component->stub));
-    }
-
-    private function componentsToGenerate(): array
-    {
-        $migrationFileName = $this->getMigrationTableName();
-
-        return [
-            new ComponentInfo(
-                type: 'model',
-                folder: app_path('/Models'),
-                path: app_path("Models/{$this->model}.php"),
-                stub: 'Dummy'
-            ),
-            new ComponentInfo(
-                type: 'factory',
-                folder: database_path('/factories'),
-                path: database_path("factories/{$this->model}Factory.php"),
-                stub: 'DummyFactory'
-            ),
-            new ComponentInfo(
-                type: 'seeder',
-                folder: database_path('/seeders'),
-                path: database_path("seeders/{$this->model}Seeder.php"),
-                stub: 'DummySeeder'
-            ),
-            new ComponentInfo(
-                type: 'migration',
-                folder: database_path('/migrations'),
-                path: database_path("migrations/{$migrationFileName}"),
-                stub: 'dummy_migration'
-            ),
-            new ComponentInfo(
-                type: 'controller',
-                folder: app_path('/Http/Controllers/API'),
-                path: app_path("Http/Controllers/API/{$this->model}Controller.php"),
-                stub: 'DummyController'
-            ),
-            new ComponentInfo(
-                type: 'test',
-                folder: base_path('tests/Feature/'),
-                path: base_path("tests/Feature/{$this->model}Test.php"),
-                stub: 'DummyTest'
-            ),
-            new ComponentInfo(
-                type: 'filter',
-                folder: app_path('/Filters'),
-                path: app_path("Filters/{$this->model}Filters.php"),
-                stub: 'DummyFilters'
-            ),
-            new ComponentInfo(
-                type: 'resource',
-                folder: app_path('/Http/Resources/' . $this->model),
-                path: app_path("Http/Resources/{$this->model}/{$this->model}Resource.php"),
-                stub: 'DummyResource'
-            ),
-            new ComponentInfo(
-                type: 'request',
-                folder: app_path('/Http/Requests/' . $this->model),
-                path: app_path("Http/Requests/{$this->model}/Create{$this->model}Request.php"),
-                stub: 'CreateDummyRequest'
-            ),
-            new ComponentInfo(
-                type: 'request',
-                folder: app_path('/Http/Requests/' . $this->model),
-                path: app_path("Http/Requests/{$this->model}/Update{$this->model}Request.php"),
-                stub: 'UpdateDummyRequest'
-            ),
-        ];
-    }
-
-    private function getMigrationTableName(): string
-    {
-        $migrationClass = 'create_' . Str::plural(Str::snake($this->model)) . '_table';
-
-        return date('Y_m_d_His') . "_{$migrationClass}.php";
     }
 }

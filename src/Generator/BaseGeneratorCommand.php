@@ -3,11 +3,12 @@
 namespace Essa\APIToolKit\Generator;
 
 use Essa\APIToolKit\Generator\DTOs\SchemaParserOutput;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
 
-class StubParser
+abstract class BaseGeneratorCommand
 {
-    private const PATTERNS = [
+    protected const PATTERNS = [
         '/Dummy/',
         '/Dummies/',
         '/dummy/',
@@ -21,7 +22,7 @@ class StubParser
         '/modelRelations/',
     ];
 
-    private const TAGS = [
+    protected const TAGS = [
         'soft-delete',
         'request',
         'resource',
@@ -29,10 +30,20 @@ class StubParser
     ];
 
     public function __construct(
-        private string $model,
-        private array $options,
-        private SchemaParserOutput $schemaParserOutput
+        protected string             $model,
+        protected array              $options,
+        protected SchemaParserOutput $schemaParserOutput,
+        protected ?string            $schema = null
     ) {
+    }
+
+    public function handle(): void
+    {
+        if ( ! file_exists($this->getFolder())) {
+            $this->createDirectory();
+        }
+
+        $this->saveContentInTheFilePath();
     }
 
     public function parseStub(string $type): string
@@ -44,7 +55,13 @@ class StubParser
         return $this->removeTags($output);
     }
 
-    private function getModelReplacements(): array
+    abstract protected function getStub(): string;
+
+    abstract protected function getFolder(): string;
+
+    abstract protected function getFullPath(): string;
+
+    protected function getModelReplacements(): array
     {
         return [
             $this->model,
@@ -61,7 +78,7 @@ class StubParser
         ];
     }
 
-    private function replacePatternsInTheStub(array $replacements, string $type): array|string|null
+    protected function replacePatternsInTheStub(array $replacements, string $type): array|string|null
     {
         return preg_replace(
             self::PATTERNS,
@@ -70,12 +87,12 @@ class StubParser
         );
     }
 
-    private function getStubContent(string $stubName): string
+    protected function getStubContent(string $stubName): string
     {
         return file_get_contents(__DIR__ . "/../Stubs/{$stubName}.stub");
     }
 
-    private function removeTags(string $string): string
+    protected function removeTags(string $string): string
     {
         $result = $string;
 
@@ -90,12 +107,22 @@ class StubParser
         return $result;
     }
 
-    private function removeTag(string $string, $condition, string $tag): string
+    protected function removeTag(string $string, $condition, string $tag): string
     {
         $pattern = $condition
             ? "/@if\(\'{$tag}\'\)|@endif\(\'{$tag}\'\)/"
             : "/@if\(\'{$tag}\'\)((?>[^@]++))*@endif\(\'{$tag}\'\)/";
 
         return preg_replace($pattern, '', $string);
+    }
+
+    protected function createDirectory(): void
+    {
+        app(Filesystem::class)->makeDirectory($this->getFolder(), 0777, true, true);
+    }
+
+    protected function saveContentInTheFilePath(): void
+    {
+        file_put_contents($this->getFullPath(), $this->parseStub($this->getStub()));
     }
 }

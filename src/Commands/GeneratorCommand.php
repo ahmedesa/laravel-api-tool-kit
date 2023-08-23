@@ -15,7 +15,6 @@ use Essa\APIToolKit\Generator\Commands\GeneratorTestCommand;
 use Essa\APIToolKit\Generator\Commands\GeneratorUpdateRequestCommand;
 use Essa\APIToolKit\Generator\SchemaParser;
 use Illuminate\Console\Command;
-use Illuminate\Filesystem\Filesystem;
 
 class GeneratorCommand extends Command
 {

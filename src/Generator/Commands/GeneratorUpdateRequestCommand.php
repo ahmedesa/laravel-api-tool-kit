@@ -19,7 +19,7 @@ class GeneratorUpdateRequestCommand extends BaseGeneratorCommand implements Sche
     }
     protected function getStubName(): string
     {
-        return 'UpdateDummyRequest'; // Replace with the name of your update request stub
+        return 'UpdateDummyRequest';
     }
 
     protected function getOutputFolder(): string

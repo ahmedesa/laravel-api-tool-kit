@@ -8,7 +8,7 @@ class GeneratorTestCommand extends BaseGeneratorCommand
 {
     protected function getStubName(): string
     {
-        return 'DummyTest'; // Replace with the name of your test stub
+        return 'DummyTest';
     }
 
     protected function getOutputFolder(): string

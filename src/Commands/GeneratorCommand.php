@@ -107,8 +107,6 @@ class GeneratorCommand extends Command
     {
         $model = ucfirst($this->argument('model'));
 
-        $this->model = ucfirst($this->argument('model'));
-
         if ($this->isReservedName($this->argument('model'))) {
             $this->error('The name "' . $this->argument('model') . '" is reserved by PHP.');
 
@@ -119,6 +117,44 @@ class GeneratorCommand extends Command
 
         $schema = $this->getSchema();
 
+        $this->generateModules($model, $userChoices, $schema);
+
+        $this->info('Module created successfully!');
+    }
+
+    private function getUserChoices(): array
+    {
+        if ($this->option('all')) {
+            $this->setDefaultOptions();
+        }
+
+        return $this->options();
+    }
+
+    private function setDefaultOptions(): void
+    {
+        $defaultOptions = config('api-tool-kit.default_generates');
+
+        foreach ($defaultOptions as $option) {
+            $this->input->setOption($option, true);
+        }
+    }
+
+    private function isReservedName($name): bool
+    {
+        return in_array(mb_strtolower($name), $this->reservedNames);
+    }
+
+    private function getSchema(): ?array
+    {
+        if ( ! $this->argument('schema')) {
+            return null;
+        }
+        return explode(',', $this->argument('schema'));
+    }
+
+    private function generateModules(string $model, array $userChoices, ?array $schema): void
+    {
         $generator = new GeneratorModelCommand(
             model: $model,
             options: $userChoices,
@@ -224,38 +260,5 @@ class GeneratorCommand extends Command
 
             $generator->handle();
         }
-
-        $this->info('Module created successfully!');
-    }
-
-    private function getUserChoices(): array
-    {
-        if ($this->option('all')) {
-            $this->setDefaultOptions();
-        }
-
-        return $this->options();
-    }
-
-    private function setDefaultOptions(): void
-    {
-        $defaultOptions = config('api-tool-kit.default_generates');
-
-        foreach ($defaultOptions as $option) {
-            $this->input->setOption($option, true);
-        }
-    }
-
-    private function isReservedName($name): bool
-    {
-        return in_array(mb_strtolower($name), $this->reservedNames);
-    }
-
-    private function getSchema(): ?array
-    {
-        if ( ! $this->argument('schema')) {
-            return null;
-        }
-        return explode(',', $this->argument('schema'));
     }
 }

@@ -9,7 +9,7 @@ class GeneratorRoutesCommand extends BaseGeneratorCommand
 {
     protected function getStubName(): string
     {
-        return 'routes'; // Replace with the name of your controller stub
+        return 'routes';
     }
 
     protected function getOutputFolder(): string

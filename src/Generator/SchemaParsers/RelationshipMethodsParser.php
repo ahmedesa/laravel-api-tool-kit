@@ -5,7 +5,7 @@ namespace Essa\APIToolKit\Generator\SchemaParsers;
 use Essa\APIToolKit\Generator\Contracts\SchemaParserInterface;
 use Illuminate\Support\Str;
 
-class RelationshipMethodsParser implements SchemaParserInterface
+class RelationshipMethodsParser extends BaseSchemaParser implements SchemaParserInterface
 {
     public function parse(array $columnDefinitions): string
     {
@@ -23,21 +23,5 @@ class RelationshipMethodsParser implements SchemaParserInterface
         $relatedModel = Str::studly(Str::beforeLast($columnName, '_id'));
 
         return "\tpublic function {$relatedName}(): \Illuminate\Database\Eloquent\Relations\BelongsTo\n\t{\n\t\treturn \$this->belongsTo(\App\Models\\{$relatedModel}::class);\n\t}\n";
-    }
-
-    private function isForeignKey(string $columnType): bool
-    {
-        return 'foreignId' === $columnType;
-    }
-
-
-    private function parseColumnDefinition(string $definition): array
-    {
-        $parts = explode(':', $definition);
-        $columnName = array_shift($parts);
-        $columnType = count($parts) > 0 ? $parts[0] : 'string';
-        $options = array_slice($parts, 1); // Rest of the parts are options
-
-        return compact('columnName', 'columnType', 'options');
     }
 }

@@ -8,7 +8,7 @@ class GeneratorFilterCommand extends BaseGeneratorCommand
 {
     protected function getStubName(): string
     {
-        return 'DummyFilters'; // Replace with the name of your filter stub
+        return 'DummyFilters';
     }
 
     protected function getOutputFolder(): string

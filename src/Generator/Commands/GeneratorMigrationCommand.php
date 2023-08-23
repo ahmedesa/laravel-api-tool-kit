@@ -20,7 +20,7 @@ class GeneratorMigrationCommand extends BaseGeneratorCommand implements SchemaRe
     }
     protected function getStubName(): string
     {
-        return 'dummy_migration'; // Replace with the name of your migration stub
+        return 'dummy_migration';
     }
 
     protected function getOutputFolder(): string

@@ -4,23 +4,21 @@ namespace Essa\APIToolKit\Generator\SchemaParsers;
 
 use Essa\APIToolKit\Generator\Contracts\SchemaParserInterface;
 
-class FactoryColumnsParser implements SchemaParserInterface
+class FactoryColumnsParser extends BaseSchemaParser implements SchemaParserInterface
 {
     public function parse(array $columnDefinitions): string
     {
         return collect($columnDefinitions)
-            ->map(fn ($definition): string => "'{$this->getColumnName($definition)}' => \$this->faker->{$this->getFactoryMethod($this->getColumnType($definition))},")
+            ->map(fn($definition) => $this->generateFactoryColumnDefinition($definition))
             ->implode(PHP_EOL . "\t\t\t");
     }
 
-    private function getColumnName(string $definition): string
+    private function generateFactoryColumnDefinition(string $definition): string
     {
-        return explode(':', $definition)[0];
-    }
+        $columnName = $this->getColumnName($definition);
+        $factoryMethod = $this->getFactoryMethod($this->getColumnType($definition));
 
-    private function getColumnType(string $definition): string
-    {
-        return explode(':', $definition)[1];
+        return "'{$columnName}' => \$this->faker->{$factoryMethod},";
     }
 
     private function getFactoryMethod(string $columnType): string

@@ -8,7 +8,7 @@ class GeneratorControllerCommand extends BaseGeneratorCommand
 {
     protected function getStubName(): string
     {
-        return 'DummyController'; // Replace with the name of your controller stub
+        return 'DummyController';
     }
 
     protected function getOutputFolder(): string

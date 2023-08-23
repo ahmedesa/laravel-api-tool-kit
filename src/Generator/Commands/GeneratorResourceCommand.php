@@ -19,7 +19,7 @@ class GeneratorResourceCommand extends BaseGeneratorCommand implements SchemaRep
     }
     protected function getStubName(): string
     {
-        return 'DummyResource'; // Replace with the name of your resource stub
+        return 'DummyResource';
     }
 
     protected function getOutputFolder(): string

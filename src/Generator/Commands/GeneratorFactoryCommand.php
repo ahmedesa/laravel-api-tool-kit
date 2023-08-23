@@ -19,7 +19,7 @@ class GeneratorFactoryCommand extends BaseGeneratorCommand implements SchemaRepl
     }
     protected function getStubName(): string
     {
-        return 'DummyFactory'; // Replace with the name of your factory stub
+        return 'DummyFactory';
     }
 
     protected function getOutputFolder(): string

@@ -8,7 +8,7 @@ class GeneratorSeederCommand extends BaseGeneratorCommand
 {
     protected function getStubName(): string
     {
-        return 'DummySeeder'; // Replace with the name of your seeder stub
+        return 'DummySeeder';
     }
 
     protected function getOutputFolder(): string

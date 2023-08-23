@@ -124,16 +124,16 @@ class GeneratorCommand extends Command
     {
         return [
             ['all', null, InputOption::VALUE_NONE, 'Generate a migration, seeder, factory, policy, resource controller, and form request classes for the model'],
-            ['routes', null, InputOption::VALUE_NONE, 'Generate a migration, seeder, factory, policy, resource controller, and form request classes for the model'],
-            ['soft-delete', null, InputOption::VALUE_NONE, 'Generate a migration, seeder, factory, policy, resource controller, and form request classes for the model'],
+            ['routes', null, InputOption::VALUE_NONE, 'Generate routes for the crud operations'],
+            ['soft-delete', null, InputOption::VALUE_NONE, 'Generate soft delete functionality for the model'],
             ['controller', 'c', InputOption::VALUE_NONE, 'Create a new controller for the model'],
             ['factory', 'f', InputOption::VALUE_NONE, 'Create a new factory for the model'],
-            ['filter', 'F', InputOption::VALUE_NONE, 'Create a new factory for the model'],
-            ['test', 't', InputOption::VALUE_NONE, 'Create a new factory for the model'],
+            ['filter', 'F', InputOption::VALUE_NONE, 'Create a new filter for the model'],
+            ['test', 't', InputOption::VALUE_NONE, 'Create new test cases for the model'],
             ['migration', 'm', InputOption::VALUE_NONE, 'Create a new migration file for the model'],
             ['seeder', 's', InputOption::VALUE_NONE, 'Create a new seeder for the model'],
-            ['resource', 'r', InputOption::VALUE_NONE, 'Indicates if the generated controller should be a resource controller'],
-            ['request', 'R', InputOption::VALUE_NONE, 'Create new form request classes and use them in the resource controller'],
+            ['resource', 'r', InputOption::VALUE_NONE, 'Generate a resource controller for the model'],
+            ['request', 'R', InputOption::VALUE_NONE, 'Create new form request classes for the model and use them in the resource controller'],
         ];
     }
 

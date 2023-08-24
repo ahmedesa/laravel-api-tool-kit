@@ -10,7 +10,7 @@ class MigrationContentParser extends SchemaParser
 {
     protected function getParsedSchema(SchemaDefinition $schemaDefinition): string
     {
-        return collect($schemaDefinition->columns)
+        return collect($schemaDefinition->getColumns())
             ->map(fn (ColumnDefinition $definition): string => $this->generateColumnDefinition($definition))
             ->implode(PHP_EOL);
     }
@@ -18,7 +18,7 @@ class MigrationContentParser extends SchemaParser
     private function generateColumnDefinition(ColumnDefinition $definition): string
     {
         $columnDefinition = $this->getColumnDefinition($definition);
-        $optionsString = $this->getOptionString($definition->options);
+        $optionsString = $this->getOptionString($definition->getOptions());
 
         return "\t\t\t" . $columnDefinition . $optionsString . ';';
     }
@@ -26,10 +26,10 @@ class MigrationContentParser extends SchemaParser
     private function getColumnDefinition(ColumnDefinition $definition): string
     {
         if ($definition->isForeignKey()) {
-            return $this->getForeignKeyColumnDefinition($definition->name);
+            return $this->getForeignKeyColumnDefinition($definition->getName());
         }
 
-        return "\$table->{$definition->type}('{$definition->name}')";
+        return "\$table->{$definition->getType()}('{$definition->getName()}')";
     }
 
     private function getForeignKeyColumnDefinition(string $columnName): string

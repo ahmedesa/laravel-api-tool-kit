@@ -10,7 +10,7 @@ class RelationshipMethodsParser extends SchemaParser
 {
     protected function getParsedSchema(SchemaDefinition $schemaDefinition): string
     {
-        return collect($schemaDefinition->columns)
+        return collect($schemaDefinition->getColumns())
             ->filter(fn (ColumnDefinition $definition): bool => $definition->isForeignKey())
             ->map(fn (ColumnDefinition $definition): string => $this->generateRelationshipMethod($definition))
             ->implode(PHP_EOL);
@@ -18,7 +18,7 @@ class RelationshipMethodsParser extends SchemaParser
 
     private function generateRelationshipMethod(ColumnDefinition $definition): string
     {
-        $columnName = $definition->name;
+        $columnName = $definition->getName();
         $relatedName = Str::camel(Str::beforeLast($columnName, '_id'));
         $relatedModel = Str::studly(Str::beforeLast($columnName, '_id'));
 

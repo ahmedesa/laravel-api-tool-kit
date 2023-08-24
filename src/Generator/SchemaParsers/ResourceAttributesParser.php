@@ -9,8 +9,8 @@ class ResourceAttributesParser extends SchemaParser
 {
     protected function getParsedSchema(SchemaDefinition $schemaDefinition): string
     {
-        return collect($schemaDefinition->columns)
-            ->map(fn (ColumnDefinition $definition): string => "'{$definition->name}' => \$this->{$definition->name},")
+        return collect($schemaDefinition->getColumns())
+            ->map(fn (ColumnDefinition $definition): string => "'{$definition->getName()}' => \$this->{$definition->getName()},")
             ->implode(PHP_EOL . "\t\t\t");
     }
 }

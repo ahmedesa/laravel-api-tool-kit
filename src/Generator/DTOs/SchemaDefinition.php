@@ -4,7 +4,7 @@ namespace Essa\APIToolKit\Generator\DTOs;
 
 class SchemaDefinition
 {
-    public function __construct(public array $columns)
+    public function __construct(private array $columns)
     {
     }
 

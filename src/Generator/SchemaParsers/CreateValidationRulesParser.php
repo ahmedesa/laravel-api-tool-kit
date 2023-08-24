@@ -9,8 +9,8 @@ class CreateValidationRulesParser extends SchemaParser
 {
     protected function getParsedSchema(SchemaDefinition $schemaDefinition): string
     {
-        return collect($schemaDefinition->columns)
-            ->map(fn (ColumnDefinition $definition): string => "'{$definition->name}' => 'required',")
+        return collect($schemaDefinition->getColumns())
+            ->map(fn (ColumnDefinition $definition): string => "'{$definition->getName()}' => 'required',")
             ->implode(PHP_EOL . "\t\t\t");
     }
 }

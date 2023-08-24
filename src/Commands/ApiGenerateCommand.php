@@ -173,7 +173,7 @@ class ApiGenerateCommand extends Command
         $tableData = [];
 
         foreach ($schemaDefinition->getColumns() as $column) {
-            $tableData[] = [$column->name, $column->type, (string) $column->getOptionsAsString()];
+            $tableData[] = [$column->getName(), $column->getType(), $column->getOptionsAsString()];
         }
 
         $headers = ['Column Name', 'Column Type', 'Options'];

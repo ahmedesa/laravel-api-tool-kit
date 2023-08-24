@@ -4,15 +4,8 @@ namespace Essa\APIToolKit\Generator\DTOs;
 
 class ColumnDefinition
 {
-    public string $name;
-    public string $type;
-    public array $options;
-
-    public function __construct(string $name, string $type, array $options)
+    public function __construct(private string $name, private string $type, private array $options)
     {
-        $this->name = $name;
-        $this->type = $type;
-        $this->options = $options;
     }
 
     public static function createFromDefinitionString($columnDefinitions): ColumnDefinition
@@ -40,5 +33,20 @@ class ColumnDefinition
     public function isForeignKey(): bool
     {
         return 'foreignId' === $this->type;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    public function getOptions(): array
+    {
+        return $this->options;
     }
 }

@@ -9,16 +9,16 @@ class FactoryColumnsParser extends SchemaParser
 {
     protected function getParsedSchema(SchemaDefinition $schemaDefinition): string
     {
-        return collect($schemaDefinition->columns)
+        return collect($schemaDefinition->getColumns())
             ->map(fn (ColumnDefinition $definition): string => $this->generateFactoryColumnDefinition($definition))
             ->implode(PHP_EOL . "\t\t\t");
     }
 
     private function generateFactoryColumnDefinition(ColumnDefinition $definition): string
     {
-        $factoryMethod = $this->getFactoryMethod($definition->type);
+        $factoryMethod = $this->getFactoryMethod($definition->getType());
 
-        return "'{$definition->name}' => \$this->faker->{$factoryMethod}(),";
+        return "'{$definition->getName()}' => \$this->faker->{$factoryMethod}(),";
     }
 
     private function getFactoryMethod(string $columnType): string

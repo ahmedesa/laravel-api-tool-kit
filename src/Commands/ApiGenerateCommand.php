@@ -4,6 +4,9 @@ namespace Essa\APIToolKit\Commands;
 
 use Essa\APIToolKit\Generator\DTOs\GenerationConfiguration;
 use Essa\APIToolKit\Generator\DTOs\SchemaDefinition;
+use Essa\APIToolKit\Generator\DTOs\TableDate;
+use Essa\APIToolKit\Generator\ConsoleTable\GeneratedFilesConsoleTable;
+use Essa\APIToolKit\Generator\ConsoleTable\SchemaConsoleTable;
 use Illuminate\Console\Command;
 use Illuminate\Container\Container;
 use Symfony\Component\Console\Input\InputArgument;
@@ -107,20 +110,23 @@ class ApiGenerateCommand extends Command
 
         $schemaDefinition = SchemaDefinition::createFromSchemaString($this->argument('schema'));
 
-        $this->executeCommands(
-            new GenerationConfiguration(
-                model: $model,
-                userChoices: $userChoices,
-                schema: $schemaDefinition
-            )
-        );
+        $generationConfiguration = new GenerationConfiguration($model, $userChoices, $schemaDefinition);
 
-        $this->info('Module created successfully!');
+        $this->executeCommands($generationConfiguration);
 
-        $this->generateSchemaTable($schemaDefinition);
+        $this->info('Here is your schema : ');
 
-        $this->displayGeneratedFiles();
+        $table = new SchemaConsoleTable($schemaDefinition);
+
+        $this->displayTable($table->generate());
+
+        $this->info('Generated Files for Model:');
+
+        $table = new GeneratedFilesConsoleTable($generationConfiguration);
+
+        $this->displayTable($table->generate());
     }
+
 
     protected function getArguments(): array
     {
@@ -183,42 +189,9 @@ class ApiGenerateCommand extends Command
         }
     }
 
-    private function generateSchemaTable(SchemaDefinition $schemaDefinition): void
+    private function displayTable(TableDate $output): void
     {
-        $tableData = [];
-
-        foreach ($schemaDefinition->getColumns() as $column) {
-            $tableData[] = [$column->getName(), $column->getType(), $column->getOptionsAsString()];
-        }
-
-        $headers = ['Column Name', 'Column Type', 'Options'];
-
-        $this->info('Here is your schema : ');
-
-        $this->table($headers, $tableData);
-    }
-
-    private function displayGeneratedFiles(): void
-    {
-        $commandDefinitions = config('api-tool-kit.api_generators.commands');
-
-        $tableData = [];
-
-        foreach ($commandDefinitions as $definition) {
-            if ($this->shouldExecute($definition['option'])) {
-                $resolverFilePath = $definition['path-resolver'];
-                $tableData[] = [
-                    $definition['option'],
-                    (new $resolverFilePath($this->argument('model')))->getFullPath()
-                ];
-            }
-        }
-
-        $headers = ['Option', 'File Path'];
-
-        $this->info('Generated Files for Model:');
-
-        $this->table($headers, $tableData);
+        $this->table($output->getHeaders(), $output->getTableData());
     }
 
     private function shouldExecute(string $option): bool

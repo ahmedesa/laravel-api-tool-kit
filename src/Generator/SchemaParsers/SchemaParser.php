@@ -20,9 +20,4 @@ abstract class SchemaParser
     }
 
     abstract protected function getParsedSchema(SchemaDefinition $schemaDefinition): string;
-
-    protected function isForeignKey(string $columnType): bool
-    {
-        return 'foreignId' === $columnType;
-    }
 }

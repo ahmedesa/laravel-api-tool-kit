@@ -36,4 +36,9 @@ class ColumnDefinition
     {
         return implode(' , ', $this->options);
     }
+
+    public function isForeignKey(): bool
+    {
+        return 'foreignId' === $this->type;
+    }
 }

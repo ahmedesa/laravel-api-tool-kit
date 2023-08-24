@@ -102,7 +102,7 @@ class ApiGenerateCommandTest extends TestCase
 
         $this->assertStringContainsString('$this->faker->firstName()', $factoryContent);
         $this->assertStringContainsString('$this->faker->randomNumber()', $factoryContent);
-        $this->assertStringContainsString('$this->faker->smallInteger()', $factoryContent);
+        $this->assertStringContainsString('$this->faker->randomNumber()', $factoryContent);
     }
 
     /**

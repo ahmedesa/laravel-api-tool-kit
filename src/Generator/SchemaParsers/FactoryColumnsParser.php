@@ -4,7 +4,6 @@ namespace Essa\APIToolKit\Generator\SchemaParsers;
 
 use Essa\APIToolKit\Generator\DTOs\ColumnDefinition;
 use Essa\APIToolKit\Generator\DTOs\SchemaDefinition;
-use Faker\Factory;
 
 class FactoryColumnsParser extends SchemaParser
 {

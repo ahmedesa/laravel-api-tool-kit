@@ -17,19 +17,19 @@ class MigrationContentParser extends SchemaParser
 
     private function generateColumnDefinition(ColumnDefinition $definition): string
     {
-        $columnDefinition = $this->getColumnDefinition($definition->name, $definition->type);
+        $columnDefinition = $this->getColumnDefinition($definition);
         $optionsString = $this->getOptionString($definition->options);
 
         return "\t\t\t" . $columnDefinition . $optionsString . ';';
     }
 
-    private function getColumnDefinition(string $columnName, string $columnType): string
+    private function getColumnDefinition(ColumnDefinition $definition): string
     {
-        if ($this->isForeignKey($columnType)) {
-            return $this->getForeignKeyColumnDefinition($columnName);
+        if ($definition->isForeignKey()) {
+            return $this->getForeignKeyColumnDefinition($definition->name);
         }
 
-        return "\$table->{$columnType}('{$columnName}')";
+        return "\$table->{$definition->type}('{$definition->name}')";
     }
 
     private function getForeignKeyColumnDefinition(string $columnName): string

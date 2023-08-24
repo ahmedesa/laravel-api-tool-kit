@@ -28,7 +28,7 @@ class GeneratedFilesConsoleTable implements ConsoleTableInterface
             }
         }
 
-        $headers = ['Option', 'File Path'];
+        $headers = ['Type', 'File Path'];
 
         return new TableDate($headers, $tableData);
     }

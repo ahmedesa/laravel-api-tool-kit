@@ -120,7 +120,7 @@ class ApiGenerateCommand extends Command
 
         $this->displayTable($table->generate());
 
-        $this->info('Generated Files for Model:');
+        $this->info('Generated Files : ');
 
         $table = new GeneratedFilesConsoleTable($apiGenerationCommandInputs);
 

@@ -7,7 +7,7 @@ use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
-class GeneratorCommand extends Command
+class ApiGenerateCommand extends Command
 {
     protected $name = 'api:generate';
 

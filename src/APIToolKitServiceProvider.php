@@ -3,7 +3,7 @@
 namespace Essa\APIToolKit;
 
 use Essa\APIToolKit\Commands\GeneratePermissions;
-use Essa\APIToolKit\Commands\GeneratorCommand;
+use Essa\APIToolKit\Commands\ApiGenerateCommand;
 use Essa\APIToolKit\Commands\MakeActionCommand;
 use Essa\APIToolKit\Commands\MakeEnumCommand;
 use Essa\APIToolKit\Commands\MakeFilterCommand;
@@ -42,7 +42,7 @@ class APIToolKitServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->commands([
-                GeneratorCommand::class,
+                ApiGenerateCommand::class,
                 MakeActionCommand::class,
                 MakeEnumCommand::class,
                 GeneratePermissions::class,

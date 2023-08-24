@@ -190,7 +190,7 @@ class ApiGenerateCommand extends Command
         $tableData = [];
 
         foreach ($commandDefinitions as $definition) {
-            if ($definition['option'] == 'model'||$this->option($definition['option'])) {
+            if ('model' === $definition['option']||$this->option($definition['option'])) {
                 $resolverFilePath = $definition['path-resolver'];
                 $tableData[] = [
                     $definition['option'],

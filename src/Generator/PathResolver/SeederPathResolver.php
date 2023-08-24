@@ -8,7 +8,7 @@ class SeederPathResolver extends PathResolver implements PathResolverInterface
 {
     public function folderPath(): string
     {
-        return database_path('/seeders');
+        return database_path('seeders');
     }
 
     public function fileName(): string

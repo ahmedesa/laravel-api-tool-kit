@@ -8,7 +8,7 @@ class ModelPathResolver extends PathResolver implements PathResolverInterface
 {
     public function folderPath(): string
     {
-        return app_path('/Models');
+        return app_path('Models');
     }
 
     public function fileName(): string

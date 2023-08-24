@@ -8,7 +8,7 @@ class FactoryPathResolver extends PathResolver implements PathResolverInterface
 {
     public function folderPath(): string
     {
-        return database_path('/factories');
+        return database_path('factories');
     }
 
     public function fileName(): string

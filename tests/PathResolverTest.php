@@ -24,7 +24,7 @@ class PathResolverTest extends TestCase
         $model = 'User';
         $resolver = new ModelPathResolver($model);
 
-        $expectedPath = app_path('/Models/User.php');
+        $expectedPath = app_path('Models/User.php');
         $this->assertEquals($expectedPath, $resolver->getFullPath());
     }
 
@@ -60,7 +60,7 @@ class PathResolverTest extends TestCase
         $model = 'User';
         $resolver = new FactoryPathResolver($model);
 
-        $expectedPath = database_path('/factories/UserFactory.php');
+        $expectedPath = database_path('factories/UserFactory.php');
         $this->assertEquals($expectedPath, $resolver->getFullPath());
     }
 
@@ -121,7 +121,7 @@ class PathResolverTest extends TestCase
         $model = 'User';
         $resolver = new SeederPathResolver($model);
 
-        $expectedPath = database_path('/seeders/UserSeeder.php');
+        $expectedPath = database_path('seeders/UserSeeder.php');
         $this->assertEquals($expectedPath, $resolver->getFullPath());
     }
 

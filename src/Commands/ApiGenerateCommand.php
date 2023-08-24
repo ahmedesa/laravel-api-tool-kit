@@ -115,7 +115,7 @@ class ApiGenerateCommand extends Command
 
         $this->info('Module created successfully!');
 
-        $this->info('Here is your schema!');
+        $this->info('Here is your schema : ');
 
         $this->generateSchemaTable($schemaDefinition);
     }

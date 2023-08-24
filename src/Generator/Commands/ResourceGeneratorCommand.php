@@ -10,7 +10,7 @@ class ResourceGeneratorCommand extends GeneratorCommand implements SchemaReplace
     public function getSchemaReplacements(): array
     {
         return [
-            'resourceContent' => (new ResourceAttributesParser($this->schema))->parse(),
+            'resourceContent' => (new ResourceAttributesParser($this->generationConfiguration->getSchema()))->parse(),
         ];
     }
     protected function getStubName(): string
@@ -20,11 +20,11 @@ class ResourceGeneratorCommand extends GeneratorCommand implements SchemaReplace
 
     protected function getOutputFolder(): string
     {
-        return app_path("Http/Resources/{$this->model}");
+        return app_path("Http/Resources/{$this->generationConfiguration->getModel()}");
     }
 
     protected function getOutputFilePath(): string
     {
-        return app_path("Http/Resources/{$this->model}/{$this->model}Resource.php");
+        return app_path("Http/Resources/{$this->generationConfiguration->getModel()}/{$this->generationConfiguration->getModel()}Resource.php");
     }
 }

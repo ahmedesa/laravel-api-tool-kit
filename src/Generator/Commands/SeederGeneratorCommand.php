@@ -16,6 +16,6 @@ class SeederGeneratorCommand extends GeneratorCommand
 
     protected function getOutputFilePath(): string
     {
-        return database_path("seeders/{$this->model}Seeder.php");
+        return database_path("seeders/{$this->generationConfiguration->getModel()}Seeder.php");
     }
 }

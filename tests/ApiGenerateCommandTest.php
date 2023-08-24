@@ -2,7 +2,7 @@
 
 namespace Essa\APIToolKit\Tests;
 
-class GeneratorCommandTest extends TestCase
+class ApiGenerateCommandTest extends TestCase
 {
     /**
      * @test
@@ -19,7 +19,7 @@ class GeneratorCommandTest extends TestCase
     /**
      * @test
      */
-    public function generateCommandWithAllDefaultsNewww(): void
+    public function generateCommandWithAllDefaults(): void
     {
         $this->artisan('api:generate', [
             'model' => 'GeneratedModel',
@@ -100,9 +100,9 @@ class GeneratorCommandTest extends TestCase
         $factoryFileName = database_path('factories/GeneratedModelFactory.php');
         $factoryContent = file_get_contents($factoryFileName);
 
-        $this->assertStringContainsString('$this->faker->firstName', $factoryContent);
-        $this->assertStringContainsString('$this->faker->randomNumber', $factoryContent);
-        $this->assertStringContainsString('$this->faker->smallInteger', $factoryContent);
+        $this->assertStringContainsString('$this->faker->firstName()', $factoryContent);
+        $this->assertStringContainsString('$this->faker->randomNumber()', $factoryContent);
+        $this->assertStringContainsString('$this->faker->smallInteger()', $factoryContent);
     }
 
     /**

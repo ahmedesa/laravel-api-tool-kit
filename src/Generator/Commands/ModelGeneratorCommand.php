@@ -11,8 +11,8 @@ class ModelGeneratorCommand extends GeneratorCommand implements SchemaReplacemen
     public function getSchemaReplacements(): array
     {
         return [
-            'fillableColumns' =>  (new FillableColumnsParser($this->schema))->parse(),
-            'modelRelations' => (new RelationshipMethodsParser($this->schema))->parse(),
+            'fillableColumns' =>  (new FillableColumnsParser($this->generationConfiguration->getSchema()))->parse(),
+            'modelRelations' => (new RelationshipMethodsParser($this->generationConfiguration->getSchema()))->parse(),
         ];
     }
     protected function getStubName(): string
@@ -27,6 +27,6 @@ class ModelGeneratorCommand extends GeneratorCommand implements SchemaReplacemen
 
     protected function getOutputFilePath(): string
     {
-        return app_path("Models/{$this->model}.php");
+        return app_path("Models/{$this->generationConfiguration->getModel()}.php");
     }
 }

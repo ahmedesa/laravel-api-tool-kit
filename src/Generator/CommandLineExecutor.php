@@ -13,6 +13,7 @@ use Essa\APIToolKit\Generator\Commands\RoutesGeneratorCommand;
 use Essa\APIToolKit\Generator\Commands\SeederGeneratorCommand;
 use Essa\APIToolKit\Generator\Commands\TestGeneratorCommand;
 use Essa\APIToolKit\Generator\Commands\UpdateFormRequestGeneratorCommand;
+use Essa\APIToolKit\Generator\DTOs\GenerationConfiguration;
 
 class CommandLineExecutor
 {
@@ -32,15 +33,15 @@ class CommandLineExecutor
         'routes' => RoutesGeneratorCommand::class,
     ];
 
-    public function executeCommands(string $model, array $userChoices, ?string $schema): void
+    public function executeCommands(GenerationConfiguration $generationConfiguration): void
     {
         foreach ($this->commands as $option => $commandClasses) {
-            if ( ! $this->shouldExecute($option, $userChoices)) {
+            if ( ! $this->shouldExecute($option, $generationConfiguration->getUserChoices())) {
                 continue;
             }
 
             foreach ((array)$commandClasses as $commandClass) {
-                $this->executeCommand($commandClass, $model, $userChoices, $schema);
+                app($commandClass)->run($generationConfiguration);
             }
         }
     }
@@ -48,13 +49,5 @@ class CommandLineExecutor
     private function shouldExecute(string $option, $userChoices): bool
     {
         return 'model' === $option || $userChoices[$option];
-    }
-    private function executeCommand(mixed $commandClass, string $model, array $userChoices, ?string $schema): void
-    {
-        app($commandClass)
-            ->setModel($model)
-            ->setOptions($userChoices)
-            ->setSchema($schema)
-            ->run();
     }
 }

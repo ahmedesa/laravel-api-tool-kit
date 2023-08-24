@@ -3,6 +3,7 @@
 namespace Essa\APIToolKit\Commands;
 
 use Essa\APIToolKit\Generator\CommandLineExecutor;
+use Essa\APIToolKit\Generator\DTOs\GenerationConfiguration;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
@@ -102,9 +103,11 @@ class ApiGenerateCommand extends Command
         $userChoices = $this->getUserChoices();
 
         $this->commandLineExecutor->executeCommands(
-            model: $model,
-            userChoices: $userChoices,
-            schema: $this->argument('schema')
+            new GenerationConfiguration(
+                model: $model,
+                userChoices: $userChoices,
+                schema: $this->argument('schema')
+            )
         );
 
         $this->info('Module created successfully!');

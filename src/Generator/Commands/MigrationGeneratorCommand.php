@@ -11,7 +11,7 @@ class MigrationGeneratorCommand extends GeneratorCommand implements SchemaReplac
     public function getSchemaReplacements(): array
     {
         return [
-            'migrationContent' => (new MigrationContentParser($this->schema))->parse(),
+            'migrationContent' => (new MigrationContentParser($this->generationConfiguration->getSchema()))->parse(),
         ];
     }
     protected function getStubName(): string
@@ -32,7 +32,7 @@ class MigrationGeneratorCommand extends GeneratorCommand implements SchemaReplac
 
     private function getMigrationTableName(): string
     {
-        $migrationClass = 'create_' . Str::plural(Str::snake($this->model)) . '_table';
+        $migrationClass = 'create_' . Str::plural(Str::snake($this->generationConfiguration->getModel())) . '_table';
 
         return date('Y_m_d_His') . "_{$migrationClass}.php";
     }

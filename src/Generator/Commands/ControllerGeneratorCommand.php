@@ -16,6 +16,6 @@ class ControllerGeneratorCommand extends GeneratorCommand
 
     protected function getOutputFilePath(): string
     {
-        return app_path("Http/Controllers/API/{$this->model}Controller.php");
+        return app_path("Http/Controllers/API/{$this->generationConfiguration->getModel()}Controller.php");
     }
 }

@@ -3,6 +3,7 @@
 namespace Essa\APIToolKit\Generator\Commands;
 
 use Essa\APIToolKit\Generator\Contracts\SchemaReplacementDataProvider;
+use Essa\APIToolKit\Generator\DTOs\GenerationConfiguration;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
 
@@ -14,43 +15,21 @@ abstract class GeneratorCommand
         'resource',
         'filter',
     ];
-    protected ?string $schema;
-
-    protected array $options;
-    protected string $model;
+    protected GenerationConfiguration $generationConfiguration;
 
     public function __construct(private Filesystem $filesystem)
     {
     }
 
-    public function run(): void
+    public function run(GenerationConfiguration $generationConfiguration): void
     {
+        $this->generationConfiguration = $generationConfiguration;
+
         if ( ! file_exists($this->getOutputFolder())) {
             $this->createFolder();
         }
 
         $this->saveContentToFile();
-    }
-
-    public function setModel(string $model): self
-    {
-        $this->model = $model;
-
-        return $this;
-    }
-
-    public function setOptions(array $options): self
-    {
-        $this->options = $options;
-
-        return $this;
-    }
-
-    public function setSchema(?string $schema): self
-    {
-        $this->schema = $schema;
-
-        return $this;
     }
     abstract protected function getStubName(): string;
 
@@ -102,7 +81,7 @@ abstract class GeneratorCommand
         foreach (self::TAGS as $option) {
             $processedContent = $this->removeTagBlock(
                 $processedContent,
-                $this->options[$option],
+                $this->generationConfiguration->getUserChoices()[$option],
                 $option
             );
         }
@@ -127,10 +106,10 @@ abstract class GeneratorCommand
     protected function getPlaceholderReplacements(): array
     {
         return [
-            'Dummy' => $this->model,
-            'Dummies' => Str::plural($this->model),
-            'dummy' => lcfirst($this->model),
-            'dummies' => lcfirst(Str::plural($this->model)),
+            'Dummy' => $this->generationConfiguration->getModel(),
+            'Dummies' => Str::plural($this->generationConfiguration->getModel()),
+            'dummy' => lcfirst($this->generationConfiguration->getModel()),
+            'dummies' => lcfirst(Str::plural($this->generationConfiguration->getModel())),
         ];
     }
 }

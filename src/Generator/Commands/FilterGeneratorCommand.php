@@ -16,6 +16,6 @@ class FilterGeneratorCommand extends GeneratorCommand
 
     protected function getOutputFilePath(): string
     {
-        return app_path("Filters/{$this->model}Filters.php");
+        return app_path("Filters/{$this->generationConfiguration->getModel()}Filters.php");
     }
 }

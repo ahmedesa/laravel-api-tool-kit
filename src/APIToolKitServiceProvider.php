@@ -2,8 +2,8 @@
 
 namespace Essa\APIToolKit;
 
-use Essa\APIToolKit\Commands\GeneratePermissions;
 use Essa\APIToolKit\Commands\ApiGenerateCommand;
+use Essa\APIToolKit\Commands\GeneratePermissions;
 use Essa\APIToolKit\Commands\MakeActionCommand;
 use Essa\APIToolKit\Commands\MakeEnumCommand;
 use Essa\APIToolKit\Commands\MakeFilterCommand;

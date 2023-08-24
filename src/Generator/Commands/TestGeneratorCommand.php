@@ -16,6 +16,6 @@ class TestGeneratorCommand extends GeneratorCommand
 
     protected function getOutputFilePath(): string
     {
-        return base_path("tests/Feature/{$this->model}Test.php");
+        return base_path("tests/Feature/{$this->generationConfiguration->getModel()}Test.php");
     }
 }

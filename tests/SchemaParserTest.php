@@ -80,9 +80,9 @@ class SchemaParserTest extends TestCase
         $output = $schemaParser->parse();
 
         $expectedFactoryContent = "
-        'name' => \$this->faker->firstName,
-        'age' => \$this->faker->randomNumber,
-        'price' => \$this->faker->randomFloat,
+        'name' => \$this->faker->firstName(),
+        'age' => \$this->faker->randomNumber(),
+        'price' => \$this->faker->randomFloat(),
     ";
 
         $this->assertStringContainsString(

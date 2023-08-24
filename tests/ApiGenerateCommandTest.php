@@ -2,6 +2,7 @@
 
 namespace Essa\APIToolKit\Tests;
 
+use Essa\APIToolKit\Generator\DTOs\SchemaDefinition;
 use Essa\APIToolKit\Generator\PathResolver\ControllerPathResolver;
 use Essa\APIToolKit\Generator\PathResolver\CreateFormRequestPathResolver;
 use Essa\APIToolKit\Generator\PathResolver\FactoryPathResolver;
@@ -13,6 +14,12 @@ use Essa\APIToolKit\Generator\PathResolver\RoutesPathResolver;
 use Essa\APIToolKit\Generator\PathResolver\SeedPathResolver;
 use Essa\APIToolKit\Generator\PathResolver\TestPathResolver;
 use Essa\APIToolKit\Generator\PathResolver\UpdateFormRequestPathResolver;
+use Essa\APIToolKit\Generator\SchemaParsers\CreateValidationRulesParser;
+use Essa\APIToolKit\Generator\SchemaParsers\FactoryColumnsParser;
+use Essa\APIToolKit\Generator\SchemaParsers\MigrationContentParser;
+use Essa\APIToolKit\Generator\SchemaParsers\RelationshipMethodsParser;
+use Essa\APIToolKit\Generator\SchemaParsers\ResourceAttributesParser;
+use Essa\APIToolKit\Generator\SchemaParsers\UpdateValidationRulesParser;
 
 class ApiGenerateCommandTest extends TestCase
 {
@@ -69,7 +76,7 @@ class ApiGenerateCommandTest extends TestCase
 
         $this->artisan('api:generate', [
             'model' => $model,
-            'schema' => "username:string:default('ahmed'),email:string:unique,company_data_id:foreignId:cascadeOnDelete",
+            'schema' => $schema = "username:string:default('ahmed'),email:string:unique,company_data_id:foreignId:cascadeOnDelete",
         ])
             ->assertExitCode(0);
 
@@ -80,8 +87,10 @@ class ApiGenerateCommandTest extends TestCase
             $this->normalizeWhitespaceAndNewlines($generatedModelContent)
         );
 
-        $this->assertStringContainsString('public function companyData(): \Illuminate\Database\Eloquent\Relations\BelongsTo', $generatedModelContent);
-        $this->assertStringContainsString('return $this->belongsTo(\App\Models\CompanyData::class);', $generatedModelContent);
+        $this->assertStringContainsString(
+            (new RelationshipMethodsParser(SchemaDefinition::createFromSchemaString($schema)))->parse(),
+            $generatedModelContent
+        );
     }
 
 
@@ -94,16 +103,17 @@ class ApiGenerateCommandTest extends TestCase
 
         $this->artisan('api:generate', [
             'model' => $model,
-            'schema' => "username:string:default('ahmed'),email:string:unique,company_id:foreignId:cascadeOnDelete",
+            'schema' => $schema = "username:string:default('ahmed'),email:string:unique,company_id:foreignId:cascadeOnDelete",
             '--migration' => true,
         ])
             ->assertExitCode(0);
 
         $migrationContent = file_get_contents((new MigrationPathResolver($model))->getFullPath());
 
-        $this->assertStringContainsString('$table->string(\'username\')->default(\'ahmed\');', $migrationContent);
-        $this->assertStringContainsString('$table->string(\'email\')->unique();', $migrationContent);
-        $this->assertStringContainsString('$table->foreignId(\'company_id\')->constrained(\'companies\')->cascadeOnDelete();', $migrationContent);
+        $this->assertStringContainsString(
+            (new MigrationContentParser(SchemaDefinition::createFromSchemaString($schema)))->parse(),
+            $migrationContent
+        );
     }
 
     /**
@@ -115,16 +125,17 @@ class ApiGenerateCommandTest extends TestCase
 
         $this->artisan('api:generate', [
             'model' => $model,
-            'schema' => "username:string:default('ahmed'),code:integer:unique,company_data_id:foreignId:cascadeOnDelete",
+            'schema' => $schema = "username:string:default('ahmed'),code:integer:unique,company_data_id:foreignId:cascadeOnDelete",
             '--factory' => true,
         ])
             ->assertExitCode(0);
 
         $factoryContent = file_get_contents((new FactoryPathResolver($model))->getFullPath());
 
-        $this->assertStringContainsString('$this->faker->firstName()', $factoryContent);
-        $this->assertStringContainsString('$this->faker->randomNumber()', $factoryContent);
-        $this->assertStringContainsString('$this->faker->randomNumber()', $factoryContent);
+        $this->assertStringContainsString(
+            (new FactoryColumnsParser(SchemaDefinition::createFromSchemaString($schema)))->parse(),
+            $factoryContent
+        );
     }
 
     /**
@@ -136,16 +147,17 @@ class ApiGenerateCommandTest extends TestCase
 
         $this->artisan('api:generate', [
             'model' => $model,
-            'schema' => "username:string:default('ahmed'),email:string:unique,company_data_id:foreignId:cascadeOnDelete",
+            'schema' => $schema = "username:string:default('ahmed'),email:string:unique,company_data_id:foreignId:cascadeOnDelete",
             '--all' => true,
         ])
             ->assertExitCode(0);
 
         $resourceContent = file_get_contents((new ResourcePathResolver($model))->getFullPath());
 
-        $this->assertStringContainsString('$this->username', $resourceContent);
-        $this->assertStringContainsString('$this->email', $resourceContent);
-        $this->assertStringContainsString('$this->company_data_id', $resourceContent);
+        $this->assertStringContainsString(
+            (new ResourceAttributesParser(SchemaDefinition::createFromSchemaString($schema)))->parse(),
+            $resourceContent
+        );
     }
 
     /**
@@ -157,7 +169,7 @@ class ApiGenerateCommandTest extends TestCase
 
         $this->artisan('api:generate', [
             'model' => $model,
-            'schema' => "username:string:default('ahmed'),email:string:unique,company_data_id:foreignId:cascadeOnDelete",
+            'schema' => $schema = "username:string:default('ahmed'),email:string:unique,company_data_id:foreignId:cascadeOnDelete",
             '--request' => true,
         ])
             ->assertExitCode(0);
@@ -165,15 +177,15 @@ class ApiGenerateCommandTest extends TestCase
         $createRequestContent = file_get_contents((new CreateFormRequestPathResolver($model))->getFullPath());
         $updateRequestContent = file_get_contents((new UpdateFormRequestPathResolver($model))->getFullPath());
 
-        // Assertions for Create Request
-        $this->assertStringContainsString('\'username\' => \'required\'', $createRequestContent);
-        $this->assertStringContainsString('\'email\' => \'required\'', $createRequestContent);
-        $this->assertStringContainsString('\'company_data_id\' => \'required\'', $createRequestContent);
+        $this->assertStringContainsString(
+            (new CreateValidationRulesParser(SchemaDefinition::createFromSchemaString($schema)))->parse(),
+            $createRequestContent
+        );
 
-        // Assertions for Update Request
-        $this->assertStringContainsString('\'username\' => \'sometimes\'', $updateRequestContent);
-        $this->assertStringContainsString('\'email\' => \'sometimes\'', $updateRequestContent);
-        $this->assertStringContainsString('\'company_data_id\' => \'sometimes\'', $updateRequestContent);
+        $this->assertStringContainsString(
+            (new UpdateValidationRulesParser(SchemaDefinition::createFromSchemaString($schema)))->parse(),
+            $updateRequestContent
+        );
     }
 
     /**

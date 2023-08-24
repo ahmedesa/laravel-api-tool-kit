@@ -2,6 +2,18 @@
 
 namespace Essa\APIToolKit\Tests;
 
+use Essa\APIToolKit\Generator\PathResolver\ControllerPathResolver;
+use Essa\APIToolKit\Generator\PathResolver\CreateFormRequestPathResolver;
+use Essa\APIToolKit\Generator\PathResolver\FactoryPathResolver;
+use Essa\APIToolKit\Generator\PathResolver\FilterPathResolver;
+use Essa\APIToolKit\Generator\PathResolver\MigrationPathResolver;
+use Essa\APIToolKit\Generator\PathResolver\ModelPathResolver;
+use Essa\APIToolKit\Generator\PathResolver\ResourcePathResolver;
+use Essa\APIToolKit\Generator\PathResolver\RoutesPathResolver;
+use Essa\APIToolKit\Generator\PathResolver\SeedPathResolver;
+use Essa\APIToolKit\Generator\PathResolver\TestPathResolver;
+use Essa\APIToolKit\Generator\PathResolver\UpdateFormRequestPathResolver;
+
 class ApiGenerateCommandTest extends TestCase
 {
     /**
@@ -21,25 +33,31 @@ class ApiGenerateCommandTest extends TestCase
      */
     public function generateCommandWithAllDefaults(): void
     {
+        $model = 'GeneratedModel';
+
         $this->artisan('api:generate', [
-            'model' => 'GeneratedModel',
+            'model' => $model,
             '--all' => true,
         ])
             ->assertExitCode(0);
 
-        $this->assertFileExists(app_path('Models/GeneratedModel.php'));
-        $this->assertFileExists(app_path('Http/Controllers/API/GeneratedModelController.php'));
-        $this->assertFileExists(app_path('Http/Resources/GeneratedModel/GeneratedModelResource.php'));
-        $this->assertFileExists(app_path('Http/Requests/GeneratedModel/CreateGeneratedModelRequest.php'));
-        $this->assertFileExists(app_path('Http/Requests/GeneratedModel/UpdateGeneratedModelRequest.php'));
-        $this->assertFileExists(app_path('Filters/GeneratedModelFilters.php'));
-        $this->assertFileExists(database_path('seeders/GeneratedModelSeeder.php'));
-        $this->assertFileExists(database_path('factories/GeneratedModelFactory.php'));
-        $this->assertFileExists(base_path('tests/Feature/GeneratedModelTest.php'));
-        $this->assertFileExists(base_path('routes/api.php'));
-        $this->assertFileExists(database_path("migrations/" . date('Y_m_d_His') . "_create_generated_models_table.php"));
+        $this->assertFileExists((new ModelPathResolver($model))->getFullPath());
+        $this->assertFileExists((new ControllerPathResolver($model))->getFullPath());
+        $this->assertFileExists((new ResourcePathResolver($model))->getFullPath());
+        $this->assertFileExists((new CreateFormRequestPathResolver($model))->getFullPath());
+        $this->assertFileExists((new UpdateFormRequestPathResolver($model))->getFullPath());
+        $this->assertFileExists((new FilterPathResolver($model))->getFullPath());
+        $this->assertFileExists((new SeedPathResolver($model))->getFullPath());
+        $this->assertFileExists((new FactoryPathResolver($model))->getFullPath());
+        $this->assertFileExists((new TestPathResolver($model))->getFullPath());
+        $this->assertFileExists((new RoutesPathResolver($model))->getFullPath());
+        $this->assertFileExists((new MigrationPathResolver($model))->getFullPath());
 
-        $this->assertStringContainsString("Route::apiResource('/generatedModels'", file_get_contents(base_path('routes/api.php')));
+
+        $this->assertStringContainsString(
+            "Route::apiResource('/generatedModels'",
+            file_get_contents((new RoutesPathResolver($model))->getFullPath())
+        );
     }
 
     /**
@@ -47,13 +65,15 @@ class ApiGenerateCommandTest extends TestCase
      */
     public function generateCommandWithSchemaShouldGenerateModelWithFillableAndRelations(): void
     {
+        $model = 'GeneratedModel';
+
         $this->artisan('api:generate', [
-            'model' => 'GeneratedModel',
+            'model' => $model,
             'schema' => "username:string:default('ahmed'),email:string:unique,company_data_id:foreignId:cascadeOnDelete",
         ])
             ->assertExitCode(0);
 
-        $generatedModelContent = file_get_contents(app_path('Models/GeneratedModel.php'));
+        $generatedModelContent = file_get_contents((new ModelPathResolver($model))->getFullPath());
 
         $this->assertStringContainsString(
             $this->normalizeWhitespaceAndNewlines("protected \$fillable = [ 'username', 'email', 'company_data_id', ];"),
@@ -62,7 +82,6 @@ class ApiGenerateCommandTest extends TestCase
 
         $this->assertStringContainsString('public function companyData(): \Illuminate\Database\Eloquent\Relations\BelongsTo', $generatedModelContent);
         $this->assertStringContainsString('return $this->belongsTo(\App\Models\CompanyData::class);', $generatedModelContent);
-
     }
 
 
@@ -71,14 +90,16 @@ class ApiGenerateCommandTest extends TestCase
      */
     public function generateCommandWithAllDefaultsAndSchemaShouldGenerateMigration(): void
     {
+        $model = 'GeneratedModel';
+
         $this->artisan('api:generate', [
-            'model' => 'GeneratedModel',
+            'model' => $model,
             'schema' => "username:string:default('ahmed'),email:string:unique,company_id:foreignId:cascadeOnDelete",
             '--migration' => true,
         ])
             ->assertExitCode(0);
 
-        $migrationContent = file_get_contents(database_path("migrations/" . date('Y_m_d_His') . "_create_generated_models_table.php"));
+        $migrationContent = file_get_contents((new MigrationPathResolver($model))->getFullPath());
 
         $this->assertStringContainsString('$table->string(\'username\')->default(\'ahmed\');', $migrationContent);
         $this->assertStringContainsString('$table->string(\'email\')->unique();', $migrationContent);
@@ -90,15 +111,16 @@ class ApiGenerateCommandTest extends TestCase
      */
     public function generateCommandWithAllDefaultsAndSchemaShouldGenerateFactory(): void
     {
+        $model = 'GeneratedModel';
+
         $this->artisan('api:generate', [
-            'model' => 'GeneratedModel',
+            'model' => $model,
             'schema' => "username:string:default('ahmed'),code:integer:unique,company_data_id:foreignId:cascadeOnDelete",
             '--factory' => true,
         ])
             ->assertExitCode(0);
 
-        $factoryFileName = database_path('factories/GeneratedModelFactory.php');
-        $factoryContent = file_get_contents($factoryFileName);
+        $factoryContent = file_get_contents((new FactoryPathResolver($model))->getFullPath());
 
         $this->assertStringContainsString('$this->faker->firstName()', $factoryContent);
         $this->assertStringContainsString('$this->faker->randomNumber()', $factoryContent);
@@ -110,15 +132,16 @@ class ApiGenerateCommandTest extends TestCase
      */
     public function generateCommandWithAllDefaultsAndSchemaShouldGenerateResource(): void
     {
+        $model = 'GeneratedModel';
+
         $this->artisan('api:generate', [
-            'model' => 'GeneratedModel',
+            'model' => $model,
             'schema' => "username:string:default('ahmed'),email:string:unique,company_data_id:foreignId:cascadeOnDelete",
             '--all' => true,
         ])
             ->assertExitCode(0);
 
-        $resourceFileName = app_path('Http/Resources/GeneratedModel/GeneratedModelResource.php');
-        $resourceContent = file_get_contents($resourceFileName);
+        $resourceContent = file_get_contents((new ResourcePathResolver($model))->getFullPath());
 
         $this->assertStringContainsString('$this->username', $resourceContent);
         $this->assertStringContainsString('$this->email', $resourceContent);
@@ -130,15 +153,17 @@ class ApiGenerateCommandTest extends TestCase
      */
     public function generateCommandWithAllDefaultsAndSchemaShouldGenerateRequests(): void
     {
+        $model = 'GeneratedModel';
+
         $this->artisan('api:generate', [
-            'model' => 'GeneratedModel',
+            'model' => $model,
             'schema' => "username:string:default('ahmed'),email:string:unique,company_data_id:foreignId:cascadeOnDelete",
             '--request' => true,
         ])
             ->assertExitCode(0);
 
-        $createRequestContent = file_get_contents(app_path('Http/Requests/GeneratedModel/CreateGeneratedModelRequest.php'));
-        $updateRequestContent = file_get_contents(app_path('Http/Requests/GeneratedModel/UpdateGeneratedModelRequest.php'));
+        $createRequestContent = file_get_contents((new CreateFormRequestPathResolver($model))->getFullPath());
+        $updateRequestContent = file_get_contents((new UpdateFormRequestPathResolver($model))->getFullPath());
 
         // Assertions for Create Request
         $this->assertStringContainsString('\'username\' => \'required\'', $createRequestContent);
@@ -156,6 +181,8 @@ class ApiGenerateCommandTest extends TestCase
      */
     public function generateCommandWithoutDefaultOptionsButWithSoftDelete(): void
     {
+        $model = 'CustomSoftDeleteModel';
+
         $this->artisan('api:generate', [
             'model' => 'CustomSoftDeleteModel',
             '--all' => true,
@@ -163,24 +190,26 @@ class ApiGenerateCommandTest extends TestCase
         ])
             ->assertExitCode(0);
 
-        $this->assertStringContainsString('SoftDeletes', file_get_contents(app_path('Models/CustomSoftDeleteModel.php')));
-        $this->assertStringContainsString('permanent-delete', file_get_contents(base_path('routes/api.php')));
-        $this->assertStringContainsString('restore', file_get_contents(base_path('routes/api.php')));
-        $this->assertStringContainsString('forceDelete', file_get_contents(app_path('Http/Controllers/API/CustomSoftDeleteModelController.php')));
+        $this->assertStringContainsString('SoftDeletes', file_get_contents((new ModelPathResolver($model))->getFullPath()));
+        $this->assertStringContainsString('permanent-delete', file_get_contents((new RoutesPathResolver($model))->getFullPath()));
+        $this->assertStringContainsString('restore', file_get_contents((new RoutesPathResolver($model))->getFullPath()));
+        $this->assertStringContainsString('forceDelete', file_get_contents((new ControllerPathResolver($model))->getFullPath()));
     }
 
     public function generateCommandWithoutDefaultOptionsButWithoutSoftDelete(): void
     {
+        $model = 'CustomModel';
+
         $this->artisan('api:generate', [
             'model' => 'CustomModel',
             '--all' => true,
         ])
             ->assertExitCode(0);
 
-        $this->assertStringNotContainsString('SoftDeletes', file_get_contents(app_path('Models/CustomModel.php')));
-        $this->assertStringNotContainsString('permanent-delete', file_get_contents(base_path('routes/api.php')));
-        $this->assertStringNotContainsString('restore', file_get_contents(base_path('routes/api.php')));
-        $this->assertStringNotContainsString('forceDelete', file_get_contents(app_path('Http/Controllers/API/CustomModelController.php')));
+        $this->assertStringNotContainsString('SoftDeletes', file_get_contents((new ModelPathResolver($model))->getFullPath()));
+        $this->assertStringNotContainsString('permanent-delete', file_get_contents((new RoutesPathResolver($model))->getFullPath()));
+        $this->assertStringNotContainsString('restore', file_get_contents((new RoutesPathResolver($model))->getFullPath()));
+        $this->assertStringNotContainsString('forceDelete', file_get_contents((new ControllerPathResolver($model))->getFullPath()));
     }
 
     /**
@@ -188,6 +217,8 @@ class ApiGenerateCommandTest extends TestCase
      */
     public function generateCommandWithoutDefaultOptions(): void
     {
+        $model = 'WithoutDefaultNewCustomModel';
+
         $this->artisan('api:generate', [
             'model' => 'WithoutDefaultNewCustomModel',
             '--soft-delete' => false,
@@ -203,14 +234,13 @@ class ApiGenerateCommandTest extends TestCase
         ])
             ->assertExitCode(0);
 
-        $this->assertFileExists(app_path('Models/WithoutDefaultNewCustomModel.php'));
-        $this->assertFileExists(app_path('Http/Resources/WithoutDefaultNewCustomModel/WithoutDefaultNewCustomModelResource.php'));
-        $this->assertFileExists(database_path('migrations'));
-        $this->assertFileExists(database_path('seeders/WithoutDefaultNewCustomModelSeeder.php'));
-        $this->assertFileExists(base_path('tests/Feature/WithoutDefaultNewCustomModelTest.php'));
+        $this->assertFileExists((new ModelPathResolver($model))->getFullPath());
+        $this->assertFileExists((new ResourcePathResolver($model))->getFullPath());
+        $this->assertFileExists((new SeedPathResolver($model))->getFullPath());
+        $this->assertFileExists((new TestPathResolver($model))->getFullPath());
 
-        $this->assertFileDoesNotExist(app_path('Http/Controllers/API/WithoutDefaultNewCustomModelController.php'));
-        $this->assertFileDoesNotExist(database_path('factories/WithoutDefaultNewCustomModelFactory.php'));
-        $this->assertFileDoesNotExist(app_path('Filters/WithoutDefaultNewCustomModelFilters.php'));
+        $this->assertFileDoesNotExist((new ControllerPathResolver($model))->getFullPath());
+        $this->assertFileDoesNotExist((new FilterPathResolver($model))->getFullPath());
+        $this->assertFileDoesNotExist((new FactoryPathResolver($model))->getFullPath());
     }
 }

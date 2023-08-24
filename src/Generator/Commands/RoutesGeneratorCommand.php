@@ -11,12 +11,12 @@ class RoutesGeneratorCommand extends GeneratorCommand
         return 'routes';
     }
 
-    protected function getOutputFolder(): string
+    protected function getOutputFolderPath(): string
     {
         return base_path('routes/api.php');
     }
 
-    protected function getOutputFilePath(): string
+    protected function getOutputFileName(): string
     {
         return base_path('routes/api.php');
     }

@@ -18,13 +18,13 @@ class UpdateFormRequestGeneratorCommand extends GeneratorCommand implements Sche
         return 'UpdateDummyRequest';
     }
 
-    protected function getOutputFolder(): string
+    protected function getOutputFolderPath(): string
     {
         return app_path("Http/Requests/{$this->generationConfiguration->getModel()}");
     }
 
-    protected function getOutputFilePath(): string
+    protected function getOutputFileName(): string
     {
-        return app_path("Http/Requests/{$this->generationConfiguration->getModel()}/Update{$this->generationConfiguration->getModel()}Request.php");
+        return "Update{$this->generationConfiguration->getModel()}Request.php";
     }
 }

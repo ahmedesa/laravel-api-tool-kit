@@ -18,13 +18,13 @@ class FactoryGeneratorCommand extends GeneratorCommand implements SchemaReplacem
         return 'DummyFactory';
     }
 
-    protected function getOutputFolder(): string
+    protected function getOutputFolderPath(): string
     {
         return database_path('/factories');
     }
 
-    protected function getOutputFilePath(): string
+    protected function getOutputFileName(): string
     {
-        return database_path("factories/{$this->generationConfiguration->getModel()}Factory.php");
+        return "{$this->generationConfiguration->getModel()}Factory.php";
     }
 }

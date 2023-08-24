@@ -9,13 +9,13 @@ class FilterGeneratorCommand extends GeneratorCommand
         return 'DummyFilters';
     }
 
-    protected function getOutputFolder(): string
+    protected function getOutputFolderPath(): string
     {
         return app_path('Filters');
     }
 
-    protected function getOutputFilePath(): string
+    protected function getOutputFileName(): string
     {
-        return app_path("Filters/{$this->generationConfiguration->getModel()}Filters.php");
+        return "{$this->generationConfiguration->getModel()}Filters.php";
     }
 }

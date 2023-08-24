@@ -9,13 +9,13 @@ class ControllerGeneratorCommand extends GeneratorCommand
         return 'DummyController';
     }
 
-    protected function getOutputFolder(): string
+    protected function getOutputFolderPath(): string
     {
         return app_path('Http/Controllers/API');
     }
 
-    protected function getOutputFilePath(): string
+    protected function getOutputFileName(): string
     {
-        return app_path("Http/Controllers/API/{$this->generationConfiguration->getModel()}Controller.php");
+        return "{$this->generationConfiguration->getModel()}Controller.php";
     }
 }

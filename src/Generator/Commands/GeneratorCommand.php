@@ -26,23 +26,24 @@ abstract class GeneratorCommand implements GeneratorCommandInterface
     {
         $this->generationConfiguration = $generationConfiguration;
 
-        if ( ! file_exists($this->getOutputFolder())) {
+        if ( ! file_exists($this->getOutputFolderPath())) {
             $this->createFolder();
         }
 
         $this->saveContentToFile();
     }
+
     abstract protected function getStubName(): string;
 
-    abstract protected function getOutputFolder(): string;
+    abstract protected function getOutputFolderPath(): string;
 
-    abstract protected function getOutputFilePath(): string;
+    abstract protected function getOutputFileName(): string;
 
     protected function createFolder(): void
     {
         $this->filesystem
             ->makeDirectory(
-                path: $this->getOutputFolder(),
+                path: $this->getOutputFolderPath(),
                 mode: 0777,
                 recursive: true,
                 force: true
@@ -51,7 +52,10 @@ abstract class GeneratorCommand implements GeneratorCommandInterface
 
     protected function saveContentToFile(): void
     {
-        file_put_contents($this->getOutputFilePath(), $this->parseStub($this->getStubName()));
+        file_put_contents(
+            filename: $this->getOutputFolderPath() . "/" . $this->getOutputFileName(),
+            data: $this->parseStub($this->getStubName())
+        );
     }
 
     protected function parseStub(string $type): string

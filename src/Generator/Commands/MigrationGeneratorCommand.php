@@ -19,15 +19,14 @@ class MigrationGeneratorCommand extends GeneratorCommand implements SchemaReplac
         return 'dummy_migration';
     }
 
-    protected function getOutputFolder(): string
+    protected function getOutputFolderPath(): string
     {
         return database_path('migrations');
     }
 
-    protected function getOutputFilePath(): string
+    protected function getOutputFileName(): string
     {
-        $migrationFileName = $this->getMigrationTableName();
-        return database_path("migrations/{$migrationFileName}");
+        return $this->getMigrationTableName();
     }
 
     private function getMigrationTableName(): string

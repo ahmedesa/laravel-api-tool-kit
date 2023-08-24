@@ -18,13 +18,13 @@ class ResourceGeneratorCommand extends GeneratorCommand implements SchemaReplace
         return 'DummyResource';
     }
 
-    protected function getOutputFolder(): string
+    protected function getOutputFolderPath(): string
     {
         return app_path("Http/Resources/{$this->generationConfiguration->getModel()}");
     }
 
-    protected function getOutputFilePath(): string
+    protected function getOutputFileName(): string
     {
-        return app_path("Http/Resources/{$this->generationConfiguration->getModel()}/{$this->generationConfiguration->getModel()}Resource.php");
+        return "{$this->generationConfiguration->getModel()}Resource.php";
     }
 }

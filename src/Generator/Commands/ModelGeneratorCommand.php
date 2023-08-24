@@ -20,13 +20,13 @@ class ModelGeneratorCommand extends GeneratorCommand implements SchemaReplacemen
         return 'Dummy';
     }
 
-    protected function getOutputFolder(): string
+    protected function getOutputFolderPath(): string
     {
         return app_path('/Models');
     }
 
-    protected function getOutputFilePath(): string
+    protected function getOutputFileName(): string
     {
-        return app_path("Models/{$this->generationConfiguration->getModel()}.php");
+        return "{$this->generationConfiguration->getModel()}.php";
     }
 }

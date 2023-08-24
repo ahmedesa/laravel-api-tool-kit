@@ -9,13 +9,13 @@ class TestGeneratorCommand extends GeneratorCommand
         return 'DummyTest';
     }
 
-    protected function getOutputFolder(): string
+    protected function getOutputFolderPath(): string
     {
         return base_path('tests/Feature');
     }
 
-    protected function getOutputFilePath(): string
+    protected function getOutputFileName(): string
     {
-        return base_path("tests/Feature/{$this->generationConfiguration->getModel()}Test.php");
+        return "{$this->generationConfiguration->getModel()}Test.php";
     }
 }

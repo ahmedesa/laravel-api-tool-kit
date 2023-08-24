@@ -9,13 +9,13 @@ class SeederGeneratorCommand extends GeneratorCommand
         return 'DummySeeder';
     }
 
-    protected function getOutputFolder(): string
+    protected function getOutputFolderPath(): string
     {
         return database_path('/seeders');
     }
 
-    protected function getOutputFilePath(): string
+    protected function getOutputFileName(): string
     {
-        return database_path("seeders/{$this->generationConfiguration->getModel()}Seeder.php");
+        return "{$this->generationConfiguration->getModel()}Seeder.php";
     }
 }

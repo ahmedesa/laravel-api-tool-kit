@@ -86,7 +86,7 @@ class ApiGenerateCommand extends Command
         'yield',
     ];
 
-    public function __construct(private CommandInvoker $commandLineExecutor)
+    public function __construct(private CommandInvoker $commandInvoker)
     {
         parent::__construct();
     }
@@ -103,7 +103,7 @@ class ApiGenerateCommand extends Command
 
         $userChoices = $this->getUserChoices();
 
-        $this->commandLineExecutor->executeCommands(
+        $this->commandInvoker->executeCommands(
             new GenerationConfiguration(
                 model: $model,
                 userChoices: $userChoices,

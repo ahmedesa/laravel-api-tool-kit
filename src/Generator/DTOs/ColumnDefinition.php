@@ -32,7 +32,7 @@ class ColumnDefinition
         return [$name, $type, $options];
     }
 
-    public function getOptionAsString(): string
+    public function getOptionsAsString(): string
     {
         return implode('| ', $this->options);
     }

@@ -3,7 +3,7 @@
 namespace Essa\APIToolKit\Generator\Commands;
 
 use Essa\APIToolKit\Generator\Contracts\PathResolverInterface;
-use Essa\APIToolKit\Generator\PathResolver\SeedPathResolver;
+use Essa\APIToolKit\Generator\PathResolver\SeederPathResolver;
 
 class SeederGeneratorCommand extends GeneratorCommand
 {
@@ -14,6 +14,6 @@ class SeederGeneratorCommand extends GeneratorCommand
 
     protected function getOutputFilePath(): PathResolverInterface
     {
-        return new SeedPathResolver($this->generationConfiguration->getModel());
+        return new SeederPathResolver($this->generationConfiguration->getModel());
     }
 }

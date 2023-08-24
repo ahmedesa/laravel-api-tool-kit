@@ -10,7 +10,7 @@ use Essa\APIToolKit\Generator\PathResolver\MigrationPathResolver;
 use Essa\APIToolKit\Generator\PathResolver\ModelPathResolver;
 use Essa\APIToolKit\Generator\PathResolver\ResourcePathResolver;
 use Essa\APIToolKit\Generator\PathResolver\RoutesPathResolver;
-use Essa\APIToolKit\Generator\PathResolver\SeedPathResolver;
+use Essa\APIToolKit\Generator\PathResolver\SeederPathResolver;
 use Essa\APIToolKit\Generator\PathResolver\TestPathResolver;
 use Essa\APIToolKit\Generator\PathResolver\UpdateFormRequestPathResolver;
 
@@ -119,7 +119,7 @@ class PathResolverTest extends TestCase
     public function SeedPathResolver(): void
     {
         $model = 'User';
-        $resolver = new SeedPathResolver($model);
+        $resolver = new SeederPathResolver($model);
 
         $expectedPath = database_path('/seeders/UserSeeder.php');
         $this->assertEquals($expectedPath, $resolver->getFullPath());

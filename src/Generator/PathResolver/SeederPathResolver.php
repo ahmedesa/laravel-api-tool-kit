@@ -4,7 +4,7 @@ namespace Essa\APIToolKit\Generator\PathResolver;
 
 use Essa\APIToolKit\Generator\Contracts\PathResolverInterface;
 
-class SeedPathResolver extends PathResolver implements PathResolverInterface
+class SeederPathResolver extends PathResolver implements PathResolverInterface
 {
     public function folderPath(): string
     {

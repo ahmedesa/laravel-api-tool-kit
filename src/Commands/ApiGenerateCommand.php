@@ -115,8 +115,6 @@ class ApiGenerateCommand extends Command
 
         $this->info('Module created successfully!');
 
-        $this->info('Here is your schema : ');
-
         $this->generateSchemaTable($schemaDefinition);
     }
 
@@ -143,6 +141,29 @@ class ApiGenerateCommand extends Command
             ['resource', 'r', InputOption::VALUE_NONE, 'Generate a resource controller for the model'],
             ['request', 'R', InputOption::VALUE_NONE, 'Create new form request classes for the model and use them in the resource controller'],
         ];
+    }
+
+    protected function displayGeneratedFiles(): void
+    {
+        $commandDefinitions = config('api-tool-kit.api_generators.commands');
+
+        $tableData = [];
+
+        foreach ($commandDefinitions as $definition) {
+            if ($this->option($definition['option'])) {
+                $filePath = $definition['option'];
+                $tableData[] = [
+                    $definition['option'],
+                    (new $filePath($this->argument('model')))->getFullPath()
+                ];
+            }
+        }
+
+        $headers = ['Option', 'File Path'];
+
+        $this->info('Generated Files for Model:');
+
+        $this->table($headers, $tableData);
     }
 
     private function getUserChoices(): array
@@ -177,6 +198,8 @@ class ApiGenerateCommand extends Command
         }
 
         $headers = ['Column Name', 'Column Type', 'Options'];
+
+        $this->info('Here is your schema : ');
 
         $this->table($headers, $tableData);
     }

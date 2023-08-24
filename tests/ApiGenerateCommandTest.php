@@ -11,7 +11,7 @@ use Essa\APIToolKit\Generator\PathResolver\MigrationPathResolver;
 use Essa\APIToolKit\Generator\PathResolver\ModelPathResolver;
 use Essa\APIToolKit\Generator\PathResolver\ResourcePathResolver;
 use Essa\APIToolKit\Generator\PathResolver\RoutesPathResolver;
-use Essa\APIToolKit\Generator\PathResolver\SeedPathResolver;
+use Essa\APIToolKit\Generator\PathResolver\SeederPathResolver;
 use Essa\APIToolKit\Generator\PathResolver\TestPathResolver;
 use Essa\APIToolKit\Generator\PathResolver\UpdateFormRequestPathResolver;
 use Essa\APIToolKit\Generator\SchemaParsers\CreateValidationRulesParser;
@@ -54,7 +54,7 @@ class ApiGenerateCommandTest extends TestCase
         $this->assertFileExists((new CreateFormRequestPathResolver($model))->getFullPath());
         $this->assertFileExists((new UpdateFormRequestPathResolver($model))->getFullPath());
         $this->assertFileExists((new FilterPathResolver($model))->getFullPath());
-        $this->assertFileExists((new SeedPathResolver($model))->getFullPath());
+        $this->assertFileExists((new SeederPathResolver($model))->getFullPath());
         $this->assertFileExists((new FactoryPathResolver($model))->getFullPath());
         $this->assertFileExists((new TestPathResolver($model))->getFullPath());
         $this->assertFileExists((new RoutesPathResolver($model))->getFullPath());
@@ -248,7 +248,7 @@ class ApiGenerateCommandTest extends TestCase
 
         $this->assertFileExists((new ModelPathResolver($model))->getFullPath());
         $this->assertFileExists((new ResourcePathResolver($model))->getFullPath());
-        $this->assertFileExists((new SeedPathResolver($model))->getFullPath());
+        $this->assertFileExists((new SeederPathResolver($model))->getFullPath());
         $this->assertFileExists((new TestPathResolver($model))->getFullPath());
 
         $this->assertFileDoesNotExist((new ControllerPathResolver($model))->getFullPath());

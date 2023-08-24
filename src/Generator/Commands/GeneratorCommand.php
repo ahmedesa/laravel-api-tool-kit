@@ -5,7 +5,7 @@ namespace Essa\APIToolKit\Generator\Commands;
 use Essa\APIToolKit\Generator\Contracts\GeneratorCommandInterface;
 use Essa\APIToolKit\Generator\Contracts\PathResolverInterface;
 use Essa\APIToolKit\Generator\Contracts\SchemaReplacementDataProvider;
-use Essa\APIToolKit\Generator\DTOs\GenerationConfiguration;
+use Essa\APIToolKit\Generator\DTOs\ApiGenerationCommandInputs;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
 
@@ -17,15 +17,15 @@ abstract class GeneratorCommand implements GeneratorCommandInterface
         'resource',
         'filter',
     ];
-    protected GenerationConfiguration $generationConfiguration;
+    protected ApiGenerationCommandInputs $apiGenerationCommandInputs;
 
     public function __construct(private Filesystem $filesystem)
     {
     }
 
-    public function run(GenerationConfiguration $generationConfiguration): void
+    public function run(ApiGenerationCommandInputs $apiGenerationCommandInputs): void
     {
-        $this->generationConfiguration = $generationConfiguration;
+        $this->apiGenerationCommandInputs = $apiGenerationCommandInputs;
 
         if ( ! file_exists($this->getOutputFilePath()->folderPath())) {
             $this->createFolder();
@@ -84,7 +84,7 @@ abstract class GeneratorCommand implements GeneratorCommandInterface
         foreach (self::TAGS as $option) {
             $processedContent = $this->removeTagBlock(
                 $processedContent,
-                $this->generationConfiguration->getUserChoices()[$option],
+                $this->apiGenerationCommandInputs->getUserChoices()[$option],
                 $option
             );
         }
@@ -109,10 +109,10 @@ abstract class GeneratorCommand implements GeneratorCommandInterface
     protected function getPlaceholderReplacements(): array
     {
         return [
-            'Dummy' => $this->generationConfiguration->getModel(),
-            'Dummies' => Str::plural($this->generationConfiguration->getModel()),
-            'dummy' => lcfirst($this->generationConfiguration->getModel()),
-            'dummies' => lcfirst(Str::plural($this->generationConfiguration->getModel())),
+            'Dummy' => $this->apiGenerationCommandInputs->getModel(),
+            'Dummies' => Str::plural($this->apiGenerationCommandInputs->getModel()),
+            'dummy' => lcfirst($this->apiGenerationCommandInputs->getModel()),
+            'dummies' => lcfirst(Str::plural($this->apiGenerationCommandInputs->getModel())),
         ];
     }
 }

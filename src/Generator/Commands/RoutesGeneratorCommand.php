@@ -15,7 +15,7 @@ class RoutesGeneratorCommand extends GeneratorCommand
 
     protected function getOutputFilePath(): PathResolverInterface
     {
-        return new RoutesPathResolver($this->generationConfiguration->getModel());
+        return new RoutesPathResolver($this->apiGenerationCommandInputs->getModel());
     }
 
     protected function saveContentToFile(): void

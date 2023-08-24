@@ -12,7 +12,7 @@ class MigrationGeneratorCommand extends GeneratorCommand implements SchemaReplac
     public function getSchemaReplacements(): array
     {
         return [
-            'migrationContent' => (new MigrationContentParser($this->generationConfiguration->getSchema()))->parse(),
+            'migrationContent' => (new MigrationContentParser($this->apiGenerationCommandInputs->getSchema()))->parse(),
         ];
     }
     protected function getStubName(): string
@@ -22,6 +22,6 @@ class MigrationGeneratorCommand extends GeneratorCommand implements SchemaReplac
 
     protected function getOutputFilePath(): PathResolverInterface
     {
-        return new MigrationPathResolver($this->generationConfiguration->getModel());
+        return new MigrationPathResolver($this->apiGenerationCommandInputs->getModel());
     }
 }

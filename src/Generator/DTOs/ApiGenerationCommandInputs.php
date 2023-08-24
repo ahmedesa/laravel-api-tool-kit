@@ -2,7 +2,7 @@
 
 namespace Essa\APIToolKit\Generator\DTOs;
 
-class GenerationConfiguration
+class ApiGenerationCommandInputs
 {
     public function __construct(private string $model, private array $userChoices, private SchemaDefinition $schema)
     {

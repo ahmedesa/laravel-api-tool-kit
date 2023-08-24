@@ -13,8 +13,8 @@ class ModelGeneratorCommand extends GeneratorCommand implements SchemaReplacemen
     public function getSchemaReplacements(): array
     {
         return [
-            'fillableColumns' =>  (new FillableColumnsParser($this->generationConfiguration->getSchema()))->parse(),
-            'modelRelations' => (new RelationshipMethodsParser($this->generationConfiguration->getSchema()))->parse(),
+            'fillableColumns' =>  (new FillableColumnsParser($this->apiGenerationCommandInputs->getSchema()))->parse(),
+            'modelRelations' => (new RelationshipMethodsParser($this->apiGenerationCommandInputs->getSchema()))->parse(),
         ];
     }
     protected function getStubName(): string
@@ -24,6 +24,6 @@ class ModelGeneratorCommand extends GeneratorCommand implements SchemaReplacemen
 
     protected function getOutputFilePath(): PathResolverInterface
     {
-        return new ModelPathResolver($this->generationConfiguration->getModel());
+        return new ModelPathResolver($this->apiGenerationCommandInputs->getModel());
     }
 }

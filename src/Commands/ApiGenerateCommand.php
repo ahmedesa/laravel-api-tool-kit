@@ -2,11 +2,11 @@
 
 namespace Essa\APIToolKit\Commands;
 
-use Essa\APIToolKit\Generator\DTOs\GenerationConfiguration;
-use Essa\APIToolKit\Generator\DTOs\SchemaDefinition;
-use Essa\APIToolKit\Generator\DTOs\TableDate;
 use Essa\APIToolKit\Generator\ConsoleTable\GeneratedFilesConsoleTable;
 use Essa\APIToolKit\Generator\ConsoleTable\SchemaConsoleTable;
+use Essa\APIToolKit\Generator\DTOs\ApiGenerationCommandInputs;
+use Essa\APIToolKit\Generator\DTOs\SchemaDefinition;
+use Essa\APIToolKit\Generator\DTOs\TableDate;
 use Illuminate\Console\Command;
 use Illuminate\Container\Container;
 use Symfony\Component\Console\Input\InputArgument;
@@ -110,9 +110,9 @@ class ApiGenerateCommand extends Command
 
         $schemaDefinition = SchemaDefinition::createFromSchemaString($this->argument('schema'));
 
-        $generationConfiguration = new GenerationConfiguration($model, $userChoices, $schemaDefinition);
+        $apiGenerationCommandInputs = new ApiGenerationCommandInputs($model, $userChoices, $schemaDefinition);
 
-        $this->executeCommands($generationConfiguration);
+        $this->executeCommands($apiGenerationCommandInputs);
 
         $this->info('Here is your schema : ');
 
@@ -122,7 +122,7 @@ class ApiGenerateCommand extends Command
 
         $this->info('Generated Files for Model:');
 
-        $table = new GeneratedFilesConsoleTable($generationConfiguration);
+        $table = new GeneratedFilesConsoleTable($apiGenerationCommandInputs);
 
         $this->displayTable($table->generate());
     }
@@ -176,7 +176,7 @@ class ApiGenerateCommand extends Command
         return in_array(mb_strtolower($name), $this->reservedNames);
     }
 
-    private function executeCommands(GenerationConfiguration $generationConfiguration): void
+    private function executeCommands(ApiGenerationCommandInputs $apiGenerationCommandInputs): void
     {
         $commandDefinitions = config('api-tool-kit.api_generators.commands');
 
@@ -184,7 +184,7 @@ class ApiGenerateCommand extends Command
             if ($this->shouldExecute($definition['option'])) {
                 $this->container
                     ->get($definition['command'])
-                    ->run($generationConfiguration);
+                    ->run($apiGenerationCommandInputs);
             }
         }
     }

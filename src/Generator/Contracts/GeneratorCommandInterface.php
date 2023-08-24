@@ -2,9 +2,9 @@
 
 namespace Essa\APIToolKit\Generator\Contracts;
 
-use Essa\APIToolKit\Generator\DTOs\GenerationConfiguration;
+use Essa\APIToolKit\Generator\DTOs\ApiGenerationCommandInputs;
 
 interface GeneratorCommandInterface
 {
-    public function run(GenerationConfiguration $generationConfiguration): void;
+    public function run(ApiGenerationCommandInputs $apiGenerationCommandInputs): void;
 }

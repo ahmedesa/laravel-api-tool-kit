@@ -14,6 +14,6 @@ class FilterGeneratorCommand extends GeneratorCommand
 
     protected function getOutputFilePath(): PathResolverInterface
     {
-        return new FilterPathResolver($this->generationConfiguration->getModel());
+        return new FilterPathResolver($this->apiGenerationCommandInputs->getModel());
     }
 }

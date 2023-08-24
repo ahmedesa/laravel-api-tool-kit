@@ -3,12 +3,12 @@
 namespace Essa\APIToolKit\Generator\ConsoleTable;
 
 use Essa\APIToolKit\Generator\Contracts\ConsoleTableInterface;
-use Essa\APIToolKit\Generator\DTOs\GenerationConfiguration;
+use Essa\APIToolKit\Generator\DTOs\ApiGenerationCommandInputs;
 use Essa\APIToolKit\Generator\DTOs\TableDate;
 
 class GeneratedFilesConsoleTable implements ConsoleTableInterface
 {
-    public function __construct(private GenerationConfiguration $generationConfiguration)
+    public function __construct(private ApiGenerationCommandInputs $apiGenerationCommandInputs)
     {
     }
 
@@ -23,7 +23,7 @@ class GeneratedFilesConsoleTable implements ConsoleTableInterface
                 $resolverFilePath = $definition['path-resolver'];
                 $tableData[] = [
                     $definition['option'],
-                    (new $resolverFilePath($this->generationConfiguration->getModel()))->getFullPath()
+                    (new $resolverFilePath($this->apiGenerationCommandInputs->getModel()))->getFullPath()
                 ];
             }
         }
@@ -35,6 +35,6 @@ class GeneratedFilesConsoleTable implements ConsoleTableInterface
 
     private function shouldExecute(string $option): bool
     {
-        return 'model' === $option || $this->generationConfiguration->getUserChoices()[$option];
+        return 'model' === $option || $this->apiGenerationCommandInputs->getUserChoices()[$option];
     }
 }

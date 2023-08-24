@@ -13,6 +13,6 @@ class ControllerGeneratorCommand extends GeneratorCommand
     }
     protected function getOutputFilePath(): PathResolverInterface
     {
-        return new ControllerPathResolver($this->generationConfiguration->getModel());
+        return new ControllerPathResolver($this->apiGenerationCommandInputs->getModel());
     }
 }

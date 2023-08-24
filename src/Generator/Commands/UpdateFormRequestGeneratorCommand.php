@@ -12,7 +12,7 @@ class UpdateFormRequestGeneratorCommand extends GeneratorCommand implements Sche
     public function getSchemaReplacements(): array
     {
         return [
-            'updateValidationRules' => (new UpdateValidationRulesParser($this->generationConfiguration->getSchema()))->parse(),
+            'updateValidationRules' => (new UpdateValidationRulesParser($this->apiGenerationCommandInputs->getSchema()))->parse(),
         ];
     }
     protected function getStubName(): string
@@ -22,6 +22,6 @@ class UpdateFormRequestGeneratorCommand extends GeneratorCommand implements Sche
 
     protected function getOutputFilePath(): PathResolverInterface
     {
-        return new UpdateFormRequestPathResolver($this->generationConfiguration->getModel());
+        return new UpdateFormRequestPathResolver($this->apiGenerationCommandInputs->getModel());
     }
 }

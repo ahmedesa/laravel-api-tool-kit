@@ -14,6 +14,6 @@ class SeederGeneratorCommand extends GeneratorCommand
 
     protected function getOutputFilePath(): PathResolverInterface
     {
-        return new SeederPathResolver($this->generationConfiguration->getModel());
+        return new SeederPathResolver($this->apiGenerationCommandInputs->getModel());
     }
 }

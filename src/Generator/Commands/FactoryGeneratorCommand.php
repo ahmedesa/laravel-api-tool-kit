@@ -12,7 +12,7 @@ class FactoryGeneratorCommand extends GeneratorCommand implements SchemaReplacem
     public function getSchemaReplacements(): array
     {
         return [
-            'factoryContent' => (new FactoryColumnsParser($this->generationConfiguration->getSchema()))->parse(),
+            'factoryContent' => (new FactoryColumnsParser($this->apiGenerationCommandInputs->getSchema()))->parse(),
         ];
     }
     protected function getStubName(): string
@@ -22,6 +22,6 @@ class FactoryGeneratorCommand extends GeneratorCommand implements SchemaReplacem
 
     protected function getOutputFilePath(): PathResolverInterface
     {
-        return new FactoryPathResolver($this->generationConfiguration->getModel());
+        return new FactoryPathResolver($this->apiGenerationCommandInputs->getModel());
     }
 }

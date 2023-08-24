@@ -14,6 +14,6 @@ class TestGeneratorCommand extends GeneratorCommand
 
     protected function getOutputFilePath(): PathResolverInterface
     {
-        return new TestPathResolver($this->generationConfiguration->getModel());
+        return new TestPathResolver($this->apiGenerationCommandInputs->getModel());
     }
 }

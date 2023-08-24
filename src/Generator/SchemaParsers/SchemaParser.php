@@ -12,7 +12,7 @@ abstract class SchemaParser
 
     public function parse(): string
     {
-        if (empty($this->schema)) {
+        if (empty($this->schema->columns)) {
             return '';
         }
 

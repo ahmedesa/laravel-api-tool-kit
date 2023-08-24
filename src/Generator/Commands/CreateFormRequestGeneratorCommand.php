@@ -2,7 +2,9 @@
 
 namespace Essa\APIToolKit\Generator\Commands;
 
+use Essa\APIToolKit\Generator\Contracts\PathResolverInterface;
 use Essa\APIToolKit\Generator\Contracts\SchemaReplacementDataProvider;
+use Essa\APIToolKit\Generator\PathResolver\CreateFormRequestPathResolver;
 use Essa\APIToolKit\Generator\SchemaParsers\CreateValidationRulesParser;
 
 class CreateFormRequestGeneratorCommand extends GeneratorCommand implements SchemaReplacementDataProvider
@@ -23,8 +25,8 @@ class CreateFormRequestGeneratorCommand extends GeneratorCommand implements Sche
         return app_path("Http/Requests/{$this->generationConfiguration->getModel()}");
     }
 
-    protected function getOutputFileName(): string
+    protected function getOutputFilePath(): PathResolverInterface
     {
-        return "Create{$this->generationConfiguration->getModel()}Request.php";
+        return new CreateFormRequestPathResolver($this->generationConfiguration->getModel());
     }
 }

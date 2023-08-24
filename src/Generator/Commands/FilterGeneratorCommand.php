@@ -2,6 +2,9 @@
 
 namespace Essa\APIToolKit\Generator\Commands;
 
+use Essa\APIToolKit\Generator\Contracts\PathResolverInterface;
+use Essa\APIToolKit\Generator\PathResolver\FilterPathResolver;
+
 class FilterGeneratorCommand extends GeneratorCommand
 {
     protected function getStubName(): string
@@ -9,13 +12,8 @@ class FilterGeneratorCommand extends GeneratorCommand
         return 'DummyFilters';
     }
 
-    protected function getOutputFolderPath(): string
+    protected function getOutputFilePath(): PathResolverInterface
     {
-        return app_path('Filters');
-    }
-
-    protected function getOutputFileName(): string
-    {
-        return "{$this->generationConfiguration->getModel()}Filters.php";
+        return new FilterPathResolver($this->generationConfiguration->getModel());
     }
 }

@@ -2,6 +2,9 @@
 
 namespace Essa\APIToolKit\Generator\Commands;
 
+use Essa\APIToolKit\Generator\Contracts\PathResolverInterface;
+use Essa\APIToolKit\Generator\PathResolver\TestPathResolver;
+
 class TestGeneratorCommand extends GeneratorCommand
 {
     protected function getStubName(): string
@@ -9,13 +12,8 @@ class TestGeneratorCommand extends GeneratorCommand
         return 'DummyTest';
     }
 
-    protected function getOutputFolderPath(): string
+    protected function getOutputFilePath(): PathResolverInterface
     {
-        return base_path('tests/Feature');
-    }
-
-    protected function getOutputFileName(): string
-    {
-        return "{$this->generationConfiguration->getModel()}Test.php";
+        return new TestPathResolver($this->generationConfiguration->getModel());
     }
 }

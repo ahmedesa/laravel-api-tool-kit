@@ -2,6 +2,9 @@
 
 namespace Essa\APIToolKit\Generator\Commands;
 
+use Essa\APIToolKit\Generator\Contracts\PathResolverInterface;
+use Essa\APIToolKit\Generator\PathResolver\SeedPathResolver;
+
 class SeederGeneratorCommand extends GeneratorCommand
 {
     protected function getStubName(): string
@@ -9,13 +12,8 @@ class SeederGeneratorCommand extends GeneratorCommand
         return 'DummySeeder';
     }
 
-    protected function getOutputFolderPath(): string
+    protected function getOutputFilePath(): PathResolverInterface
     {
-        return database_path('/seeders');
-    }
-
-    protected function getOutputFileName(): string
-    {
-        return "{$this->generationConfiguration->getModel()}Seeder.php";
+        return new SeedPathResolver($this->generationConfiguration->getModel());
     }
 }

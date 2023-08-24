@@ -2,7 +2,9 @@
 
 namespace Essa\APIToolKit\Generator\Commands;
 
+use Essa\APIToolKit\Generator\Contracts\PathResolverInterface;
 use Essa\APIToolKit\Generator\Contracts\SchemaReplacementDataProvider;
+use Essa\APIToolKit\Generator\PathResolver\UpdateFormRequestPathResolver;
 use Essa\APIToolKit\Generator\SchemaParsers\UpdateValidationRulesParser;
 
 class UpdateFormRequestGeneratorCommand extends GeneratorCommand implements SchemaReplacementDataProvider
@@ -18,13 +20,8 @@ class UpdateFormRequestGeneratorCommand extends GeneratorCommand implements Sche
         return 'UpdateDummyRequest';
     }
 
-    protected function getOutputFolderPath(): string
+    protected function getOutputFilePath(): PathResolverInterface
     {
-        return app_path("Http/Requests/{$this->generationConfiguration->getModel()}");
-    }
-
-    protected function getOutputFileName(): string
-    {
-        return "Update{$this->generationConfiguration->getModel()}Request.php";
+        return new UpdateFormRequestPathResolver($this->generationConfiguration->getModel());
     }
 }

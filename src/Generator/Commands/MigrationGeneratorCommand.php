@@ -2,9 +2,10 @@
 
 namespace Essa\APIToolKit\Generator\Commands;
 
+use Essa\APIToolKit\Generator\Contracts\PathResolverInterface;
 use Essa\APIToolKit\Generator\Contracts\SchemaReplacementDataProvider;
+use Essa\APIToolKit\Generator\PathResolver\MigrationPathResolver;
 use Essa\APIToolKit\Generator\SchemaParsers\MigrationContentParser;
-use Illuminate\Support\Str;
 
 class MigrationGeneratorCommand extends GeneratorCommand implements SchemaReplacementDataProvider
 {
@@ -19,20 +20,8 @@ class MigrationGeneratorCommand extends GeneratorCommand implements SchemaReplac
         return 'dummy_migration';
     }
 
-    protected function getOutputFolderPath(): string
+    protected function getOutputFilePath(): PathResolverInterface
     {
-        return database_path('migrations');
-    }
-
-    protected function getOutputFileName(): string
-    {
-        return $this->getMigrationTableName();
-    }
-
-    private function getMigrationTableName(): string
-    {
-        $migrationClass = 'create_' . Str::plural(Str::snake($this->generationConfiguration->getModel())) . '_table';
-
-        return date('Y_m_d_His') . "_{$migrationClass}.php";
+        return new MigrationPathResolver($this->generationConfiguration->getModel());
     }
 }

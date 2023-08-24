@@ -3,6 +3,7 @@
 namespace Essa\APIToolKit\Generator\Commands;
 
 use Essa\APIToolKit\Generator\Contracts\GeneratorCommandInterface;
+use Essa\APIToolKit\Generator\Contracts\PathResolverInterface;
 use Essa\APIToolKit\Generator\Contracts\SchemaReplacementDataProvider;
 use Essa\APIToolKit\Generator\DTOs\GenerationConfiguration;
 use Illuminate\Filesystem\Filesystem;
@@ -26,7 +27,7 @@ abstract class GeneratorCommand implements GeneratorCommandInterface
     {
         $this->generationConfiguration = $generationConfiguration;
 
-        if ( ! file_exists($this->getOutputFolderPath())) {
+        if ( ! file_exists($this->getOutputFilePath()->folderPath())) {
             $this->createFolder();
         }
 
@@ -34,16 +35,13 @@ abstract class GeneratorCommand implements GeneratorCommandInterface
     }
 
     abstract protected function getStubName(): string;
-
-    abstract protected function getOutputFolderPath(): string;
-
-    abstract protected function getOutputFileName(): string;
+    abstract protected function getOutputFilePath(): PathResolverInterface;
 
     protected function createFolder(): void
     {
         $this->filesystem
             ->makeDirectory(
-                path: $this->getOutputFolderPath(),
+                path: $this->getOutputFilePath()->folderPath(),
                 mode: 0777,
                 recursive: true,
                 force: true
@@ -53,7 +51,7 @@ abstract class GeneratorCommand implements GeneratorCommandInterface
     protected function saveContentToFile(): void
     {
         file_put_contents(
-            filename: $this->getOutputFolderPath() . "/" . $this->getOutputFileName(),
+            filename: $this->getOutputFilePath()->getFullPath(),
             data: $this->parseStub($this->getStubName())
         );
     }

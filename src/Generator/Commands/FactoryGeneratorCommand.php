@@ -2,7 +2,9 @@
 
 namespace Essa\APIToolKit\Generator\Commands;
 
+use Essa\APIToolKit\Generator\Contracts\PathResolverInterface;
 use Essa\APIToolKit\Generator\Contracts\SchemaReplacementDataProvider;
+use Essa\APIToolKit\Generator\PathResolver\FactoryPathResolver;
 use Essa\APIToolKit\Generator\SchemaParsers\FactoryColumnsParser;
 
 class FactoryGeneratorCommand extends GeneratorCommand implements SchemaReplacementDataProvider
@@ -18,13 +20,8 @@ class FactoryGeneratorCommand extends GeneratorCommand implements SchemaReplacem
         return 'DummyFactory';
     }
 
-    protected function getOutputFolderPath(): string
+    protected function getOutputFilePath(): PathResolverInterface
     {
-        return database_path('/factories');
-    }
-
-    protected function getOutputFileName(): string
-    {
-        return "{$this->generationConfiguration->getModel()}Factory.php";
+        return new FactoryPathResolver($this->generationConfiguration->getModel());
     }
 }

@@ -2,7 +2,9 @@
 
 namespace Essa\APIToolKit\Generator\Commands;
 
+use Essa\APIToolKit\Generator\Contracts\PathResolverInterface;
 use Essa\APIToolKit\Generator\Contracts\SchemaReplacementDataProvider;
+use Essa\APIToolKit\Generator\PathResolver\ModelPathResolver;
 use Essa\APIToolKit\Generator\SchemaParsers\FillableColumnsParser;
 use Essa\APIToolKit\Generator\SchemaParsers\RelationshipMethodsParser;
 
@@ -20,13 +22,8 @@ class ModelGeneratorCommand extends GeneratorCommand implements SchemaReplacemen
         return 'Dummy';
     }
 
-    protected function getOutputFolderPath(): string
+    protected function getOutputFilePath(): PathResolverInterface
     {
-        return app_path('/Models');
-    }
-
-    protected function getOutputFileName(): string
-    {
-        return "{$this->generationConfiguration->getModel()}.php";
+        return new ModelPathResolver($this->generationConfiguration->getModel());
     }
 }

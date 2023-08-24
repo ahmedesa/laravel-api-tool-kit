@@ -2,7 +2,9 @@
 
 namespace Essa\APIToolKit\Generator\Commands;
 
+use Essa\APIToolKit\Generator\Contracts\PathResolverInterface;
 use Essa\APIToolKit\Generator\Contracts\SchemaReplacementDataProvider;
+use Essa\APIToolKit\Generator\PathResolver\ResourcePathResolver;
 use Essa\APIToolKit\Generator\SchemaParsers\ResourceAttributesParser;
 
 class ResourceGeneratorCommand extends GeneratorCommand implements SchemaReplacementDataProvider
@@ -18,13 +20,8 @@ class ResourceGeneratorCommand extends GeneratorCommand implements SchemaReplace
         return 'DummyResource';
     }
 
-    protected function getOutputFolderPath(): string
+    protected function getOutputFilePath(): PathResolverInterface
     {
-        return app_path("Http/Resources/{$this->generationConfiguration->getModel()}");
-    }
-
-    protected function getOutputFileName(): string
-    {
-        return "{$this->generationConfiguration->getModel()}Resource.php";
+        return new ResourcePathResolver($this->generationConfiguration->getModel());
     }
 }

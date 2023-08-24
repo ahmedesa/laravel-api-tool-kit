@@ -103,15 +103,21 @@ class ApiGenerateCommand extends Command
 
         $userChoices = $this->getUserChoices();
 
+        $schemaDefinition = SchemaDefinition::createFromSchemaString($this->argument('schema'));
+
         $this->commandInvoker->executeCommands(
             new GenerationConfiguration(
                 model: $model,
                 userChoices: $userChoices,
-                schema: SchemaDefinition::createFromSchemaString($this->argument('schema'))
+                schema: $schemaDefinition
             )
         );
 
         $this->info('Module created successfully!');
+
+        $this->info('Here is your schema!');
+
+        $this->generateSchemaTable($schemaDefinition);
     }
 
     protected function getArguments(): array
@@ -160,5 +166,18 @@ class ApiGenerateCommand extends Command
     private function isReservedName($name): bool
     {
         return in_array(mb_strtolower($name), $this->reservedNames);
+    }
+
+    private function generateSchemaTable(SchemaDefinition $schemaDefinition): void
+    {
+        $tableData = [];
+
+        foreach ($schemaDefinition->getColumns() as $column) {
+            $tableData[] = [$column->name, $column->type, (string) $column->getOptionAsString()];
+        }
+
+        $headers = ['Column Name', 'Column Type', 'Options'];
+
+        $this->table($headers, $tableData);
     }
 }

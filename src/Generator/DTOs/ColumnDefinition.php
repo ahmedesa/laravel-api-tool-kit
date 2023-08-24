@@ -31,4 +31,9 @@ class ColumnDefinition
 
         return [$name, $type, $options];
     }
+
+    public function getOptionAsString(): string
+    {
+        return implode('| ', $this->options);
+    }
 }

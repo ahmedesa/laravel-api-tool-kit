@@ -2,10 +2,10 @@
 
 namespace Essa\APIToolKit\Commands;
 
-use Essa\APIToolKit\Generator\CommandInvoker;
 use Essa\APIToolKit\Generator\DTOs\GenerationConfiguration;
 use Essa\APIToolKit\Generator\DTOs\SchemaDefinition;
 use Illuminate\Console\Command;
+use Illuminate\Container\Container;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
@@ -86,7 +86,9 @@ class ApiGenerateCommand extends Command
         'yield',
     ];
 
-    public function __construct(private CommandInvoker $commandInvoker)
+    private array $defaultCommands = ['model'];
+
+    public function __construct(private Container $container)
     {
         parent::__construct();
     }
@@ -105,7 +107,7 @@ class ApiGenerateCommand extends Command
 
         $schemaDefinition = SchemaDefinition::createFromSchemaString($this->argument('schema'));
 
-        $this->commandInvoker->executeCommands(
+        $this->executeCommands(
             new GenerationConfiguration(
                 model: $model,
                 userChoices: $userChoices,
@@ -168,6 +170,19 @@ class ApiGenerateCommand extends Command
         return in_array(mb_strtolower($name), $this->reservedNames);
     }
 
+    private function executeCommands(GenerationConfiguration $generationConfiguration): void
+    {
+        $commandDefinitions = config('api-tool-kit.api_generators.commands');
+
+        foreach ($commandDefinitions as $definition) {
+            if ($this->shouldExecute($definition['option'])) {
+                $this->container
+                    ->get($definition['command'])
+                    ->run($generationConfiguration);
+            }
+        }
+    }
+
     private function generateSchemaTable(SchemaDefinition $schemaDefinition): void
     {
         $tableData = [];
@@ -190,7 +205,7 @@ class ApiGenerateCommand extends Command
         $tableData = [];
 
         foreach ($commandDefinitions as $definition) {
-            if ('model' === $definition['option']||$this->option($definition['option'])) {
+            if ($this->shouldExecute($definition['option'])) {
                 $resolverFilePath = $definition['path-resolver'];
                 $tableData[] = [
                     $definition['option'],
@@ -204,5 +219,10 @@ class ApiGenerateCommand extends Command
         $this->info('Generated Files for Model:');
 
         $this->table($headers, $tableData);
+    }
+
+    private function shouldExecute(string $option): bool
+    {
+        return in_array($option, $this->defaultCommands) || $this->option($option);
     }
 }

@@ -16,7 +16,10 @@ use Essa\APIToolKit\Generator\PathResolver\UpdateFormRequestPathResolver;
 
 class PathResolverTest extends TestCase
 {
-    public function testModelPathResolver(): void
+    /**
+     * @test
+     */
+    public function ModelPathResolver(): void
     {
         $model = 'User';
         $resolver = new ModelPathResolver($model);
@@ -25,7 +28,10 @@ class PathResolverTest extends TestCase
         $this->assertEquals($expectedPath, $resolver->getFullPath());
     }
 
-    public function testControllerPathResolver(): void
+    /**
+     * @test
+     */
+    public function ControllerPathResolver(): void
     {
         $model = 'User';
         $resolver = new ControllerPathResolver($model);
@@ -34,7 +40,10 @@ class PathResolverTest extends TestCase
         $this->assertEquals($expectedPath, $resolver->getFullPath());
     }
 
-    public function testCreateFormRequestPathResolver(): void
+    /**
+     * @test
+     */
+    public function CreateFormRequestPathResolver(): void
     {
         $model = 'User';
         $resolver = new CreateFormRequestPathResolver($model);
@@ -43,7 +52,10 @@ class PathResolverTest extends TestCase
         $this->assertEquals($expectedPath, $resolver->getFullPath());
     }
 
-    public function testFactoryPathResolver(): void
+    /**
+     * @test
+     */
+    public function FactoryPathResolver(): void
     {
         $model = 'User';
         $resolver = new FactoryPathResolver($model);
@@ -52,7 +64,10 @@ class PathResolverTest extends TestCase
         $this->assertEquals($expectedPath, $resolver->getFullPath());
     }
 
-    public function testFilterPathResolver(): void
+    /**
+     * @test
+     */
+    public function FilterPathResolver(): void
     {
         $model = 'User';
         $resolver = new FilterPathResolver($model);
@@ -61,7 +76,10 @@ class PathResolverTest extends TestCase
         $this->assertEquals($expectedPath, $resolver->getFullPath());
     }
 
-    public function testMigrationPathResolver(): void
+    /**
+     * @test
+     */
+    public function MigrationPathResolver(): void
     {
         $model = 'User';
         $resolver = new MigrationPathResolver($model);
@@ -71,7 +89,10 @@ class PathResolverTest extends TestCase
         $this->assertEquals($expectedPath, $resolver->getFullPath());
     }
 
-    public function testResourcePathResolver(): void
+    /**
+     * @test
+     */
+    public function ResourcePathResolver(): void
     {
         $model = 'User';
         $resolver = new ResourcePathResolver($model);
@@ -80,7 +101,10 @@ class PathResolverTest extends TestCase
         $this->assertEquals($expectedPath, $resolver->getFullPath());
     }
 
-    public function testRoutesPathResolver(): void
+    /**
+     * @test
+     */
+    public function RoutesPathResolver(): void
     {
         $model = 'User';
         $resolver = new RoutesPathResolver($model);
@@ -89,7 +113,10 @@ class PathResolverTest extends TestCase
         $this->assertEquals($expectedPath, $resolver->getFullPath());
     }
 
-    public function testSeedPathResolver(): void
+    /**
+     * @test
+     */
+    public function SeedPathResolver(): void
     {
         $model = 'User';
         $resolver = new SeedPathResolver($model);
@@ -98,7 +125,10 @@ class PathResolverTest extends TestCase
         $this->assertEquals($expectedPath, $resolver->getFullPath());
     }
 
-    public function testTestPathResolver(): void
+    /**
+     * @test
+     */
+    public function TestPathResolver(): void
     {
         $model = 'User';
         $resolver = new TestPathResolver($model);
@@ -107,7 +137,10 @@ class PathResolverTest extends TestCase
         $this->assertEquals($expectedPath, $resolver->getFullPath());
     }
 
-    public function testUpdateFormRequestPathResolver(): void
+    /**
+     * @test
+     */
+    public function UpdateFormRequestPathResolver(): void
     {
         $model = 'User';
         $resolver = new UpdateFormRequestPathResolver($model);

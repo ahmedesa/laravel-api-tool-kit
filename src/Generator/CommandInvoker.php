@@ -14,6 +14,7 @@ use Essa\APIToolKit\Generator\Commands\SeederGeneratorCommand;
 use Essa\APIToolKit\Generator\Commands\TestGeneratorCommand;
 use Essa\APIToolKit\Generator\Commands\UpdateFormRequestGeneratorCommand;
 use Essa\APIToolKit\Generator\DTOs\GenerationConfiguration;
+use Illuminate\Container\Container;
 
 class CommandInvoker
 {
@@ -33,6 +34,9 @@ class CommandInvoker
         'migration' => MigrationGeneratorCommand::class,
         'routes' => RoutesGeneratorCommand::class,
     ];
+    public function __construct(private Container $container)
+    {
+    }
 
     public function executeCommands(GenerationConfiguration $generationConfiguration): void
     {
@@ -42,7 +46,9 @@ class CommandInvoker
             }
 
             foreach ((array)$commandClasses as $commandClass) {
-                app($commandClass)->run($generationConfiguration);
+                $this->container
+                    ->get($commandClass)
+                    ->run($generationConfiguration);
             }
         }
     }

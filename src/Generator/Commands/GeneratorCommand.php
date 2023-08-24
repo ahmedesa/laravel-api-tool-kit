@@ -2,12 +2,13 @@
 
 namespace Essa\APIToolKit\Generator\Commands;
 
+use Essa\APIToolKit\Generator\Contracts\GeneratorCommandInterface;
 use Essa\APIToolKit\Generator\Contracts\SchemaReplacementDataProvider;
 use Essa\APIToolKit\Generator\DTOs\GenerationConfiguration;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
 
-abstract class GeneratorCommand
+abstract class GeneratorCommand implements GeneratorCommandInterface
 {
     protected const TAGS = [
         'soft-delete',

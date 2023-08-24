@@ -15,8 +15,9 @@ use Essa\APIToolKit\Generator\Commands\TestGeneratorCommand;
 use Essa\APIToolKit\Generator\Commands\UpdateFormRequestGeneratorCommand;
 use Essa\APIToolKit\Generator\DTOs\GenerationConfiguration;
 
-class CommandLineExecutor
+class CommandInvoker
 {
+    private array $defaultCommands = ['model'];
     private array $commands = [
         'model' => ModelGeneratorCommand::class,
         'factory' => FactoryGeneratorCommand::class,
@@ -46,8 +47,8 @@ class CommandLineExecutor
         }
     }
 
-    private function shouldExecute(string $option, $userChoices): bool
+    private function shouldExecute(string $option, array $userChoices): bool
     {
-        return 'model' === $option || $userChoices[$option];
+        return in_array($option, $this->defaultCommands) || $userChoices[$option];
     }
 }

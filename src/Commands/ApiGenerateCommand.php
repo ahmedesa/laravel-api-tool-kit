@@ -2,7 +2,7 @@
 
 namespace Essa\APIToolKit\Commands;
 
-use Essa\APIToolKit\Generator\CommandLineExecutor;
+use Essa\APIToolKit\Generator\CommandInvoker;
 use Essa\APIToolKit\Generator\DTOs\GenerationConfiguration;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -85,7 +85,7 @@ class ApiGenerateCommand extends Command
         'yield',
     ];
 
-    public function __construct(private CommandLineExecutor $commandLineExecutor)
+    public function __construct(private CommandInvoker $commandLineExecutor)
     {
         parent::__construct();
     }

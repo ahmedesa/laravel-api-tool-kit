@@ -16,7 +16,10 @@ class SchemaParserTest extends TestCase
     /**
      * @test
      */
-    public function testGenerateFillableColumns(): void
+    /**
+     * @test
+     */
+    public function GenerateFillableColumns(): void
     {
         $schema = 'name:string,age:integer,email:string:unique';
         $schemaParser = new FillableColumnsParser(SchemaDefinition::createFromSchemaString($schema));
@@ -34,7 +37,10 @@ class SchemaParserTest extends TestCase
         );
     }
 
-    public function testParseGeneratesMigrationContent(): void
+    /**
+     * @test
+     */
+    public function ParseGeneratesMigrationContent(): void
     {
         $schema = 'name:string,age:integer';
         $schemaParser = new MigrationContentParser(SchemaDefinition::createFromSchemaString($schema));
@@ -51,7 +57,10 @@ class SchemaParserTest extends TestCase
         );
     }
 
-    public function testGenerateRelationshipMethod(): void
+    /**
+     * @test
+     */
+    public function GenerateRelationshipMethod(): void
     {
         $schema = 'author_id:foreignId,category_id:foreignId';
         $schemaParser = new RelationshipMethodsParser(SchemaDefinition::createFromSchemaString($schema));
@@ -74,7 +83,10 @@ class SchemaParserTest extends TestCase
         );
     }
 
-    public function testParseGeneratesFactoryColumns(): void
+    /**
+     * @test
+     */
+    public function ParseGeneratesFactoryColumns(): void
     {
         $schema = 'name:string,age:integer,price:decimal';
         $schemaParser = new FactoryColumnsParser(SchemaDefinition::createFromSchemaString($schema));
@@ -92,7 +104,10 @@ class SchemaParserTest extends TestCase
         );
     }
 
-    public function testParseGeneratesColumnDefinitions(): void
+    /**
+     * @test
+     */
+    public function ParseGeneratesColumnDefinitions(): void
     {
         $schema = 'name:string,age:integer,price:decimal';
         $schemaParser = new MigrationContentParser(SchemaDefinition::createFromSchemaString($schema));
@@ -110,7 +125,10 @@ class SchemaParserTest extends TestCase
         );
     }
 
-    public function testParseGeneratesResourceAttributes(): void
+    /**
+     * @test
+     */
+    public function ParseGeneratesResourceAttributes(): void
     {
         $schema = 'name:string,age:integer,price:decimal';
         $schemaParser = new ResourceAttributesParser(SchemaDefinition::createFromSchemaString($schema));
@@ -128,7 +146,10 @@ class SchemaParserTest extends TestCase
         );
     }
 
-    public function testParseGeneratesCreateValidationRules(): void
+    /**
+     * @test
+     */
+    public function ParseGeneratesCreateValidationRules(): void
     {
         $schema = 'name:string,age:integer,price:decimal';
         $schemaParser = new CreateValidationRulesParser(SchemaDefinition::createFromSchemaString($schema));
@@ -146,7 +167,10 @@ class SchemaParserTest extends TestCase
         );
     }
 
-    public function testParseGeneratesUpdateValidationRules(): void
+    /**
+     * @test
+     */
+    public function ParseGeneratesUpdateValidationRules(): void
     {
         $schema = 'name:string,age:integer,price:decimal';
         $schemaParser = new UpdateValidationRulesParser(SchemaDefinition::createFromSchemaString($schema));
@@ -164,7 +188,10 @@ class SchemaParserTest extends TestCase
         );
     }
 
-    public function testParseGeneratesForeignKeyWithCascadeOption(): void
+    /**
+     * @test
+     */
+    public function ParseGeneratesForeignKeyWithCascadeOption(): void
     {
         $schema = 'author_id:foreignId:cascadeOnDelete';
         $schemaParser = new MigrationContentParser(SchemaDefinition::createFromSchemaString($schema));

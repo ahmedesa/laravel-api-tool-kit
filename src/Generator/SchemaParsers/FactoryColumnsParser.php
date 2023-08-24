@@ -4,6 +4,7 @@ namespace Essa\APIToolKit\Generator\SchemaParsers;
 
 use Essa\APIToolKit\Generator\DTOs\ColumnDefinition;
 use Essa\APIToolKit\Generator\DTOs\SchemaDefinition;
+use Faker\Factory;
 
 class FactoryColumnsParser extends SchemaParser
 {
@@ -26,13 +27,12 @@ class FactoryColumnsParser extends SchemaParser
         return match ($columnType) {
             'string', 'char' => 'firstName',
             'integer', 'unsignedInteger', 'bigInteger', 'unsignedBigInteger',
-            'mediumInteger', 'tinyInteger', 'smallInteger' => 'randomNumber',
+            'mediumInteger', 'tinyInteger', 'smallInteger','foreignId' => 'randomNumber',
             'boolean' => 'boolean',
             'decimal', 'double', 'float' => 'randomFloat',
             'date', 'dateTime', 'dateTimeTz', 'timestamp', 'timestampTz','datetime' => 'dateTime',
             'time', 'timeTz' => 'time',
             'uuid' => 'uuid',
-            'foreignId' => 'smallInteger',
             default => 'text',
         };
     }

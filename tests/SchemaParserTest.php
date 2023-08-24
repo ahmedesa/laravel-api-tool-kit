@@ -2,6 +2,7 @@
 
 namespace Essa\APIToolKit\Tests;
 
+use Essa\APIToolKit\Generator\DTOs\SchemaDefinition;
 use Essa\APIToolKit\Generator\SchemaParsers\CreateValidationRulesParser;
 use Essa\APIToolKit\Generator\SchemaParsers\FactoryColumnsParser;
 use Essa\APIToolKit\Generator\SchemaParsers\FillableColumnsParser;
@@ -18,7 +19,7 @@ class SchemaParserTest extends TestCase
     public function testGenerateFillableColumns(): void
     {
         $schema = 'name:string,age:integer,email:string:unique';
-        $schemaParser = new FillableColumnsParser($schema);
+        $schemaParser = new FillableColumnsParser(SchemaDefinition::createFromSchemaString($schema));
         $output = $schemaParser->parse();
 
         $expectedFillableColumns = "
@@ -36,7 +37,7 @@ class SchemaParserTest extends TestCase
     public function testParseGeneratesMigrationContent(): void
     {
         $schema = 'name:string,age:integer';
-        $schemaParser = new MigrationContentParser($schema);
+        $schemaParser = new MigrationContentParser(SchemaDefinition::createFromSchemaString($schema));
         $output = $schemaParser->parse();
 
         $expectedMigrationContent = "
@@ -53,7 +54,7 @@ class SchemaParserTest extends TestCase
     public function testGenerateRelationshipMethod(): void
     {
         $schema = 'author_id:foreignId,category_id:foreignId';
-        $schemaParser = new RelationshipMethodsParser($schema);
+        $schemaParser = new RelationshipMethodsParser(SchemaDefinition::createFromSchemaString($schema));
         $output = $schemaParser->parse();
 
         $expectedMethod = "
@@ -76,7 +77,7 @@ class SchemaParserTest extends TestCase
     public function testParseGeneratesFactoryColumns(): void
     {
         $schema = 'name:string,age:integer,price:decimal';
-        $schemaParser = new FactoryColumnsParser($schema);
+        $schemaParser = new FactoryColumnsParser(SchemaDefinition::createFromSchemaString($schema));
         $output = $schemaParser->parse();
 
         $expectedFactoryContent = "
@@ -94,7 +95,7 @@ class SchemaParserTest extends TestCase
     public function testParseGeneratesColumnDefinitions(): void
     {
         $schema = 'name:string,age:integer,price:decimal';
-        $schemaParser = new MigrationContentParser($schema);
+        $schemaParser = new MigrationContentParser(SchemaDefinition::createFromSchemaString($schema));
         $output = $schemaParser->parse();
 
         $expectedMigrationContent = "
@@ -112,7 +113,7 @@ class SchemaParserTest extends TestCase
     public function testParseGeneratesResourceAttributes(): void
     {
         $schema = 'name:string,age:integer,price:decimal';
-        $schemaParser = new ResourceAttributesParser($schema);
+        $schemaParser = new ResourceAttributesParser(SchemaDefinition::createFromSchemaString($schema));
         $output = $schemaParser->parse();
 
         $expectedResourceContent = "
@@ -130,7 +131,7 @@ class SchemaParserTest extends TestCase
     public function testParseGeneratesCreateValidationRules(): void
     {
         $schema = 'name:string,age:integer,price:decimal';
-        $schemaParser = new CreateValidationRulesParser($schema);
+        $schemaParser = new CreateValidationRulesParser(SchemaDefinition::createFromSchemaString($schema));
         $output = $schemaParser->parse();
 
         $expectedValidationRulesForCreate = "
@@ -148,7 +149,7 @@ class SchemaParserTest extends TestCase
     public function testParseGeneratesUpdateValidationRules(): void
     {
         $schema = 'name:string,age:integer,price:decimal';
-        $schemaParser = new UpdateValidationRulesParser($schema);
+        $schemaParser = new UpdateValidationRulesParser(SchemaDefinition::createFromSchemaString($schema));
         $output = $schemaParser->parse();
 
         $expectedValidationRulesForUpdate = "
@@ -166,7 +167,7 @@ class SchemaParserTest extends TestCase
     public function testParseGeneratesForeignKeyWithCascadeOption(): void
     {
         $schema = 'author_id:foreignId:cascadeOnDelete';
-        $schemaParser = new MigrationContentParser($schema);
+        $schemaParser = new MigrationContentParser(SchemaDefinition::createFromSchemaString($schema));
         $output = $schemaParser->parse();
 
         $expectedMigrationContent = "
@@ -177,14 +178,5 @@ class SchemaParserTest extends TestCase
             $this->normalizeWhitespaceAndNewlines($expectedMigrationContent),
             $this->normalizeWhitespaceAndNewlines($output)
         );
-    }
-
-    private function getSchema($schema): ?array
-    {
-        if ( ! $schema) {
-            return null;
-        }
-
-        return explode(',', $schema);
     }
 }

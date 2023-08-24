@@ -4,6 +4,7 @@ namespace Essa\APIToolKit\Commands;
 
 use Essa\APIToolKit\Generator\CommandInvoker;
 use Essa\APIToolKit\Generator\DTOs\GenerationConfiguration;
+use Essa\APIToolKit\Generator\DTOs\SchemaDefinition;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
@@ -106,7 +107,7 @@ class ApiGenerateCommand extends Command
             new GenerationConfiguration(
                 model: $model,
                 userChoices: $userChoices,
-                schema: $this->argument('schema')
+                schema: SchemaDefinition::createFromSchemaString($this->argument('schema'))
             )
         );
 

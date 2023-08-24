@@ -2,12 +2,15 @@
 
 namespace Essa\APIToolKit\Generator\SchemaParsers;
 
+use Essa\APIToolKit\Generator\DTOs\ColumnDefinition;
+use Essa\APIToolKit\Generator\DTOs\SchemaDefinition;
+
 class UpdateValidationRulesParser extends SchemaParser
 {
-    protected function getParsedSchema(array $columnDefinitions): string
+    protected function getParsedSchema(SchemaDefinition $schemaDefinition): string
     {
-        return collect($columnDefinitions)
-            ->map(fn ($definition) => "'{$this->getColumnName($definition)}' => 'sometimes',")
+        return collect($schemaDefinition->columns)
+            ->map(fn (ColumnDefinition $definition): string => "'{$definition->name}' => 'sometimes',")
             ->implode(PHP_EOL . "\t\t\t");
     }
 }

@@ -2,26 +2,23 @@
 
 namespace Essa\APIToolKit\Generator\SchemaParsers;
 
+use Essa\APIToolKit\Generator\DTOs\ColumnDefinition;
+use Essa\APIToolKit\Generator\DTOs\SchemaDefinition;
 use Illuminate\Support\Str;
 
 class MigrationContentParser extends SchemaParser
 {
-    protected function getParsedSchema(array $columnDefinitions): string
+    protected function getParsedSchema(SchemaDefinition $schemaDefinition): string
     {
-        return collect($columnDefinitions)
-            ->map(fn ($definition) => $this->generateColumnDefinition($definition))
+        return collect($schemaDefinition->columns)
+            ->map(fn (ColumnDefinition $definition): string => $this->generateColumnDefinition($definition))
             ->implode(PHP_EOL);
     }
 
-    private function generateColumnDefinition(string $definition): string
+    private function generateColumnDefinition(ColumnDefinition $definition): string
     {
-        $parsedColumn = $this->parseColumnDefinition($definition);
-        $columnName = $parsedColumn['columnName'];
-        $columnType = $parsedColumn['columnType'];
-        $options = $parsedColumn['options'];
-
-        $columnDefinition = $this->getColumnDefinition($columnName, $columnType);
-        $optionsString = $this->getOptionString($options);
+        $columnDefinition = $this->getColumnDefinition($definition->name, $definition->type);
+        $optionsString = $this->getOptionString($definition->options);
 
         return "\t\t\t" . $columnDefinition . $optionsString . ';';
     }

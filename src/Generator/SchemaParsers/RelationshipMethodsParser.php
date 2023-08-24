@@ -2,22 +2,23 @@
 
 namespace Essa\APIToolKit\Generator\SchemaParsers;
 
+use Essa\APIToolKit\Generator\DTOs\ColumnDefinition;
+use Essa\APIToolKit\Generator\DTOs\SchemaDefinition;
 use Illuminate\Support\Str;
 
 class RelationshipMethodsParser extends SchemaParser
 {
-    protected function getParsedSchema(array $columnDefinitions): string
+    protected function getParsedSchema(SchemaDefinition $schemaDefinition): string
     {
-        return collect($columnDefinitions)
-            ->filter(fn ($definition) => $this->isForeignKey($this->parseColumnDefinition($definition)['columnType']))
-            ->map(fn ($definition) => $this->generateRelationshipMethod($definition))
+        return collect($schemaDefinition->columns)
+            ->filter(fn (ColumnDefinition $definition): bool => $this->isForeignKey($definition->type))
+            ->map(fn (ColumnDefinition $definition): string => $this->generateRelationshipMethod($definition))
             ->implode(PHP_EOL);
     }
 
-    private function generateRelationshipMethod(string $definition): string
+    private function generateRelationshipMethod(ColumnDefinition $definition): string
     {
-        $parsedColumn = $this->parseColumnDefinition($definition);
-        $columnName = $parsedColumn['columnName'];
+        $columnName = $definition->name;
         $relatedName = Str::camel(Str::beforeLast($columnName, '_id'));
         $relatedModel = Str::studly(Str::beforeLast($columnName, '_id'));
 

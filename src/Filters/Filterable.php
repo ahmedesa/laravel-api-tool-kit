@@ -2,8 +2,8 @@
 
 namespace Essa\APIToolKit\Filters;
 
-use Essa\APIToolKit\Exceptions\MissingDefaultFiltersException;
 use Essa\APIToolKit\Filters\DTO\FiltersDTO;
+use Essa\APIToolKit\Filters\Exceptions\MissingDefaultFiltersException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 

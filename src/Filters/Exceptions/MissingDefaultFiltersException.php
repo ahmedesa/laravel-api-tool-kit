@@ -1,6 +1,6 @@
 <?php
 
-namespace Essa\APIToolKit\Exceptions;
+namespace Essa\APIToolKit\Filters\Exceptions;
 
 use Exception;
 

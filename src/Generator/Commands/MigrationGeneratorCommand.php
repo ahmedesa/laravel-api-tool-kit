@@ -17,6 +17,6 @@ class MigrationGeneratorCommand extends GeneratorCommand implements SchemaReplac
     }
     protected function getStubName(): string
     {
-        return 'dummyMigration';
+        return 'DummyMigration';
     }
 }

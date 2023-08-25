@@ -10,14 +10,14 @@ class RoutesGeneratorCommand extends GeneratorCommand
 
     protected function getStubName(): string
     {
-        return 'routes';
+        return 'DummyRoutes';
     }
 
     protected function saveContentToFile(): void
     {
         app(Filesystem::class)->append(
             base_path('routes/api.php'),
-            $this->parseStub('routes')
+            $this->parseStub('DummyRoutes')
         );
     }
 }

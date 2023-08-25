@@ -19,6 +19,6 @@ class ModelGeneratorCommand extends GeneratorCommand implements SchemaReplacemen
     }
     protected function getStubName(): string
     {
-        return 'Dummy';
+        return 'DummyModel';
     }
 }

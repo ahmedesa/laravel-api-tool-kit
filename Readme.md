@@ -10,9 +10,7 @@
 
 ## In Progress
 
-- **Feature Enhancement:** Adding Schema Support to API Generator (In Progress)
-
-*Note: The schema feature is inspired by the [Laravel 5 Generators Extended](https://github.com/laracasts/Laravel-5-Generators-Extended/tree/master) package.*
+Adding Schema Support to API Generator
 
 **How Schema Support Works (Upcoming Feature)**
 
@@ -21,13 +19,14 @@ We're working on enhancing the API Generator with schema support. This feature l
 ```bash
 php artisan api:generate ModelName --schema="column1:string,column2:integer,column3:datetime"
 ```
+*Note: The schema feature is inspired by the [Laravel 5 Generators Extended](https://github.com/laracasts/Laravel-5-Generators-Extended/tree/master) package.*
 
 <p align="center">
     <img src="api-generator.png">
 </p>
 
 ## Introduction
-The Laravel API Toolkit is a comprehensive suite of tools designed to help you create robust, high-performance APIs using Laravel's industry-leading best practices. With this toolkit, you can streamline your development process and build APIs that are both fast and organized. Whether you're a seasoned developer or just getting started, the Laravel API Toolkit has everything you need to build world-class APIs that meet your business needs.
+Supercharge your API development with the Api Toolkit, using standardized responses, dynamic pagination, advanced filtering, one-click full CRUD setup, logic clarity, media mastery, and crystal-clear enums. Let's elevate your development journey with high-performance APIs!
 
 ## Why Choose the Laravel API Toolkit?
 

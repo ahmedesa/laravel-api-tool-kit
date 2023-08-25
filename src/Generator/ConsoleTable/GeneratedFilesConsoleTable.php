@@ -16,7 +16,7 @@ class GeneratedFilesConsoleTable implements ConsoleTableInterface
 
         foreach ($apiGeneratorOptions as $option => $config) {
             if ($apiGenerationCommandInputs->isOptionSelected($option)) {
-                $resolverFilePath = $config['path-resolver'];
+                $resolverFilePath = $config['path_resolver'];
                 $tableData[] = [
                     $option,
                     (new $resolverFilePath($apiGenerationCommandInputs->getModel()))->getFullPath()

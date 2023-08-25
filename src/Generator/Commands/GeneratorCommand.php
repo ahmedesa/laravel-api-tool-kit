@@ -39,7 +39,7 @@ abstract class GeneratorCommand implements GeneratorCommandInterface
 
     protected function getOutputFilePath(): PathResolverInterface
     {
-        $pathResolverClass = config("api-tool-kit.api_generators.options.{$this->type}.path-resolver");
+        $pathResolverClass = config("api-tool-kit.api_generators.options.{$this->type}.path_resolver");
 
         return new $pathResolverClass($this->apiGenerationCommandInputs->getModel());
     }

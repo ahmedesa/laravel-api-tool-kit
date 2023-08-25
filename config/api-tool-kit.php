@@ -56,58 +56,47 @@ return [
     */
     'api_generators' => [
         'commands' => [
-            [
-                'option' => 'model',
+            'model' => [
                 'command' => ModelGeneratorCommand::class,
                 'path-resolver' => ModelPathResolver::class
             ],
-            [
-                'option' => 'factory',
+            'factory' => [
                 'command' => FactoryGeneratorCommand::class,
                 'path-resolver' => FactoryPathResolver::class
             ],
-            [
-                'option' => 'seeder',
+            'seeder' => [
                 'command' => SeederGeneratorCommand::class,
                 'path-resolver' => SeederPathResolver::class
             ],
-            [
-                'option' => 'controller',
+            'controller' => [
                 'command' => ControllerGeneratorCommand::class,
                 'path-resolver' => ControllerPathResolver::class
             ],
-            [
-                'option' => 'resource',
+            'resource' => [
                 'command' => ResourceGeneratorCommand::class,
                 'path-resolver' => ResourcePathResolver::class
             ],
-            [
-                'option' => 'test',
+            'test' => [
                 'command' => TestGeneratorCommand::class,
                 'path-resolver' => TestPathResolver::class
             ],
-            [
-                'option' => 'request',
+            'update-request' => [
                 'command' => CreateFormRequestGeneratorCommand::class,
                 'path-resolver' => CreateFormRequestPathResolver::class
             ],
-            [
-                'option' => 'request',
+            'create-request' => [
                 'command' => UpdateFormRequestGeneratorCommand::class,
                 'path-resolver' => UpdateFormRequestPathResolver::class
             ],
-            [
-                'option' => 'filter',
+            'filter' => [
                 'command' => FilterGeneratorCommand::class,
                 'path-resolver' => FilterPathResolver::class
             ],
-            [
-                'option' => 'migration',
+            'migration' => [
                 'command' => MigrationGeneratorCommand::class,
                 'path-resolver' => MigrationPathResolver::class
             ],
-            [
-                'option' => 'routes',
+            'routes' => [
                 'command' => RoutesGeneratorCommand::class,
                 'path-resolver' => RoutesPathResolver::class
             ],

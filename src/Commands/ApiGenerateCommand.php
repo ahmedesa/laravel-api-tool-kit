@@ -104,25 +104,25 @@ class ApiGenerateCommand extends Command
             return false;
         }
 
-        $userChoices = $this->getUserChoices();
-
-        $schemaDefinition = SchemaDefinition::createFromSchemaString($this->argument('schema'));
-
-        $apiGenerationCommandInputs = new ApiGenerationCommandInputs($model, $userChoices, $schemaDefinition);
+        $apiGenerationCommandInputs = new ApiGenerationCommandInputs(
+            model: $model,
+            userChoices: $this->getUserChoices(),
+            schema: SchemaDefinition::createFromSchemaString($this->argument('schema'))
+        );
 
         $this->executeCommands($apiGenerationCommandInputs);
 
         $this->info('Here is your schema : ');
 
-        $table = new SchemaConsoleTable($schemaDefinition);
+        $table = new SchemaConsoleTable();
 
-        $this->displayTable($table->generate());
+        $this->displayTable($table->generate($apiGenerationCommandInputs));
 
         $this->info('Generated Files : ');
 
-        $table = new GeneratedFilesConsoleTable($apiGenerationCommandInputs);
+        $table = new GeneratedFilesConsoleTable();
 
-        $this->displayTable($table->generate());
+        $this->displayTable($table->generate($apiGenerationCommandInputs));
     }
 
 
@@ -157,7 +157,12 @@ class ApiGenerateCommand extends Command
             $this->setDefaultOptions();
         }
 
-        return $this->options() + ['model' => true];
+        $a = [
+            'update-request' => $this->option('request'),
+            'create-request' => $this->option('request'),
+        ];
+
+        return $this->options() + ['model' => true] + $a;
     }
 
     private function setDefaultOptions(): void
@@ -178,8 +183,8 @@ class ApiGenerateCommand extends Command
     {
         $commandDefinitions = config('api-tool-kit.api_generators.commands');
 
-        foreach ($commandDefinitions as $definition) {
-            if ($apiGenerationCommandInputs->isOptionSelected($definition['option'])) {
+        foreach ($commandDefinitions as $option => $definition) {
+            if ($apiGenerationCommandInputs->isOptionSelected($option)) {
                 $this->container
                     ->get($definition['command'])
                     ->run($apiGenerationCommandInputs);

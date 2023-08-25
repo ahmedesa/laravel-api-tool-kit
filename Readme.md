@@ -19,11 +19,11 @@ We're working on enhancing the API Generator with schema support. This feature l
 ```bash
 php artisan api:generate ModelName --schema="column1:string,column2:integer,column3:datetime"
 ```
-*Note: The schema feature is inspired by the [Laravel 5 Generators Extended](https://github.com/laracasts/Laravel-5-Generators-Extended/tree/master) package.*
-
 <p align="center">
     <img src="api-generator.png">
 </p>
+
+*Note: The schema feature is inspired by the [Laravel 5 Generators Extended](https://github.com/laracasts/Laravel-5-Generators-Extended/tree/master) package.*
 
 ## Introduction
 Supercharge your API development with the Api Toolkit, using standardized responses, dynamic pagination, advanced filtering, one-click full CRUD setup, logic clarity, media mastery, and crystal-clear enums. Let's elevate your development journey with high-performance APIs!

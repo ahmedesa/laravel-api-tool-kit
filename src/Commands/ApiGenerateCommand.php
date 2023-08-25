@@ -175,7 +175,7 @@ class ApiGenerateCommand extends Command
         }
     }
 
-    private function isReservedName($name): bool
+    private function isReservedName(string $name): bool
     {
         return in_array(mb_strtolower($name), $this->reservedNames);
     }

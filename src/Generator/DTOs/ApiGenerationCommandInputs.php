@@ -22,4 +22,9 @@ class ApiGenerationCommandInputs
     {
         return $this->schema;
     }
+
+    public function isOptionSelected(string $option): bool
+    {
+        return $this->userChoices[$option];
+    }
 }

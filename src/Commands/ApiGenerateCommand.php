@@ -89,8 +89,6 @@ class ApiGenerateCommand extends Command
         'yield',
     ];
 
-    private array $defaultCommands = ['model'];
-
     public function __construct(private Container $container)
     {
         parent::__construct();
@@ -159,7 +157,7 @@ class ApiGenerateCommand extends Command
             $this->setDefaultOptions();
         }
 
-        return $this->options();
+        return $this->options() + ['model' => true];
     }
 
     private function setDefaultOptions(): void
@@ -181,7 +179,7 @@ class ApiGenerateCommand extends Command
         $commandDefinitions = config('api-tool-kit.api_generators.commands');
 
         foreach ($commandDefinitions as $definition) {
-            if ($this->shouldExecute($definition['option'])) {
+            if ($apiGenerationCommandInputs->isOptionSelected($definition['option'])) {
                 $this->container
                     ->get($definition['command'])
                     ->run($apiGenerationCommandInputs);
@@ -192,10 +190,5 @@ class ApiGenerateCommand extends Command
     private function displayTable(TableDate $output): void
     {
         $this->table($output->getHeaders(), $output->getTableData());
-    }
-
-    private function shouldExecute(string $option): bool
-    {
-        return in_array($option, $this->defaultCommands) || $this->option($option);
     }
 }

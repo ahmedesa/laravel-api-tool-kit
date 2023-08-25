@@ -19,7 +19,7 @@ class GeneratedFilesConsoleTable implements ConsoleTableInterface
         $tableData = [];
 
         foreach ($commandDefinitions as $definition) {
-            if ($this->shouldExecute($definition['option'])) {
+            if ($this->apiGenerationCommandInputs->isOptionSelected($definition['option'])) {
                 $resolverFilePath = $definition['path-resolver'];
                 $tableData[] = [
                     $definition['option'],
@@ -31,10 +31,5 @@ class GeneratedFilesConsoleTable implements ConsoleTableInterface
         $headers = ['Type', 'File Path'];
 
         return new TableDate($headers, $tableData);
-    }
-
-    private function shouldExecute(string $option): bool
-    {
-        return 'model' === $option || $this->apiGenerationCommandInputs->getUserChoices()[$option];
     }
 }

@@ -17,7 +17,7 @@ class MigrationGeneratorCommand extends GeneratorCommand implements SchemaReplac
     }
     protected function getStubName(): string
     {
-        return 'dummy_migration';
+        return 'dummyMigration';
     }
 
     protected function getOutputFilePath(): PathResolverInterface

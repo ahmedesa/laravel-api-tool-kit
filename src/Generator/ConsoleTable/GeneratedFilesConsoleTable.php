@@ -10,13 +10,13 @@ class GeneratedFilesConsoleTable implements ConsoleTableInterface
 {
     public function generate(ApiGenerationCommandInputs $apiGenerationCommandInputs): TableDate
     {
-        $commandDefinitions = config('api-tool-kit.api_generators.options');
+        $apiGeneratorOptions = config('api-tool-kit.api_generators.options');
 
         $tableData = [];
 
-        foreach ($commandDefinitions as $option => $definition) {
+        foreach ($apiGeneratorOptions as $option => $config) {
             if ($apiGenerationCommandInputs->isOptionSelected($option)) {
-                $resolverFilePath = $definition['path-resolver'];
+                $resolverFilePath = $config['path-resolver'];
                 $tableData[] = [
                     $option,
                     (new $resolverFilePath($apiGenerationCommandInputs->getModel()))->getFullPath()

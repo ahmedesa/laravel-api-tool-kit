@@ -116,10 +116,10 @@ abstract class GeneratorCommand implements GeneratorCommandInterface
     protected function getPlaceholderReplacements(): array
     {
         return [
-            'Dummy' => $this->apiGenerationCommandInputs->getModel(),
-            'Dummies' => Str::plural($this->apiGenerationCommandInputs->getModel()),
-            'dummy' => lcfirst($this->apiGenerationCommandInputs->getModel()),
-            'dummies' => lcfirst(Str::plural($this->apiGenerationCommandInputs->getModel())),
+            '{Dummy}' => $this->apiGenerationCommandInputs->getModel(),
+            '{Dummies}' => Str::plural($this->apiGenerationCommandInputs->getModel()),
+            '{dummy}' => lcfirst($this->apiGenerationCommandInputs->getModel()),
+            '{dummies}' => lcfirst(Str::plural($this->apiGenerationCommandInputs->getModel())),
         ];
     }
 }

@@ -12,7 +12,7 @@ class FactoryGeneratorCommand extends GeneratorCommand implements SchemaReplacem
     public function getSchemaReplacements(): array
     {
         return [
-            'factoryContent' => (new FactoryColumnsParser($this->apiGenerationCommandInputs->getSchema()))->parse(),
+            '{factoryContent}' => (new FactoryColumnsParser($this->apiGenerationCommandInputs->getSchema()))->parse(),
         ];
     }
     protected function getStubName(): string

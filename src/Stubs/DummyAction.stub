@@ -1,8 +1,8 @@
 <?php
 
-namespace DummyNamespace;
+namespace {Dummy}Namespace;
 
-class DummyClass
+class {Dummy}Class
 {
     public function execute(array $data)
     {

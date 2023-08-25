@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Http\Resources\Dummy;
+namespace App\Http\Resources\{Dummy};
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class DummyResource extends JsonResource
+class {Dummy}Resource extends JsonResource
 {
     public function toArray($request): array
     {
         return [
-            resourceContent
+            {resourceContent}
         ];
     }
 }

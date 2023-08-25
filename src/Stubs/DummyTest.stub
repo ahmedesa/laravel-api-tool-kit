@@ -4,28 +4,28 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use App\Models\User;
-use App\Models\Dummy;
+use App\Models\{Dummy};
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class DummyTest extends TestCase
+class {Dummy}Test extends TestCase
 {
     use  RefreshDatabase;
 
-    protected string $endpoint = '/api/dummies';
-    protected string $tableName = 'dummies';
+    protected string $endpoint = '/api/{dummies}';
+    protected string $tableName = '{dummies}';
 
     public function setUp(): void
     {
         parent::setUp();
     }
 
-    public function testCreateDummy(): void
+    public function testCreate{Dummy}(): void
     {
         $this->markTestIncomplete('This test case needs review.');
 
         $this->actingAs(User::factory()->create());
 
-        $payload = Dummy::factory()->make([])->toArray();
+        $payload = {Dummy}::factory()->make([])->toArray();
 
         $this->json('POST', $this->endpoint, $payload)
              ->assertStatus(201)
@@ -34,27 +34,27 @@ class DummyTest extends TestCase
         $this->assertDatabaseHas($this->tableName, ['id' => 1]);
     }
 
-    public function testViewAllDummiesSuccessfully(): void
+    public function testViewAll{Dummies}Successfully(): void
     {
         $this->markTestIncomplete('This test case needs review.');
 
         $this->actingAs(User::factory()->create());
 
-        Dummy::factory(5)->create();
+        {Dummy}::factory(5)->create();
 
         $this->json('GET', $this->endpoint)
              ->assertStatus(200)
              ->assertJsonCount(5, 'data')
-             ->assertSee(Dummy::first(rand(1, 5))->name);
+             ->assertSee({Dummy}::first(rand(1, 5))->name);
     }
 
-    public function testViewAllDummiesByFooFilter(): void
+    public function testViewAll{Dummies}ByFooFilter(): void
     {
         $this->markTestIncomplete('This test case needs review.');
 
         $this->actingAs(User::factory()->create());
 
-        Dummy::factory(5)->create();
+        {Dummy}::factory(5)->create();
 
         $this->json('GET', $this->endpoint.'?foo=1')
              ->assertStatus(200)
@@ -62,7 +62,7 @@ class DummyTest extends TestCase
              ->assertDontSee('foo');
     }
 
-    public function testsCreateDummyValidation(): void
+    public function testsCreate{Dummy}Validation(): void
     {
         $this->markTestIncomplete('This test case needs review.');
 
@@ -75,26 +75,26 @@ class DummyTest extends TestCase
              ->assertStatus(422);
     }
 
-    public function testViewDummyData(): void
+    public function testView{Dummy}Data(): void
     {
         $this->markTestIncomplete('This test case needs review.');
 
         $this->actingAs(User::factory()->create());
 
-        Dummy::factory()->create();
+        {Dummy}::factory()->create();
 
         $this->json('GET', $this->endpoint.'/1')
-             ->assertSee(Dummy::first()->name)
+             ->assertSee({Dummy}::first()->name)
              ->assertStatus(200);
     }
 
-    public function testUpdateDummy(): void
+    public function testUpdate{Dummy}(): void
     {
         $this->markTestIncomplete('This test case needs review.');
 
         $this->actingAs(User::factory()->create());
 
-        Dummy::factory()->create();
+        {Dummy}::factory()->create();
 
         $payload = [
             'name' => 'Random'
@@ -105,27 +105,27 @@ class DummyTest extends TestCase
              ->assertSee($payload['name']);
     }
 
-    public function testDeleteDummy(): void
+    public function testDelete{Dummy}(): void
     {
         $this->markTestIncomplete('This test case needs review.');
 
         $this->actingAs(User::factory()->create());
 
-        Dummy::factory()->create();
+        {Dummy}::factory()->create();
 
         $this->json('DELETE', $this->endpoint.'/1')
              ->assertStatus(204);
 
-        $this->assertEquals(0, Dummy::count());
+        $this->assertEquals(0, {Dummy}::count());
     }
     @if('soft-delete')
-    public function testRestoreDummy(): void
+    public function testRestore{Dummy}(): void
     {
         $this->markTestIncomplete('This test case needs review.');
 
         $this->actingAs(User::factory()->create());
 
-        Dummy::factory()->create();
+        {Dummy}::factory()->create();
 
         $this->json('DELETE', $this->endpoint.'/1')
              ->assertStatus(204);
@@ -139,13 +139,13 @@ class DummyTest extends TestCase
         ]);
     }
 
-    public function testPermanentDummy(): void
+    public function testPermanent{Dummy}(): void
     {
         $this->markTestIncomplete('This test case needs review.');
 
         $this->actingAs(User::factory()->create());
 
-        Dummy::factory()->create();
+        {Dummy}::factory()->create();
 
         $this->json('DELETE', $this->endpoint.'/1')
              ->assertStatus(204);

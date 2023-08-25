@@ -4,7 +4,7 @@ namespace App\Filters;
 
 use Essa\APIToolKit\Filters\QueryFilters;
 
-class DummyFilters extends QueryFilters
+class {Dummy}Filters extends QueryFilters
 {
     protected array $allowedFilters = [];
 

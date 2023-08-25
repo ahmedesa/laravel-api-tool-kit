@@ -12,7 +12,7 @@ class ResourceGeneratorCommand extends GeneratorCommand implements SchemaReplace
     public function getSchemaReplacements(): array
     {
         return [
-            'resourceContent' => (new ResourceAttributesParser($this->apiGenerationCommandInputs->getSchema()))->parse(),
+            '{resourceContent}' => (new ResourceAttributesParser($this->apiGenerationCommandInputs->getSchema()))->parse(),
         ];
     }
     protected function getStubName(): string

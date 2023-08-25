@@ -55,7 +55,7 @@ return [
     |
     */
     'api_generators' => [
-        'commands' => [
+        'options' => [
             'model' => [
                 'command' => ModelGeneratorCommand::class,
                 'path-resolver' => ModelPathResolver::class

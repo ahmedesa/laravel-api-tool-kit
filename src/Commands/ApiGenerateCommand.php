@@ -181,7 +181,7 @@ class ApiGenerateCommand extends Command
 
     private function executeCommands(ApiGenerationCommandInputs $apiGenerationCommandInputs): void
     {
-        $commandDefinitions = config('api-tool-kit.api_generators.commands');
+        $commandDefinitions = config('api-tool-kit.api_generators.options');
 
         foreach ($commandDefinitions as $option => $definition) {
             if ($apiGenerationCommandInputs->isOptionSelected($option)) {

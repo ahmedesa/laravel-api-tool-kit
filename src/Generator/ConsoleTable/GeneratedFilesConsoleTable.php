@@ -10,7 +10,7 @@ class GeneratedFilesConsoleTable implements ConsoleTableInterface
 {
     public function generate(ApiGenerationCommandInputs $apiGenerationCommandInputs): TableDate
     {
-        $commandDefinitions = config('api-tool-kit.api_generators.commands');
+        $commandDefinitions = config('api-tool-kit.api_generators.options');
 
         $tableData = [];
 

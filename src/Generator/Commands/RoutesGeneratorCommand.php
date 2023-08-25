@@ -2,8 +2,6 @@
 
 namespace Essa\APIToolKit\Generator\Commands;
 
-use Illuminate\Filesystem\Filesystem;
-
 class RoutesGeneratorCommand extends GeneratorCommand
 {
     protected string $type = 'routes';
@@ -15,7 +13,7 @@ class RoutesGeneratorCommand extends GeneratorCommand
 
     protected function saveContentToFile(): void
     {
-        app(Filesystem::class)->append(
+        $this->filesystem->append(
             base_path('routes/api.php'),
             $this->parseStub('DummyRoutes')
         );

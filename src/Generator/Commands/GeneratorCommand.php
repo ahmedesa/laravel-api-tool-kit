@@ -20,7 +20,7 @@ abstract class GeneratorCommand implements GeneratorCommandInterface
     protected string $type;
     protected ApiGenerationCommandInputs $apiGenerationCommandInputs;
 
-    public function __construct(private Filesystem $filesystem)
+    public function __construct(protected Filesystem $filesystem)
     {
     }
 

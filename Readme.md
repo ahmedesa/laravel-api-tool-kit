@@ -8,7 +8,7 @@
 ![Test Status](https://img.shields.io/github/actions/workflow/status/ahmedesa/laravel-api-tool-kit/test.yml?label=tests&branch=master)
 [![Total Downloads](https://img.shields.io/packagist/dt/essa/api-tool-kit.svg?style=flat-square)](https://packagist.org/packages/essa/api-tool-kit)
 
-## In Progress
+## In Progress 
 
 Adding Schema Support to API Generator
 
@@ -26,7 +26,7 @@ php artisan api:generate ModelName --schema="column1:string,column2:integer,colu
 *Note: The schema feature is inspired by the [Laravel 5 Generators Extended](https://github.com/laracasts/Laravel-5-Generators-Extended/tree/master) package.*
 
 ## Introduction
-Supercharge your API development with the Api Toolkit, using standardized responses, dynamic pagination, advanced filtering, one-click full CRUD setup, logic clarity, media mastery, and crystal-clear enums. Let's elevate your development journey with high-performance APIs!
+Supercharge your API development with the API Toolkit, using standardized responses, dynamic pagination, advanced filtering, one-click full CRUD setup, logic clarity, media mastery, and crystal-clear enums. Let's elevate your development journey with high-performance APIs!
 
 ## Why Choose the Laravel API Toolkit?
 
@@ -42,17 +42,18 @@ Don't fuss over managing the number of results per page. The dynamic pagination 
 ```php
 $users = User::dynamicPaginate();
 ```
-### Filtering Magic
-Refine query results with simplicity. The powerful filtering system lets you sort, search, and even include relationships, making data retrieval a cinch.
+### Simplified Filtering
+Refine query results with simplicity. The powerful filtering system lets you filter, sort, search, and even include relationships with ease.
 
 ```php
 Car::useFilters()->get();
 ```
-### Rapid API Setup
-Accelerate your workflow with the API Generator. This nifty tool automates essential file creation, from controllers to requests, helping you start strong.
+### Simplify API Setup with the API Generator
+
+Say goodbye to manual file setup! The API Generator does the hard work for you by creating key files from migrations to controllers automatically. Just use one simple command to kickstart your API development.
 
 ```
-php artisan api:generate ModelName
+php artisan api:generate ModelName --all
 ```
 ### Logic Made Clear
 Tackle complex business logic with Actions. These gems follow the command pattern, boosting readability and maintenance for your code.

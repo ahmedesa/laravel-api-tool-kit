@@ -157,12 +157,13 @@ class ApiGenerateCommand extends Command
             $this->setDefaultOptions();
         }
 
-        $a = [
+        $extraOptions = [
             'update-request' => $this->option('request'),
             'create-request' => $this->option('request'),
+            'model' => true
         ];
 
-        return $this->options() + ['model' => true] + $a;
+        return $this->options() + $extraOptions;
     }
 
     private function setDefaultOptions(): void

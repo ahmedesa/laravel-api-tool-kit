@@ -2,6 +2,7 @@
 
 namespace Essa\APIToolKit\Filters;
 
+use Essa\APIToolKit\Exceptions\MissingDefaultFiltersException;
 use Essa\APIToolKit\Filters\DTO\FiltersDTO;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
@@ -18,7 +19,7 @@ trait Filterable
         ?FiltersDTO $filteredDTO = null
     ): Builder {
         if ( ! property_exists($this, 'default_filters') && null === $filterClass) {
-            throw new Exception('please add default_filters property to the model');
+            throw new MissingDefaultFiltersException();
         }
 
         $filteredDTO ??= FiltersDTO::buildFromRequest(app(Request::class));

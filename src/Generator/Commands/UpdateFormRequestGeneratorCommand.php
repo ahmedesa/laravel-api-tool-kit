@@ -12,7 +12,7 @@ class UpdateFormRequestGeneratorCommand extends GeneratorCommand implements Sche
     public function getSchemaReplacements(): array
     {
         return [
-            '{updateValidationRules}' => (new UpdateValidationRulesParser($this->apiGenerationCommandInputs->getSchema()))->parse(),
+            'updateValidationRules' => (new UpdateValidationRulesParser($this->apiGenerationCommandInputs->getSchema()))->parse(),
         ];
     }
     protected function getStubName(): string

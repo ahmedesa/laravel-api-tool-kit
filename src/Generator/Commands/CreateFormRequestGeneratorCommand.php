@@ -11,7 +11,7 @@ class CreateFormRequestGeneratorCommand extends GeneratorCommand implements Sche
     public function getSchemaReplacements(): array
     {
         return [
-            '{createValidationRules}' => (new CreateValidationRulesParser($this->apiGenerationCommandInputs->getSchema()))->parse(),
+            'createValidationRules' => (new CreateValidationRulesParser($this->apiGenerationCommandInputs->getSchema()))->parse(),
         ];
     }
 

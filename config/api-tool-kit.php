@@ -1,38 +1,15 @@
 <?php
 
-use Essa\APIToolKit\Generator\Commands\ControllerGeneratorCommand;
-use Essa\APIToolKit\Generator\Commands\CreateFormRequestGeneratorCommand;
-use Essa\APIToolKit\Generator\Commands\FactoryGeneratorCommand;
-use Essa\APIToolKit\Generator\Commands\FilterGeneratorCommand;
-use Essa\APIToolKit\Generator\Commands\MigrationGeneratorCommand;
-use Essa\APIToolKit\Generator\Commands\ModelGeneratorCommand;
-use Essa\APIToolKit\Generator\Commands\ResourceGeneratorCommand;
-use Essa\APIToolKit\Generator\Commands\RoutesGeneratorCommand;
-use Essa\APIToolKit\Generator\Commands\SeederGeneratorCommand;
-use Essa\APIToolKit\Generator\Commands\TestGeneratorCommand;
-use Essa\APIToolKit\Generator\Commands\UpdateFormRequestGeneratorCommand;
-use Essa\APIToolKit\Generator\PathResolver\ControllerPathResolver;
-use Essa\APIToolKit\Generator\PathResolver\CreateFormRequestPathResolver;
-use Essa\APIToolKit\Generator\PathResolver\FactoryPathResolver;
-use Essa\APIToolKit\Generator\PathResolver\FilterPathResolver;
-use Essa\APIToolKit\Generator\PathResolver\MigrationPathResolver;
-use Essa\APIToolKit\Generator\PathResolver\ModelPathResolver;
-use Essa\APIToolKit\Generator\PathResolver\ResourcePathResolver;
-use Essa\APIToolKit\Generator\PathResolver\RoutesPathResolver;
-use Essa\APIToolKit\Generator\PathResolver\SeederPathResolver;
-use Essa\APIToolKit\Generator\PathResolver\TestPathResolver;
-use Essa\APIToolKit\Generator\PathResolver\UpdateFormRequestPathResolver;
-
 return [
     /*
     |--------------------------------------------------------------------------
     | Default Generators
     |--------------------------------------------------------------------------
     |
-    | the default option that will be created if no option specified
+    | The default options that will be created if no option is specified.
     |
-    | Supported options: 'seeder','controller','request','resource','factory',
-    |                    'migration','filter','test','routes'
+    | Supported options: 'seeder', 'controller', 'request', 'resource', 'factory',
+    |                    'migration', 'filter', 'test', 'routes'
     |
     */
     'default_generates' => [
@@ -48,57 +25,57 @@ return [
     ],
     /*
     |--------------------------------------------------------------------------
-    | api generators Commands
+    | API Generators Commands
     |--------------------------------------------------------------------------
     |
-    |   Don't touch !
+    | Define API generator commands and their path resolvers.
     |
     */
     'api_generators' => [
         'options' => [
             'model' => [
-                'command' => ModelGeneratorCommand::class,
-                'path-resolver' => ModelPathResolver::class
+                'command' => \Essa\APIToolKit\Generator\Commands\ModelGeneratorCommand::class,
+                'path-resolver' => \Essa\APIToolKit\Generator\PathResolver\ModelPathResolver::class
             ],
             'factory' => [
-                'command' => FactoryGeneratorCommand::class,
-                'path-resolver' => FactoryPathResolver::class
+                'command' => \Essa\APIToolKit\Generator\Commands\FactoryGeneratorCommand::class,
+                'path-resolver' => \Essa\APIToolKit\Generator\PathResolver\FactoryPathResolver::class
             ],
             'seeder' => [
-                'command' => SeederGeneratorCommand::class,
-                'path-resolver' => SeederPathResolver::class
+                'command' => \Essa\APIToolKit\Generator\Commands\SeederGeneratorCommand::class,
+                'path-resolver' => \Essa\APIToolKit\Generator\PathResolver\SeederPathResolver::class
             ],
             'controller' => [
-                'command' => ControllerGeneratorCommand::class,
-                'path-resolver' => ControllerPathResolver::class
+                'command' => \Essa\APIToolKit\Generator\Commands\ControllerGeneratorCommand::class,
+                'path-resolver' => \Essa\APIToolKit\Generator\PathResolver\ControllerPathResolver::class
             ],
             'resource' => [
-                'command' => ResourceGeneratorCommand::class,
-                'path-resolver' => ResourcePathResolver::class
+                'command' => \Essa\APIToolKit\Generator\Commands\ResourceGeneratorCommand::class,
+                'path-resolver' => \Essa\APIToolKit\Generator\PathResolver\ResourcePathResolver::class
             ],
             'test' => [
-                'command' => TestGeneratorCommand::class,
-                'path-resolver' => TestPathResolver::class
+                'command' => \Essa\APIToolKit\Generator\Commands\TestGeneratorCommand::class,
+                'path-resolver' => \Essa\APIToolKit\Generator\PathResolver\TestPathResolver::class
             ],
             'update-request' => [
-                'command' => CreateFormRequestGeneratorCommand::class,
-                'path-resolver' => CreateFormRequestPathResolver::class
+                'command' => \Essa\APIToolKit\Generator\Commands\CreateFormRequestGeneratorCommand::class,
+                'path-resolver' => \Essa\APIToolKit\Generator\PathResolver\CreateFormRequestPathResolver::class
             ],
             'create-request' => [
-                'command' => UpdateFormRequestGeneratorCommand::class,
-                'path-resolver' => UpdateFormRequestPathResolver::class
+                'command' => \Essa\APIToolKit\Generator\Commands\UpdateFormRequestGeneratorCommand::class,
+                'path-resolver' => \Essa\APIToolKit\Generator\PathResolver\UpdateFormRequestPathResolver::class
             ],
             'filter' => [
-                'command' => FilterGeneratorCommand::class,
-                'path-resolver' => FilterPathResolver::class
+                'command' => \Essa\APIToolKit\Generator\Commands\FilterGeneratorCommand::class,
+                'path-resolver' => \Essa\APIToolKit\Generator\PathResolver\FilterPathResolver::class
             ],
             'migration' => [
-                'command' => MigrationGeneratorCommand::class,
-                'path-resolver' => MigrationPathResolver::class
+                'command' => \Essa\APIToolKit\Generator\Commands\MigrationGeneratorCommand::class,
+                'path-resolver' => \Essa\APIToolKit\Generator\PathResolver\MigrationPathResolver::class
             ],
             'routes' => [
-                'command' => RoutesGeneratorCommand::class,
-                'path-resolver' => RoutesPathResolver::class
+                'command' => \Essa\APIToolKit\Generator\Commands\RoutesGeneratorCommand::class,
+                'path-resolver' => \Essa\APIToolKit\Generator\PathResolver\RoutesPathResolver::class
             ],
         ]
     ],
@@ -106,7 +83,7 @@ return [
     |--------------------------------------------------------------------------
     | Default Generators
     |--------------------------------------------------------------------------
-    | number of items per page when use dynamic pagination
+    | Number of items per page when using dynamic pagination.
     */
     'default_pagination_number' => 20,
 
@@ -120,10 +97,10 @@ return [
     */
     'filters' => [
         'handlers' => [
-            Essa\APIToolKit\Filters\Handlers\FiltersHandler::class,
-            Essa\APIToolKit\Filters\Handlers\SortHandler::class,
-            Essa\APIToolKit\Filters\Handlers\IncludesHandler::class,
-            Essa\APIToolKit\Filters\Handlers\SearchHandler::class,
+            \Essa\APIToolKit\Filters\Handlers\FiltersHandler::class,
+            \Essa\APIToolKit\Filters\Handlers\SortHandler::class,
+            \Essa\APIToolKit\Filters\Handlers\IncludesHandler::class,
+            \Essa\APIToolKit\Filters\Handlers\SearchHandler::class,
         ],
     ],
 ];

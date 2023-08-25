@@ -57,11 +57,11 @@ return [
                 'command' => \Essa\APIToolKit\Generator\Commands\TestGeneratorCommand::class,
                 'path-resolver' => \Essa\APIToolKit\Generator\PathResolver\TestPathResolver::class
             ],
-            'update-request' => [
+            'create-request' => [
                 'command' => \Essa\APIToolKit\Generator\Commands\CreateFormRequestGeneratorCommand::class,
                 'path-resolver' => \Essa\APIToolKit\Generator\PathResolver\CreateFormRequestPathResolver::class
             ],
-            'create-request' => [
+            'update-request' => [
                 'command' => \Essa\APIToolKit\Generator\Commands\UpdateFormRequestGeneratorCommand::class,
                 'path-resolver' => \Essa\APIToolKit\Generator\PathResolver\UpdateFormRequestPathResolver::class
             ],

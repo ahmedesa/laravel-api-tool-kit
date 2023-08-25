@@ -2,13 +2,12 @@
 
 namespace Essa\APIToolKit\Generator\Commands;
 
-use Essa\APIToolKit\Generator\Contracts\PathResolverInterface;
 use Essa\APIToolKit\Generator\Contracts\SchemaReplacementDataProvider;
-use Essa\APIToolKit\Generator\PathResolver\CreateFormRequestPathResolver;
 use Essa\APIToolKit\Generator\SchemaParsers\CreateValidationRulesParser;
 
 class CreateFormRequestGeneratorCommand extends GeneratorCommand implements SchemaReplacementDataProvider
 {
+    protected string $type = 'create-request';
     public function getSchemaReplacements(): array
     {
         return [
@@ -19,10 +18,5 @@ class CreateFormRequestGeneratorCommand extends GeneratorCommand implements Sche
     protected function getStubName(): string
     {
         return 'CreateDummyRequest';
-    }
-
-    protected function getOutputFilePath(): PathResolverInterface
-    {
-        return new CreateFormRequestPathResolver($this->apiGenerationCommandInputs->getModel());
     }
 }

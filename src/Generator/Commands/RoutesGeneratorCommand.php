@@ -2,20 +2,15 @@
 
 namespace Essa\APIToolKit\Generator\Commands;
 
-use Essa\APIToolKit\Generator\Contracts\PathResolverInterface;
-use Essa\APIToolKit\Generator\PathResolver\RoutesPathResolver;
 use Illuminate\Filesystem\Filesystem;
 
 class RoutesGeneratorCommand extends GeneratorCommand
 {
+    protected string $type = 'routes';
+
     protected function getStubName(): string
     {
         return 'routes';
-    }
-
-    protected function getOutputFilePath(): PathResolverInterface
-    {
-        return new RoutesPathResolver($this->apiGenerationCommandInputs->getModel());
     }
 
     protected function saveContentToFile(): void

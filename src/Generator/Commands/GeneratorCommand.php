@@ -17,6 +17,7 @@ abstract class GeneratorCommand implements GeneratorCommandInterface
         'resource',
         'filter',
     ];
+    protected string $type;
     protected ApiGenerationCommandInputs $apiGenerationCommandInputs;
 
     public function __construct(private Filesystem $filesystem)
@@ -35,7 +36,13 @@ abstract class GeneratorCommand implements GeneratorCommandInterface
     }
 
     abstract protected function getStubName(): string;
-    abstract protected function getOutputFilePath(): PathResolverInterface;
+
+    protected function getOutputFilePath(): PathResolverInterface
+    {
+        $pathResolverClass = config("api-tool-kit.api_generators.options.{$this->type}.path-resolver");
+
+        return new $pathResolverClass($this->apiGenerationCommandInputs->getModel());
+    }
 
     protected function createFolder(): void
     {

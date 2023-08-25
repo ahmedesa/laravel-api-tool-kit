@@ -2,13 +2,13 @@
 
 namespace Essa\APIToolKit\Generator\Commands;
 
-use Essa\APIToolKit\Generator\Contracts\PathResolverInterface;
 use Essa\APIToolKit\Generator\Contracts\SchemaReplacementDataProvider;
-use Essa\APIToolKit\Generator\PathResolver\MigrationPathResolver;
 use Essa\APIToolKit\Generator\SchemaParsers\MigrationContentParser;
 
 class MigrationGeneratorCommand extends GeneratorCommand implements SchemaReplacementDataProvider
 {
+    protected string $type = 'migration';
+
     public function getSchemaReplacements(): array
     {
         return [
@@ -18,10 +18,5 @@ class MigrationGeneratorCommand extends GeneratorCommand implements SchemaReplac
     protected function getStubName(): string
     {
         return 'dummyMigration';
-    }
-
-    protected function getOutputFilePath(): PathResolverInterface
-    {
-        return new MigrationPathResolver($this->apiGenerationCommandInputs->getModel());
     }
 }

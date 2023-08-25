@@ -2,14 +2,14 @@
 
 namespace Essa\APIToolKit\Generator\Commands;
 
-use Essa\APIToolKit\Generator\Contracts\PathResolverInterface;
 use Essa\APIToolKit\Generator\Contracts\SchemaReplacementDataProvider;
-use Essa\APIToolKit\Generator\PathResolver\ModelPathResolver;
 use Essa\APIToolKit\Generator\SchemaParsers\FillableColumnsParser;
 use Essa\APIToolKit\Generator\SchemaParsers\RelationshipMethodsParser;
 
 class ModelGeneratorCommand extends GeneratorCommand implements SchemaReplacementDataProvider
 {
+    protected string $type = 'model';
+
     public function getSchemaReplacements(): array
     {
         return [
@@ -20,10 +20,5 @@ class ModelGeneratorCommand extends GeneratorCommand implements SchemaReplacemen
     protected function getStubName(): string
     {
         return 'Dummy';
-    }
-
-    protected function getOutputFilePath(): PathResolverInterface
-    {
-        return new ModelPathResolver($this->apiGenerationCommandInputs->getModel());
     }
 }

@@ -2,17 +2,12 @@
 
 namespace Essa\APIToolKit\Generator\Commands;
 
-use Essa\APIToolKit\Generator\Contracts\PathResolverInterface;
-use Essa\APIToolKit\Generator\PathResolver\ControllerPathResolver;
-
 class ControllerGeneratorCommand extends GeneratorCommand
 {
+    protected string $type = 'controller';
+
     protected function getStubName(): string
     {
         return 'DummyController';
-    }
-    protected function getOutputFilePath(): PathResolverInterface
-    {
-        return new ControllerPathResolver($this->apiGenerationCommandInputs->getModel());
     }
 }

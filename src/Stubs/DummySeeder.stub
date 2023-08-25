@@ -12,7 +12,7 @@ class {Dummy}Seeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
         {Dummy}::factory(10)->create();
     }

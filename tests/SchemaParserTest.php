@@ -157,9 +157,9 @@ class SchemaParserTest extends TestCase
         $output = $schemaParser->parse();
 
         $expectedValidationRulesForCreate = "
-        'name' => 'required',
-        'age' => 'required',
-        'price' => 'required',
+        'name' => ['required', 'string'],
+        'age' => ['required', 'integer'],
+        'price' => ['required', 'numeric'],
     ";
 
         $this->assertStringContainsString(
@@ -173,14 +173,14 @@ class SchemaParserTest extends TestCase
      */
     public function ParseGeneratesUpdateValidationRules(): void
     {
-        $schema = 'name:string,age:integer,price:decimal';
+        $schema = 'email:string,age:integer,price:decimal';
         $schemaParser = new UpdateValidationRulesParser(SchemaDefinition::createFromSchemaString($schema));
         $output = $schemaParser->parse();
 
         $expectedValidationRulesForUpdate = "
-        'name' => 'sometimes',
-        'age' => 'sometimes',
-        'price' => 'sometimes',
+        'email' => ['sometimes', 'email', 'string'],
+        'age' => ['sometimes', 'integer'],
+        'price' => ['sometimes', 'numeric'],
     ";
 
         $this->assertStringContainsString(

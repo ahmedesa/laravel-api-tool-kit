@@ -4,6 +4,7 @@ namespace Essa\APIToolKit\Generator\SchemaParsers;
 
 use Essa\APIToolKit\Generator\DTOs\ColumnDefinition;
 use Essa\APIToolKit\Generator\DTOs\SchemaDefinition;
+use Essa\APIToolKit\Generator\Guessers\FactoryMethodGuesser;
 
 class FactoryColumnsParser extends SchemaParser
 {
@@ -16,7 +17,8 @@ class FactoryColumnsParser extends SchemaParser
 
     private function generateFactoryColumnDefinition(ColumnDefinition $definition): string
     {
-        $factoryMethod = $this->getFactoryMethod($definition->getType());
+        $factoryMethodGuesser = new FactoryMethodGuesser($definition);
+        $factoryMethod = $factoryMethodGuesser->guess();
 
         return "'{$definition->getName()}' => \$this->faker->{$factoryMethod}(),";
     }

@@ -49,4 +49,9 @@ class ColumnDefinition
     {
         return $this->options;
     }
+
+    public function isTimeType(): bool
+    {
+        return in_array($this->getType(), ['date', 'dateTime', 'dateTimeTz', 'timestamp', 'timestampTz','datetime']);
+    }
 }

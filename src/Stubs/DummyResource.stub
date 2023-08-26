@@ -10,6 +10,8 @@ class DummyResource extends JsonResource
     {
         return [
             resourceContent
+            'created_at' => dateTimeFormat($this->created_at),
+            'updated_at' => dateTimeFormat($this->updated_at),
         ];
     }
 }

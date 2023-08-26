@@ -130,7 +130,7 @@ class SchemaParserTest extends TestCase
      */
     public function ParseGeneratesResourceAttributes(): void
     {
-        $schema = 'name:string,age:integer,price:decimal';
+        $schema = 'name:string,age:integer,price:decimal,opened_at:datetime';
         $schemaParser = new ResourceAttributesParser(SchemaDefinition::createFromSchemaString($schema));
         $output = $schemaParser->parse();
 
@@ -138,6 +138,7 @@ class SchemaParserTest extends TestCase
         'name' => \$this->name,
         'age' => \$this->age,
         'price' => \$this->price,
+        'opened_at' => dateTimeFormat(\$this->opened_at),
     ";
 
         $this->assertStringContainsString(

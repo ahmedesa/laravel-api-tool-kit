@@ -24,19 +24,6 @@ abstract class TestCase extends OrchestraTestCase
         );
     }
 
-    private function createRoutesFile(): void
-    {
-        $filePath = base_path('routes/api.php');
-
-        if (is_dir($filePath)) {
-            rmdir($filePath);
-        }
-
-        if (!file_exists($filePath)) {
-            touch($filePath);
-        }
-    }
-
     protected function getPackageProviders($app): array
     {
         return [
@@ -71,5 +58,18 @@ abstract class TestCase extends OrchestraTestCase
         $content = str_replace(["\r\n", "\r"], "\n", $content);
 
         return trim($content);
+    }
+
+    private function createRoutesFile(): void
+    {
+        $filePath = base_path('routes/api.php');
+
+        if (is_dir($filePath)) {
+            rmdir($filePath);
+        }
+
+        if ( ! file_exists($filePath)) {
+            touch($filePath);
+        }
     }
 }

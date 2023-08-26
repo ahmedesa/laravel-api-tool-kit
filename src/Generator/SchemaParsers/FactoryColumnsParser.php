@@ -22,19 +22,4 @@ class FactoryColumnsParser extends SchemaParser
 
         return "'{$definition->getName()}' => \$this->faker->{$factoryMethod}(),";
     }
-
-    private function getFactoryMethod(string $columnType): string
-    {
-        return match ($columnType) {
-            'string', 'char' => 'firstName',
-            'integer', 'unsignedInteger', 'bigInteger', 'unsignedBigInteger',
-            'mediumInteger', 'tinyInteger', 'smallInteger','foreignId' => 'randomNumber',
-            'boolean' => 'boolean',
-            'decimal', 'double', 'float' => 'randomFloat',
-            'date', 'dateTime', 'dateTimeTz', 'timestamp', 'timestampTz','datetime' => 'dateTime',
-            'time', 'timeTz' => 'time',
-            'uuid' => 'uuid',
-            default => 'text',
-        };
-    }
 }

@@ -17,9 +17,24 @@ abstract class TestCase extends OrchestraTestCase
 
         $this->setUpDatabase($this->app);
 
+        $this->createRoutesFile();
+
         Factory::guessFactoryNamesUsing(
             fn (string $modelName) => 'Essa\\APIToolKit\\Tests\\database\\factories\\' . class_basename($modelName) . 'Factory'
         );
+    }
+
+    private function createRoutesFile(): void
+    {
+        $filePath = base_path('routes/api.php');
+
+        if (is_dir($filePath)) {
+            rmdir($filePath);
+        }
+
+        if (!file_exists($filePath)) {
+            touch($filePath);
+        }
     }
 
     protected function getPackageProviders($app): array

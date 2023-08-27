@@ -152,12 +152,12 @@ class SchemaParserTest extends TestCase
      */
     public function ParseGeneratesCreateValidationRules(): void
     {
-        $schema = 'name:string|age:integer|price:decimal';
+        $schema = 'name:string:nullable|age:integer|price:decimal';
         $schemaParser = new CreateValidationRulesParser(SchemaDefinition::createFromSchemaString($schema));
         $output = $schemaParser->parse();
 
         $expectedValidationRulesForCreate = "
-        'name' => ['required', 'string'],
+        'name' => ['nullable', 'string'],
         'age' => ['required', 'integer'],
         'price' => ['required', 'numeric'],
     ";

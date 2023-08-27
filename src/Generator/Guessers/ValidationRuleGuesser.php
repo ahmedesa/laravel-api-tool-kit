@@ -13,7 +13,7 @@ class ValidationRuleGuesser implements Guesser
 
     public function guess(): string
     {
-        $rules = $this->extraValidation + [];
+        $rules = $this->addExtraValidationToTheRules();
 
         if (str_contains($this->definition->getName(), 'email')) {
 
@@ -61,5 +61,19 @@ class ValidationRuleGuesser implements Guesser
         }
 
         return "'" . implode("', '", $rules) . "'";
+    }
+
+    private function shouldAddNullableRule(): bool
+    {
+        return in_array('nullable', $this->definition->getOptions()) && $this->extraValidation === ['required'];
+    }
+
+    private function addExtraValidationToTheRules(): array
+    {
+        if ( ! $this->shouldAddNullableRule()) {
+            return $this->extraValidation;
+        }
+
+        return ['nullable'];
     }
 }

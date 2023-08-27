@@ -76,7 +76,7 @@ class ApiGenerateCommandTest extends TestCase
 
         $this->artisan('api:generate', [
             'model' => $model,
-            'schema' => $schema = "username:string:default('ahmed'),email:string:unique,company_data_id:foreignId:cascadeOnDelete",
+            'schema' => $schema = "username:string:default('ahmed')|email:string:unique|company_data_id:foreignId:cascadeOnDelete",
         ])
             ->assertExitCode(0);
 
@@ -103,7 +103,7 @@ class ApiGenerateCommandTest extends TestCase
 
         $this->artisan('api:generate', [
             'model' => $model,
-            'schema' => $schema = "username:string:default('ahmed'),email:string:unique,company_id:foreignId:cascadeOnDelete",
+            'schema' => $schema = "username:string:default('ahmed')|email:string:unique|company_id:foreignId:cascadeOnDelete",
             '--migration' => true,
         ])
             ->assertExitCode(0);
@@ -125,7 +125,7 @@ class ApiGenerateCommandTest extends TestCase
 
         $this->artisan('api:generate', [
             'model' => $model,
-            'schema' => $schema = "username:string:default('ahmed'),code:integer:unique,company_data_id:foreignId:cascadeOnDelete",
+            'schema' => $schema = "username:string:default('ahmed')|code:integer:unique|company_data_id:foreignId:cascadeOnDelete",
             '--factory' => true,
         ])
             ->assertExitCode(0);
@@ -147,7 +147,7 @@ class ApiGenerateCommandTest extends TestCase
 
         $this->artisan('api:generate', [
             'model' => $model,
-            'schema' => $schema = "username:string:default('ahmed'),email:string:unique,company_data_id:foreignId:cascadeOnDelete",
+            'schema' => $schema = "username:string:default('ahmed')|email:string:unique|company_data_id:foreignId:cascadeOnDelete",
             '--all' => true,
         ])
             ->assertExitCode(0);
@@ -169,7 +169,7 @@ class ApiGenerateCommandTest extends TestCase
 
         $this->artisan('api:generate', [
             'model' => $model,
-            'schema' => $schema = "username:string:default('ahmed'),email:string:unique,company_data_id:foreignId:cascadeOnDelete",
+            'schema' => $schema = "username:string:default('ahmed')|email:string:unique|company_data_id:foreignId:cascadeOnDelete",
             '--request' => true,
         ])
             ->assertExitCode(0);

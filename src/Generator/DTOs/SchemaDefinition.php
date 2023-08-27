@@ -14,7 +14,7 @@ class SchemaDefinition
             return new self([]);
         }
 
-        $columnDefinitions = explode(',', $schema);
+        $columnDefinitions = explode('|', $schema);
 
         $columns = [];
 

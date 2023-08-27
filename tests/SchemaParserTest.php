@@ -21,7 +21,7 @@ class SchemaParserTest extends TestCase
      */
     public function GenerateFillableColumns(): void
     {
-        $schema = 'name:string,age:integer,email:string:unique';
+        $schema = 'name:string|age:integer|email:string:unique';
         $schemaParser = new FillableColumnsParser(SchemaDefinition::createFromSchemaString($schema));
         $output = $schemaParser->parse();
 
@@ -42,7 +42,7 @@ class SchemaParserTest extends TestCase
      */
     public function ParseGeneratesMigrationContent(): void
     {
-        $schema = 'name:string,age:integer';
+        $schema = 'name:string|age:integer';
         $schemaParser = new MigrationContentParser(SchemaDefinition::createFromSchemaString($schema));
         $output = $schemaParser->parse();
 
@@ -62,7 +62,7 @@ class SchemaParserTest extends TestCase
      */
     public function GenerateRelationshipMethod(): void
     {
-        $schema = 'author_id:foreignId,category_id:foreignId';
+        $schema = 'author_id:foreignId|category_id:foreignId';
         $schemaParser = new RelationshipMethodsParser(SchemaDefinition::createFromSchemaString($schema));
         $output = $schemaParser->parse();
 
@@ -88,7 +88,7 @@ class SchemaParserTest extends TestCase
      */
     public function ParseGeneratesFactoryColumns(): void
     {
-        $schema = 'name:string,age:integer,price:decimal';
+        $schema = 'name:string|age:integer|price:decimal';
         $schemaParser = new FactoryColumnsParser(SchemaDefinition::createFromSchemaString($schema));
         $output = $schemaParser->parse();
 
@@ -109,7 +109,7 @@ class SchemaParserTest extends TestCase
      */
     public function ParseGeneratesColumnDefinitions(): void
     {
-        $schema = 'name:string,age:integer,price:decimal';
+        $schema = 'name:string|age:integer|price:decimal';
         $schemaParser = new MigrationContentParser(SchemaDefinition::createFromSchemaString($schema));
         $output = $schemaParser->parse();
 
@@ -130,7 +130,7 @@ class SchemaParserTest extends TestCase
      */
     public function ParseGeneratesResourceAttributes(): void
     {
-        $schema = 'name:string,age:integer,price:decimal,opened_at:datetime';
+        $schema = 'name:string|age:integer|price:decimal|opened_at:datetime';
         $schemaParser = new ResourceAttributesParser(SchemaDefinition::createFromSchemaString($schema));
         $output = $schemaParser->parse();
 
@@ -152,7 +152,7 @@ class SchemaParserTest extends TestCase
      */
     public function ParseGeneratesCreateValidationRules(): void
     {
-        $schema = 'name:string,age:integer,price:decimal';
+        $schema = 'name:string|age:integer|price:decimal';
         $schemaParser = new CreateValidationRulesParser(SchemaDefinition::createFromSchemaString($schema));
         $output = $schemaParser->parse();
 
@@ -173,7 +173,7 @@ class SchemaParserTest extends TestCase
      */
     public function ParseGeneratesUpdateValidationRules(): void
     {
-        $schema = 'email:string,age:integer,price:decimal';
+        $schema = 'email:string|age:integer|price:decimal';
         $schemaParser = new UpdateValidationRulesParser(SchemaDefinition::createFromSchemaString($schema));
         $output = $schemaParser->parse();
 

@@ -8,33 +8,24 @@
 ![Test Status](https://img.shields.io/github/actions/workflow/status/ahmedesa/laravel-api-tool-kit/test.yml?label=tests&branch=master)
 [![Total Downloads](https://img.shields.io/packagist/dt/essa/api-tool-kit.svg?style=flat-square)](https://packagist.org/packages/essa/api-tool-kit)
 
-## In Progress 
-
-Adding Schema Support to API Generator
-
-**How Schema Support Works (Upcoming Feature)**
-
-We're working on enhancing the API Generator with schema support. This feature lets you define your database table structure directly from the command line, and it will generate factory model migrations, requests, and all specified data based on this schema:
-
-```bash
-php artisan api:generate ModelName --schema="column1:string,column2:integer,column3:datetime"
-```
-<p align="center">
-    <img src="api-generator.png">
-</p>
-
-*Note: The schema feature is inspired by the [Laravel 5 Generators Extended](https://github.com/laracasts/Laravel-5-Generators-Extended/tree/master) package.*
-
 ## Introduction
 Supercharge your API development with the API Toolkit, using standardized responses, dynamic pagination, advanced filtering, one-click full CRUD setup, logic clarity, media mastery, and crystal-clear enums. Let's elevate your development journey with high-performance APIs!
-
+## Installation
+to install the package using Composer:
+```
+composer require essa/api-tool-kit
+```
 ## Why Choose the Laravel API Toolkit?
 
 ### Consistent Responses, Less Hassle
-Crafting responses that clients can easily understand becomes a breeze. With the toolkit's standardized response formats, your communication is seamless, saving you time and effort.
-
-```php
-$this->responseSuccess('Car created successfully', $car);
+The API Response feature simplifies generating consistent JSON responses. It provides a standardized format for your api responses:
+```json
+{
+  "message": "your resource successfully",
+  "data": [
+    ...
+  ]
+}
 ```
 ### Pagination Done Right
 Don't fuss over managing the number of results per page. The dynamic pagination feature adapts effortlessly to your needs, giving you control without complications.
@@ -50,11 +41,21 @@ Car::useFilters()->get();
 ```
 ### Simplify API Setup with the API Generator
 
-Say goodbye to manual file setup! The API Generator does the hard work for you by creating key files from migrations to controllers automatically. Just use one simple command to kickstart your API development.
-
+The API Generator automates file setup, creating key files from migrations to controllers. Use one command to kickstart your API development.
 ```
 php artisan api:generate ModelName --all
 ```
+#### Schema Support (Upcoming Feature)
+Enhance the API Generator with schema support, allowing you to define your database table structure directly from the command line. Generate factory model migrations, requests, and data based on this schema.
+
+```
+php artisan api:generate ModelName --schema="column1:string|column2:integer|column3:datetime"
+```
+
+<p align="center">
+    <img src="api-generator.png">
+</p>
+
 ### Logic Made Clear
 Tackle complex business logic with Actions. These gems follow the command pattern, boosting readability and maintenance for your code.
 
@@ -68,8 +69,7 @@ Handle file uploads and deletions like a pro. The Media Helper streamlines media
 $filePath = MediaHelper::uploadFile($file, $path);
 ```
 ### Enums for Clarity
-Say goodbye to hardcoded values. Enums replace them with meaningful constants, resulting in cleaner, more understandable code.
-
+The Enum class provides a way to work with enumerations, eliminating hardcoded values in your code:
 ```php
 namespace App\Enums;
 

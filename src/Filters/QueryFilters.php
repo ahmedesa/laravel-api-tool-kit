@@ -35,7 +35,7 @@ class QueryFilters
                 columnSearch: $this->columnSearch,
                 relationSearch: $this->relationSearch
             ))
-            ->through(config('api-tool-kit.filters.handlers'))
+            ->through(config('api-tool-kit-internal.filters.handlers'))
             ->thenReturn()
             ->getBuilder();
     }

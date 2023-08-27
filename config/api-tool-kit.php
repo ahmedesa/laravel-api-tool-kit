@@ -6,10 +6,10 @@ return [
     | Default Generators
     |--------------------------------------------------------------------------
     |
-    | the default option that will be created if no option specified
+    | The default options that will be created if no option is specified.
     |
-    | Supported options: 'seeder','controller','request','resource','factory',
-    |                    'migration','filter','test','routes'
+    | Supported options: 'seeder', 'controller', 'request', 'resource', 'factory',
+    |                    'migration', 'filter', 'test', 'routes'
     |
     */
     'default_generates' => [
@@ -27,24 +27,17 @@ return [
     |--------------------------------------------------------------------------
     | Default Generators
     |--------------------------------------------------------------------------
-    | number of items per page when use dynamic pagination
+    | Number of items per page when using dynamic pagination.
     */
     'default_pagination_number' => 20,
 
     /*
     |--------------------------------------------------------------------------
-    | Filters
+    | Default Datetime Format for API Resources
     |--------------------------------------------------------------------------
-    |
-    | Specify the list of handler classes for processing query filters.
-    | These handlers will be applied in the specified order.
+    | The default format for displaying date and time values in API resources.
+    | Used by the dateTimeFormat function when generating API resource responses,
+    | ensuring consistent formatting for datetime values.
     */
-    'filters' => [
-        'handlers' => [
-            Essa\APIToolKit\Filters\Handlers\FiltersHandler::class,
-            Essa\APIToolKit\Filters\Handlers\SortHandler::class,
-            Essa\APIToolKit\Filters\Handlers\IncludesHandler::class,
-            Essa\APIToolKit\Filters\Handlers\SearchHandler::class,
-        ],
-    ],
+    'datetime_format' => 'Y-m-d H:i:s',
 ];

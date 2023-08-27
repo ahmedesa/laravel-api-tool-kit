@@ -8,6 +8,11 @@ class DummyResource extends JsonResource
 {
     public function toArray($request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            resourceContent
+            'created_at' => dateTimeFormat($this->created_at),
+            'updated_at' => dateTimeFormat($this->updated_at),
+        ];
     }
 }

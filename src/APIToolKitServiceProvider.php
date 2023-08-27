@@ -2,8 +2,8 @@
 
 namespace Essa\APIToolKit;
 
+use Essa\APIToolKit\Commands\ApiGenerateCommand;
 use Essa\APIToolKit\Commands\GeneratePermissions;
-use Essa\APIToolKit\Commands\GeneratorCommand;
 use Essa\APIToolKit\Commands\MakeActionCommand;
 use Essa\APIToolKit\Commands\MakeEnumCommand;
 use Essa\APIToolKit\Commands\MakeFilterCommand;
@@ -31,6 +31,8 @@ class APIToolKitServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/api-tool-kit.php', 'api-tool-kit');
 
+        $this->mergeConfigFrom(__DIR__ . '/../config/api-tool-kit-internal.php', 'api-tool-kit-internal');
+
         if ($this->app->runningInConsole() && function_exists('config_path')) {
             $this->publishes([
                 __DIR__ . '/../config/api-tool-kit.php' => config_path('api-tool-kit.php'),
@@ -42,7 +44,7 @@ class APIToolKitServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->commands([
-                GeneratorCommand::class,
+                ApiGenerateCommand::class,
                 MakeActionCommand::class,
                 MakeEnumCommand::class,
                 GeneratePermissions::class,

@@ -43,7 +43,7 @@ class MakeFilterCommand extends GeneratorCommand
         return $rootNamespace . '\Filters';
     }
 
-    protected function replaceClass($stub, $name)
+    protected function replaceClass($stub, $name): array|string
     {
         $class = str_replace($this->getNamespace($name) . '\\', '', $name);
 

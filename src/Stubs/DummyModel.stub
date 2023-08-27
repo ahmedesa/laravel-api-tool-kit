@@ -20,6 +20,8 @@ class Dummy extends Model
      * @var array
      */
     protected $fillable = [
-
+        fillableColumns
     ];
+
+modelRelations
 }

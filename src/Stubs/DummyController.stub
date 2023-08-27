@@ -27,7 +27,7 @@ class DummyController extends Controller
 
     public function store(@if('request')CreateDummy@endif('request')Request $request): JsonResponse
     {
-        $dummy = Dummy::create($request->all());
+        $dummy = Dummy::create($request->validated());
 
         return $this->responseCreated('Dummy created successfully', @if('resource')new DummyResource(@endif('resource')$dummy@if('resource'))@endif('resource'));
     }
@@ -39,7 +39,7 @@ class DummyController extends Controller
 
     public function update(@if('request')UpdateDummy@endif('request')Request $request, Dummy $dummy): JsonResponse
     {
-        $dummy->update($request->all());
+        $dummy->update($request->validated());
 
         return $this->responseSuccess('Dummy updated Successfully', @if('resource')new DummyResource(@endif('resource')$dummy@if('resource'))@endif('resource'));
     }

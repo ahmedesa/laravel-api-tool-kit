@@ -17,6 +17,8 @@ abstract class TestCase extends OrchestraTestCase
 
         $this->setUpDatabase($this->app);
 
+        $this->createRoutesFile();
+
         Factory::guessFactoryNamesUsing(
             fn (string $modelName) => 'Essa\\APIToolKit\\Tests\\database\\factories\\' . class_basename($modelName) . 'Factory'
         );
@@ -47,5 +49,27 @@ abstract class TestCase extends OrchestraTestCase
             $table->string('slug');
             $table->foreignId('test_model_id')->nullable();
         });
+    }
+
+
+    protected function normalizeWhitespaceAndNewlines(string $content): string
+    {
+        $content = preg_replace('/\s+/', ' ', $content);
+        $content = str_replace(["\r\n", "\r"], "\n", $content);
+
+        return trim($content);
+    }
+
+    private function createRoutesFile(): void
+    {
+        $filePath = base_path('routes/api.php');
+
+        if (is_dir($filePath)) {
+            rmdir($filePath);
+        }
+
+        if ( ! file_exists($filePath)) {
+            touch($filePath);
+        }
     }
 }

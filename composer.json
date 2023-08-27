@@ -36,15 +36,15 @@
     "autoload": {
         "psr-4": {
             "Essa\\APIToolKit\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Essa\\APIToolKit\\Tests\\": "tests"
         },
         "files": [
             "src/helpers.php"
         ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Essa\\APIToolKit\\Tests\\": "tests"
+        }
     },
     "extra": {
         "laravel": {

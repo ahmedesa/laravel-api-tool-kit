@@ -4,7 +4,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 if ( ! function_exists('dateTimeFormat')) {
-    function dateTimeFormat(?string $value, ?string $format): ?string
+    function dateTimeFormat(?string $value, ?string $format = null): ?string
     {
         $format ??= config('api-tool-kit.datetime_format');
 
@@ -13,14 +13,14 @@ if ( ! function_exists('dateTimeFormat')) {
 }
 
 if ( ! function_exists('createOrRandomFactory')) {
-    function createOrRandomFactory($class_name): Model
+    function createOrRandomFactory($className): Model
     {
-        $class = new $class_name();
+        $class = new $className();
 
         if ($class::count()) {
             return $class::inRandomOrder()->first();
         }
 
-        return $class_name::factory()->create();
+        return $className::factory()->create();
     }
 }

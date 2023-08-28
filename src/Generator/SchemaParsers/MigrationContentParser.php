@@ -29,6 +29,10 @@ class MigrationContentParser extends SchemaParser
             return $this->getForeignKeyColumnDefinition($definition->getName());
         }
 
+        if ($definition->isEnum()) {
+            return $this->getEnumColumnDefinition($definition);
+        }
+
         return "\$table->{$definition->getType()}('{$definition->getName()}')";
     }
 
@@ -49,5 +53,12 @@ class MigrationContentParser extends SchemaParser
     private function addOption(string $option): string
     {
         return preg_match('/\(/', $option) ? "->{$option}" : "->{$option}()";
+    }
+
+    private function getEnumColumnDefinition(ColumnDefinition $definition): string
+    {
+        $enumValuesString = "'" . implode("', '", $definition->getEnumValues()) . "'";
+
+        return "\$table->enum('{$definition->getName()}', [{$enumValuesString}])";
     }
 }

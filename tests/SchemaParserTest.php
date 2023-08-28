@@ -21,7 +21,7 @@ class SchemaParserTest extends TestCase
      */
     public function GenerateFillableColumns(): void
     {
-        $schema = 'name:string|age:integer|email:string:unique';
+        $schema = 'name:string|age:integer|email:string:unique|status:enum(approved,rejected)';
         $schemaParser = new FillableColumnsParser(SchemaDefinition::createFromSchemaString($schema));
         $output = $schemaParser->parse();
 
@@ -29,6 +29,7 @@ class SchemaParserTest extends TestCase
             'name',
             'age',
             'email',
+            'status',
         ";
 
         $this->assertStringContainsString(
@@ -110,7 +111,7 @@ class SchemaParserTest extends TestCase
      */
     public function ParseGeneratesColumnDefinitions(): void
     {
-        $schema = 'name:string|age:integer|price:decimal';
+        $schema = 'name:string|age:integer|price:decimal|status:enum(approved,rejected)';
         $schemaParser = new MigrationContentParser(SchemaDefinition::createFromSchemaString($schema));
         $output = $schemaParser->parse();
 
@@ -118,6 +119,7 @@ class SchemaParserTest extends TestCase
         \$table->string('name');
         \$table->integer('age');
         \$table->decimal('price');
+        \$table->enum('status', ['approved', 'rejected']);
     ";
 
         $this->assertStringContainsString(
@@ -131,7 +133,7 @@ class SchemaParserTest extends TestCase
      */
     public function ParseGeneratesResourceAttributes(): void
     {
-        $schema = 'name:string|age:integer|price:decimal|opened_at:datetime';
+        $schema = 'name:string|age:integer|price:decimal|opened_at:datetime|status:enum(approved,rejected)';
         $schemaParser = new ResourceAttributesParser(SchemaDefinition::createFromSchemaString($schema));
         $output = $schemaParser->parse();
 
@@ -140,6 +142,7 @@ class SchemaParserTest extends TestCase
         'age' => \$this->age,
         'price' => \$this->price,
         'opened_at' => dateTimeFormat(\$this->opened_at),
+        'status' => \$this->status,
     ";
 
         $this->assertStringContainsString(
@@ -153,7 +156,7 @@ class SchemaParserTest extends TestCase
      */
     public function ParseGeneratesCreateValidationRules(): void
     {
-        $schema = 'name:string:nullable|age:integer|price:decimal';
+        $schema = 'name:string:nullable|age:integer|price:decimal|status:enum(approved,rejected)';
         $schemaParser = new CreateValidationRulesParser(SchemaDefinition::createFromSchemaString($schema));
         $output = $schemaParser->parse();
 
@@ -161,6 +164,7 @@ class SchemaParserTest extends TestCase
         'name' => ['nullable', 'string'],
         'age' => ['required', 'integer'],
         'price' => ['required', 'numeric'],
+        'status' => ['required', 'in:approved,rejected'],
     ";
 
         $this->assertStringContainsString(

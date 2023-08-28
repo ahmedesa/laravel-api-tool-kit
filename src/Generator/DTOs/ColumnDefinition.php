@@ -35,6 +35,16 @@ class ColumnDefinition
         return 'foreignId' === $this->type;
     }
 
+    public function isEnum(): bool
+    {
+        return str_contains($this->type, 'enum(');
+    }
+
+    public function getEnumValues(): array
+    {
+        return array_map('trim', explode(',', trim($this->type, 'enum() ')));
+    }
+
     public function getName(): string
     {
         return $this->name;
@@ -42,6 +52,10 @@ class ColumnDefinition
 
     public function getType(): string
     {
+        if ($this->isEnum()) {
+            return 'enum';
+        }
+
         return $this->type;
     }
 
@@ -52,6 +66,6 @@ class ColumnDefinition
 
     public function isTimeType(): bool
     {
-        return in_array($this->getType(), ['date', 'dateTime', 'dateTimeTz', 'timestamp', 'timestampTz','datetime']);
+        return in_array($this->getType(), ['date', 'dateTime', 'dateTimeTz', 'timestamp', 'timestampTz', 'datetime']);
     }
 }

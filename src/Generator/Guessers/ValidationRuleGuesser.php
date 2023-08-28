@@ -15,48 +15,51 @@ class ValidationRuleGuesser implements Guesser
     {
         $rules = $this->addExtraValidationToTheRules();
 
-        if (str_contains($this->definition->getName(), 'email')) {
+        if ($this->definition->isEnum()) {
+            $rules[] = 'in:' . implode(',', $this->definition->getEnumValues());
+        }
 
+        if ($this->isEmailColumn()) {
             $rules[] = 'email';
         }
 
-        if (str_contains($this->definition->getName(), 'image')) {
+        if ($this->isImageColumn()) {
             $rules[] = 'image';
         }
 
-        if (in_array($this->definition->getType(), ['string', 'text'])) {
+        if ($this->isStringOrText()) {
             $rules[] = 'string';
         }
 
-        if (in_array($this->definition->getType(), ['integer', 'bigInteger', 'unsignedBigInteger', 'mediumInteger', 'tinyInteger', 'smallInteger'])) {
+        if ($this->isIntegerType()) {
             $rules[] = 'integer';
         }
 
-        if ('boolean' === $this->definition->getType()) {
+        if ($this->isBooleanType()) {
             $rules[] = 'boolean';
         }
 
-        if (in_array($this->definition->getType(), ['decimal', 'double', 'float'])) {
+        if ($this->isNumericType()) {
             $rules[] = 'numeric';
         }
 
-        if (in_array($this->definition->getType(), ['date', 'dateTime', 'dateTimeTz', 'timestamp', 'timestampTz'])) {
+        if ($this->isDateType()) {
             $rules[] = 'date';
         }
 
-        if (in_array($this->definition->getType(), ['time', 'timeTz'])) {
+        if ($this->isTimeType()) {
             $rules[] = 'date_format:H:i:s';
         }
 
-        if (in_array($this->definition->getType(), ['uuid', 'uuidBinary'])) {
+        if ($this->isUuidType()) {
             $rules[] = 'uuid';
         }
 
-        if ('ipAddress' === $this->definition->getType()) {
+        if ($this->isIpAddressType()) {
             $rules[] = 'ip';
         }
 
-        if (in_array($this->definition->getType(), ['json', 'jsonb'])) {
+        if ($this->isJsonType()) {
             $rules[] = 'json';
         }
 
@@ -75,5 +78,60 @@ class ValidationRuleGuesser implements Guesser
         }
 
         return ['nullable'];
+    }
+
+    private function isEmailColumn(): bool
+    {
+        return str_contains($this->definition->getName(), 'email');
+    }
+
+    private function isImageColumn(): bool
+    {
+        return str_contains($this->definition->getName(), 'image');
+    }
+
+    private function isStringOrText(): bool
+    {
+        return in_array($this->definition->getType(), ['string', 'text']) && ! $this->isImageColumn();
+    }
+
+    private function isIntegerType(): bool
+    {
+        return in_array($this->definition->getType(), ['integer', 'bigInteger', 'unsignedBigInteger', 'mediumInteger', 'tinyInteger', 'smallInteger']);
+    }
+
+    private function isBooleanType(): bool
+    {
+        return 'boolean' === $this->definition->getType();
+    }
+
+    private function isNumericType(): bool
+    {
+        return in_array($this->definition->getType(), ['decimal', 'double', 'float']);
+    }
+
+    private function isDateType(): bool
+    {
+        return in_array($this->definition->getType(), ['date', 'dateTime', 'dateTimeTz', 'timestamp', 'timestampTz']);
+    }
+
+    private function isTimeType(): bool
+    {
+        return in_array($this->definition->getType(), ['time', 'timeTz']);
+    }
+
+    private function isUuidType(): bool
+    {
+        return in_array($this->definition->getType(), ['uuid', 'uuidBinary']);
+    }
+
+    private function isIpAddressType(): bool
+    {
+        return 'ipAddress' === $this->definition->getType();
+    }
+
+    private function isJsonType(): bool
+    {
+        return in_array($this->definition->getType(), ['json', 'jsonb']);
     }
 }

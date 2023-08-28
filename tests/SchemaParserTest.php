@@ -89,7 +89,7 @@ class SchemaParserTest extends TestCase
      */
     public function ParseGeneratesFactoryColumns(): void
     {
-        $schema = 'name:string|age:integer|price:decimal|user_id:foreignId';
+        $schema = 'name:string|age:integer|price:decimal|user_id:foreignId|status:enum(approved,rejected)';
         $schemaParser = new FactoryColumnsParser(SchemaDefinition::createFromSchemaString($schema));
         $output = $schemaParser->parse();
 
@@ -98,6 +98,7 @@ class SchemaParserTest extends TestCase
         'age' => \$this->faker->randomNumber(),
         'price' => \$this->faker->randomFloat(),
         'user_id' =>  createOrRandomFactory(\App\Models\User::class),
+        'status' => \$this->faker->randomElement(['approved', 'rejected']),
     ";
 
         $this->assertStringContainsString(

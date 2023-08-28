@@ -25,7 +25,7 @@ class FactoryColumnsParser extends SchemaParser
         $factoryMethodGuesser = new FactoryMethodGuesser($definition);
         $factoryMethod = $factoryMethodGuesser->guess();
 
-        return "'{$definition->getName()}' => \$this->faker->{$factoryMethod}(),";
+        return "'{$definition->getName()}' => \$this->faker->{$factoryMethod},";
     }
 
     private function isRelationColumn(ColumnDefinition $definition): bool

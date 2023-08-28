@@ -14,10 +14,16 @@ class FactoryMethodGuesser implements Guesser
     public function guess(): string
     {
         if ($this->isEmailColumn($this->definition)) {
-            return 'safeEmail';
+            return 'safeEmail()';
         }
 
-        return $this->guessByType();
+        if ($this->definition->isEnum()) {
+            $enumValuesString = "'" . implode("', '", $this->definition->getEnumValues()) . "'";
+
+            return "randomElement([{$enumValuesString}])";
+        }
+
+        return $this->guessByType() . "()";
     }
 
     private function isEmailColumn(ColumnDefinition $definition): bool

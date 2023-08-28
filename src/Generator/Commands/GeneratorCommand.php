@@ -3,8 +3,8 @@
 namespace Essa\APIToolKit\Generator\Commands;
 
 use Essa\APIToolKit\Generator\Contracts\GeneratorCommandInterface;
+use Essa\APIToolKit\Generator\Contracts\HasDynamicContent;
 use Essa\APIToolKit\Generator\Contracts\PathResolverInterface;
-use Essa\APIToolKit\Generator\Contracts\SchemaReplacementDataProvider;
 use Essa\APIToolKit\Generator\DTOs\ApiGenerationCommandInputs;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
@@ -74,8 +74,8 @@ abstract class GeneratorCommand implements GeneratorCommandInterface
     {
         $replacements = $this->getPlaceholderReplacements();
 
-        if ($this instanceof SchemaReplacementDataProvider) {
-            $replacements = array_merge($replacements, $this->getSchemaReplacements());
+        if ($this instanceof HasDynamicContent) {
+            $replacements = array_merge($replacements, $this->getContent());
         }
 
         return strtr(

@@ -2,15 +2,15 @@
 
 namespace Essa\APIToolKit\Generator\Commands;
 
-use Essa\APIToolKit\Generator\Contracts\SchemaReplacementDataProvider;
+use Essa\APIToolKit\Generator\Contracts\HasDynamicContent;
 use Essa\APIToolKit\Generator\SchemaParsers\FillableColumnsParser;
 use Essa\APIToolKit\Generator\SchemaParsers\RelationshipMethodsParser;
 
-class ModelGeneratorCommand extends GeneratorCommand implements SchemaReplacementDataProvider
+class ModelGeneratorCommand extends GeneratorCommand implements HasDynamicContent
 {
     protected string $type = 'model';
 
-    public function getSchemaReplacements(): array
+    public function getContent(): array
     {
         return [
             'fillableColumns' =>  (new FillableColumnsParser($this->apiGenerationCommandInputs->getSchema()))->parse(),

@@ -2,14 +2,14 @@
 
 namespace Essa\APIToolKit\Generator\Commands;
 
-use Essa\APIToolKit\Generator\Contracts\SchemaReplacementDataProvider;
+use Essa\APIToolKit\Generator\Contracts\HasDynamicContent;
 use Essa\APIToolKit\Generator\SchemaParsers\MigrationContentParser;
 
-class MigrationGeneratorCommand extends GeneratorCommand implements SchemaReplacementDataProvider
+class MigrationGeneratorCommand extends GeneratorCommand implements HasDynamicContent
 {
     protected string $type = 'migration';
 
-    public function getSchemaReplacements(): array
+    public function getContent(): array
     {
         return [
             'migrationContent' => (new MigrationContentParser($this->apiGenerationCommandInputs->getSchema()))->parse(),

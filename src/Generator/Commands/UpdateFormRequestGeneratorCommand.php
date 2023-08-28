@@ -2,14 +2,14 @@
 
 namespace Essa\APIToolKit\Generator\Commands;
 
-use Essa\APIToolKit\Generator\Contracts\SchemaReplacementDataProvider;
+use Essa\APIToolKit\Generator\Contracts\HasDynamicContent;
 use Essa\APIToolKit\Generator\SchemaParsers\UpdateValidationRulesParser;
 
-class UpdateFormRequestGeneratorCommand extends GeneratorCommand implements SchemaReplacementDataProvider
+class UpdateFormRequestGeneratorCommand extends GeneratorCommand implements HasDynamicContent
 {
     protected string $type = 'update-request';
 
-    public function getSchemaReplacements(): array
+    public function getContent(): array
     {
         return [
             'updateValidationRules' => (new UpdateValidationRulesParser($this->apiGenerationCommandInputs->getSchema()))->parse(),

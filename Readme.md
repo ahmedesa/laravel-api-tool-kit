@@ -9,7 +9,7 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/essa/api-tool-kit.svg?style=flat-square)](https://packagist.org/packages/essa/api-tool-kit)
 
 ## Introduction
-Supercharge your API development with the API Toolkit, using standardized responses, dynamic pagination, advanced filtering, one-click full CRUD setup, logic clarity, media mastery, and crystal-clear enums. Let's elevate your development journey with high-performance APIs!
+Elevate your development journey with high-performance APIs using the API Toolkit. Supercharge your API development with standardized responses, dynamic pagination, advanced filtering, and a one-click full CRUD setup. Let's take your APIs to the next level!
 ## Installation
 to install the package using Composer:
 ```

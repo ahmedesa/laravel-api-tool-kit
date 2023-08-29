@@ -45,7 +45,7 @@ The API Generator automates file setup, creating key files from migrations to co
 ```
 php artisan api:generate ModelName --all
 ```
-#### Schema Support (Upcoming Feature)
+#### Schema Support
 Enhance the API Generator with schema support, allowing you to define your database table structure directly from the command line. Generate factory model migrations, requests, and data based on this schema.
 
 ```

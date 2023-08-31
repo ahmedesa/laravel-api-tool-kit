@@ -49,7 +49,7 @@ php artisan api:generate ModelName --all
 Enhance the API Generator with schema support, allowing you to define your database table structure directly from the command line. Generate factory model migrations, requests, and data based on this schema.
 
 ```
-php artisan api:generate ModelName --schema="column1:string|column2:integer|column3:datetime"
+php artisan api:generate ModelName "column1:string|column2:integer|column3:datetime"
 ```
 
 <p align="center">

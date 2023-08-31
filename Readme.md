@@ -83,5 +83,5 @@ class UserTypes extends Enum
 ## Official Documentation
 Access our documentation to unlock the full potential of the Laravel API Toolkit:
 
-[Explore the Documentation](https://ahmedesa.github.io/laravel-api-tool-kit-docs/)
+[Explore the Documentation](https://laravelapitoolkit.com/)
 

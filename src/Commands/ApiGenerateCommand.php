@@ -94,14 +94,14 @@ class ApiGenerateCommand extends Command
         parent::__construct();
     }
 
-    public function handle()
+    public function handle(): int
     {
         $model = ucfirst($this->argument('model'));
 
         if ($this->isReservedName($this->argument('model'))) {
             $this->error('The name "' . $this->argument('model') . '" is reserved by PHP.');
 
-            return false;
+            return self::FAILURE;
         }
 
         $apiGenerationCommandInputs = new ApiGenerationCommandInputs(
@@ -123,6 +123,8 @@ class ApiGenerateCommand extends Command
         $table = new GeneratedFilesConsoleTable();
 
         $this->displayTable($table->generate($apiGenerationCommandInputs));
+
+        return self::SUCCESS;
     }
 
 

@@ -20,6 +20,7 @@ use Essa\APIToolKit\Generator\SchemaParsers\MigrationContentParser;
 use Essa\APIToolKit\Generator\SchemaParsers\RelationshipMethodsParser;
 use Essa\APIToolKit\Generator\SchemaParsers\ResourceAttributesParser;
 use Essa\APIToolKit\Generator\SchemaParsers\UpdateValidationRulesParser;
+use Symfony\Component\Console\Command\Command;
 
 class ApiGenerateCommandTest extends TestCase
 {
@@ -32,7 +33,7 @@ class ApiGenerateCommandTest extends TestCase
             'model' => 'class',
         ])
             ->expectsOutput('The name "class" is reserved by PHP.')
-            ->assertExitCode(0);
+            ->assertExitCode(Command::FAILURE);
     }
 
     /**
@@ -46,7 +47,7 @@ class ApiGenerateCommandTest extends TestCase
             'model' => $model,
             '--all' => true,
         ])
-            ->assertExitCode(0);
+            ->assertExitCode(Command::SUCCESS);
 
         $this->assertFileExists((new ModelPathResolver($model))->getFullPath());
         $this->assertFileExists((new ControllerPathResolver($model))->getFullPath());
@@ -78,7 +79,7 @@ class ApiGenerateCommandTest extends TestCase
             'model' => $model,
             'schema' => $schema = "username:string:default('ahmed')|email:string:unique|company_data_id:foreignId:cascadeOnDelete",
         ])
-            ->assertExitCode(0);
+            ->assertExitCode(Command::SUCCESS);
 
         $generatedModelContent = file_get_contents((new ModelPathResolver($model))->getFullPath());
 
@@ -106,7 +107,7 @@ class ApiGenerateCommandTest extends TestCase
             'schema' => $schema = "username:string:default('ahmed')|email:string:unique|company_id:foreignId:cascadeOnDelete",
             '--migration' => true,
         ])
-            ->assertExitCode(0);
+            ->assertExitCode(Command::SUCCESS);
 
         $migrationContent = file_get_contents((new MigrationPathResolver($model))->getFullPath());
 
@@ -128,7 +129,7 @@ class ApiGenerateCommandTest extends TestCase
             'schema' => $schema = "username:string:default('ahmed')|code:integer:unique|company_data_id:foreignId:cascadeOnDelete",
             '--factory' => true,
         ])
-            ->assertExitCode(0);
+            ->assertExitCode(Command::SUCCESS);
 
         $factoryContent = file_get_contents((new FactoryPathResolver($model))->getFullPath());
 
@@ -150,7 +151,7 @@ class ApiGenerateCommandTest extends TestCase
             'schema' => $schema = "username:string:default('ahmed')|email:string:unique|company_data_id:foreignId:cascadeOnDelete",
             '--all' => true,
         ])
-            ->assertExitCode(0);
+            ->assertExitCode(Command::SUCCESS);
 
         $resourceContent = file_get_contents((new ResourcePathResolver($model))->getFullPath());
 
@@ -172,7 +173,7 @@ class ApiGenerateCommandTest extends TestCase
             'schema' => $schema = "username:string:default('ahmed')|email:string:unique|company_data_id:foreignId:cascadeOnDelete",
             '--request' => true,
         ])
-            ->assertExitCode(0);
+            ->assertExitCode(Command::SUCCESS);
 
         $createRequestContent = file_get_contents((new CreateFormRequestPathResolver($model))->getFullPath());
         $updateRequestContent = file_get_contents((new UpdateFormRequestPathResolver($model))->getFullPath());
@@ -200,7 +201,7 @@ class ApiGenerateCommandTest extends TestCase
             '--all' => true,
             '--soft-delete' => true
         ])
-            ->assertExitCode(0);
+            ->assertExitCode(Command::SUCCESS);
 
         $this->assertStringContainsString('SoftDeletes', file_get_contents((new ModelPathResolver($model))->getFullPath()));
         $this->assertStringContainsString('permanent-delete', file_get_contents((new RoutesPathResolver($model))->getFullPath()));
@@ -216,7 +217,7 @@ class ApiGenerateCommandTest extends TestCase
             'model' => 'CustomModel',
             '--all' => true,
         ])
-            ->assertExitCode(0);
+            ->assertExitCode(Command::SUCCESS);
 
         $this->assertStringNotContainsString('SoftDeletes', file_get_contents((new ModelPathResolver($model))->getFullPath()));
         $this->assertStringNotContainsString('permanent-delete', file_get_contents((new RoutesPathResolver($model))->getFullPath()));
@@ -244,7 +245,7 @@ class ApiGenerateCommandTest extends TestCase
             '--test' => true,
             '--routes' => true,
         ])
-            ->assertExitCode(0);
+            ->assertExitCode(Command::SUCCESS);
 
         $this->assertFileExists((new ModelPathResolver($model))->getFullPath());
         $this->assertFileExists((new ResourcePathResolver($model))->getFullPath());

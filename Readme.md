@@ -9,7 +9,7 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/essa/api-tool-kit.svg?style=flat-square)](https://packagist.org/packages/essa/api-tool-kit)
 
 ## Introduction
-Supercharge your API development with the API Toolkit, using standardized responses, dynamic pagination, advanced filtering, one-click full CRUD setup, logic clarity, media mastery, and crystal-clear enums. Let's elevate your development journey with high-performance APIs!
+Elevate your development journey with high-performance APIs using the API Toolkit. Supercharge your API development with standardized responses, dynamic pagination, advanced filtering, and a one-click full CRUD setup. Let's take your APIs to the next level!
 ## Installation
 to install the package using Composer:
 ```
@@ -45,11 +45,11 @@ The API Generator automates file setup, creating key files from migrations to co
 ```
 php artisan api:generate ModelName --all
 ```
-#### Schema Support (Upcoming Feature)
+#### Schema Support
 Enhance the API Generator with schema support, allowing you to define your database table structure directly from the command line. Generate factory model migrations, requests, and data based on this schema.
 
 ```
-php artisan api:generate ModelName --schema="column1:string|column2:integer|column3:datetime"
+php artisan api:generate ModelName "column1:string|column2:integer|column3:datetime"
 ```
 
 <p align="center">
@@ -83,5 +83,5 @@ class UserTypes extends Enum
 ## Official Documentation
 Access our documentation to unlock the full potential of the Laravel API Toolkit:
 
-[Explore the Documentation](https://ahmedesa.github.io/laravel-api-tool-kit-docs/)
+[Explore the Documentation](https://laravelapitoolkit.com/)
 

@@ -4,9 +4,9 @@ namespace Essa\APIToolKit\Commands;
 
 use Essa\APIToolKit\Generator\ConsoleTable\GeneratedFilesConsoleTable;
 use Essa\APIToolKit\Generator\ConsoleTable\SchemaConsoleTable;
+use Essa\APIToolKit\Generator\Contracts\ConsoleTableInterface;
 use Essa\APIToolKit\Generator\DTOs\ApiGenerationCommandInputs;
 use Essa\APIToolKit\Generator\DTOs\SchemaDefinition;
-use Essa\APIToolKit\Generator\DTOs\TableDate;
 use Illuminate\Console\Command;
 use Illuminate\Container\Container;
 use Symfony\Component\Console\Input\InputArgument;
@@ -114,15 +114,11 @@ class ApiGenerateCommand extends Command
 
         $this->info('Here is your schema : ');
 
-        $table = new SchemaConsoleTable();
-
-        $this->displayTable($table->generate($apiGenerationCommandInputs));
+        $this->displayTable(new SchemaConsoleTable(), $apiGenerationCommandInputs);
 
         $this->info('Generated Files : ');
 
-        $table = new GeneratedFilesConsoleTable();
-
-        $this->displayTable($table->generate($apiGenerationCommandInputs));
+        $this->displayTable(new GeneratedFilesConsoleTable(), $apiGenerationCommandInputs);
 
         return self::SUCCESS;
     }
@@ -195,8 +191,12 @@ class ApiGenerateCommand extends Command
         }
     }
 
-    private function displayTable(TableDate $output): void
-    {
+    private function displayTable(
+        ConsoleTableInterface $consoleTable,
+        ApiGenerationCommandInputs $apiGenerationCommandInputs
+    ): void {
+        $output = $consoleTable->generate($apiGenerationCommandInputs);
+
         $this->table($output->getHeaders(), $output->getTableData());
     }
 }

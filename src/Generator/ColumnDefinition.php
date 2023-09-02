@@ -1,6 +1,6 @@
 <?php
 
-namespace Essa\APIToolKit\Generator\DTOs;
+namespace Essa\APIToolKit\Generator;
 
 class ColumnDefinition
 {

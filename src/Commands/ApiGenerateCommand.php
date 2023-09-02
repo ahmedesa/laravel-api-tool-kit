@@ -2,11 +2,11 @@
 
 namespace Essa\APIToolKit\Commands;
 
+use Essa\APIToolKit\Generator\ApiGenerationCommandInputs;
 use Essa\APIToolKit\Generator\ConsoleTable\GeneratedFilesConsoleTable;
 use Essa\APIToolKit\Generator\ConsoleTable\SchemaConsoleTable;
 use Essa\APIToolKit\Generator\Contracts\ConsoleTableInterface;
-use Essa\APIToolKit\Generator\DTOs\ApiGenerationCommandInputs;
-use Essa\APIToolKit\Generator\DTOs\SchemaDefinition;
+use Essa\APIToolKit\Generator\SchemaDefinition;
 use Illuminate\Console\Command;
 use Illuminate\Container\Container;
 use Symfony\Component\Console\Input\InputArgument;

@@ -2,7 +2,7 @@
 
 namespace Essa\APIToolKit\Tests;
 
-use Essa\APIToolKit\Generator\DTOs\SchemaDefinition;
+use Essa\APIToolKit\Generator\SchemaDefinition;
 use Essa\APIToolKit\Generator\SchemaParsers\CreateValidationRulesParser;
 use Essa\APIToolKit\Generator\SchemaParsers\FactoryColumnsParser;
 use Essa\APIToolKit\Generator\SchemaParsers\FillableColumnsParser;

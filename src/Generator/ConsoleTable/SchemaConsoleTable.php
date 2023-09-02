@@ -2,9 +2,9 @@
 
 namespace Essa\APIToolKit\Generator\ConsoleTable;
 
+use Essa\APIToolKit\Generator\ApiGenerationCommandInputs;
 use Essa\APIToolKit\Generator\Contracts\ConsoleTableInterface;
-use Essa\APIToolKit\Generator\DTOs\ApiGenerationCommandInputs;
-use Essa\APIToolKit\Generator\DTOs\TableDate;
+use Essa\APIToolKit\Generator\TableDate;
 
 class SchemaConsoleTable implements ConsoleTableInterface
 {

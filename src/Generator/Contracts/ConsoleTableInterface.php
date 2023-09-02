@@ -2,8 +2,8 @@
 
 namespace Essa\APIToolKit\Generator\Contracts;
 
-use Essa\APIToolKit\Generator\DTOs\ApiGenerationCommandInputs;
-use Essa\APIToolKit\Generator\DTOs\TableDate;
+use Essa\APIToolKit\Generator\ApiGenerationCommandInputs;
+use Essa\APIToolKit\Generator\TableDate;
 
 interface ConsoleTableInterface
 {

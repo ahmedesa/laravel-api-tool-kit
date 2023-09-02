@@ -2,7 +2,6 @@
 
 namespace Essa\APIToolKit\Tests;
 
-use Essa\APIToolKit\Generator\DTOs\SchemaDefinition;
 use Essa\APIToolKit\Generator\PathResolver\ControllerPathResolver;
 use Essa\APIToolKit\Generator\PathResolver\CreateFormRequestPathResolver;
 use Essa\APIToolKit\Generator\PathResolver\FactoryPathResolver;
@@ -14,6 +13,7 @@ use Essa\APIToolKit\Generator\PathResolver\RoutesPathResolver;
 use Essa\APIToolKit\Generator\PathResolver\SeederPathResolver;
 use Essa\APIToolKit\Generator\PathResolver\TestPathResolver;
 use Essa\APIToolKit\Generator\PathResolver\UpdateFormRequestPathResolver;
+use Essa\APIToolKit\Generator\SchemaDefinition;
 use Essa\APIToolKit\Generator\SchemaParsers\CreateValidationRulesParser;
 use Essa\APIToolKit\Generator\SchemaParsers\FactoryColumnsParser;
 use Essa\APIToolKit\Generator\SchemaParsers\MigrationContentParser;

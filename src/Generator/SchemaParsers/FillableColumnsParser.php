@@ -2,8 +2,8 @@
 
 namespace Essa\APIToolKit\Generator\SchemaParsers;
 
-use Essa\APIToolKit\Generator\DTOs\ColumnDefinition;
-use Essa\APIToolKit\Generator\DTOs\SchemaDefinition;
+use Essa\APIToolKit\Generator\ColumnDefinition;
+use Essa\APIToolKit\Generator\SchemaDefinition;
 
 class FillableColumnsParser extends SchemaParser
 {

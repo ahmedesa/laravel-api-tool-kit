@@ -2,7 +2,7 @@
 
 namespace Essa\APIToolKit\Generator\Contracts;
 
-use Essa\APIToolKit\Generator\DTOs\ApiGenerationCommandInputs;
+use Essa\APIToolKit\Generator\ApiGenerationCommandInputs;
 
 interface GeneratorCommandInterface
 {

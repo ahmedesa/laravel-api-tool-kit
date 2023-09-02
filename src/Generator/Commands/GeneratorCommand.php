@@ -2,10 +2,10 @@
 
 namespace Essa\APIToolKit\Generator\Commands;
 
+use Essa\APIToolKit\Generator\ApiGenerationCommandInputs;
 use Essa\APIToolKit\Generator\Contracts\GeneratorCommandInterface;
 use Essa\APIToolKit\Generator\Contracts\HasDynamicContent;
 use Essa\APIToolKit\Generator\Contracts\PathResolverInterface;
-use Essa\APIToolKit\Generator\DTOs\ApiGenerationCommandInputs;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
 

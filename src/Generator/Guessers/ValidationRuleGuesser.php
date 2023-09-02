@@ -2,8 +2,8 @@
 
 namespace Essa\APIToolKit\Generator\Guessers;
 
+use Essa\APIToolKit\Generator\ColumnDefinition;
 use Essa\APIToolKit\Generator\Contracts\Guesser;
-use Essa\APIToolKit\Generator\DTOs\ColumnDefinition;
 
 class ValidationRuleGuesser implements Guesser
 {

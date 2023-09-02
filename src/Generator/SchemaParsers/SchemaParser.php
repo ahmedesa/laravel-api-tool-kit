@@ -2,7 +2,7 @@
 
 namespace Essa\APIToolKit\Generator\SchemaParsers;
 
-use Essa\APIToolKit\Generator\DTOs\SchemaDefinition;
+use Essa\APIToolKit\Generator\SchemaDefinition;
 
 abstract class SchemaParser
 {

@@ -23,7 +23,7 @@ class ExceptionHandlerTest extends TestCase
     public function HandlesAuthenticationException(): void
     {
         $exception = new AuthenticationException('Unauthenticated.');
-        $this->assertExceptionHandling($exception, 401, 'unauthenticated!', 'Unauthenticated.');
+        $this->assertExceptionHandling($exception, 401, 'Unauthenticated!', 'Unauthenticated.');
     }
 
     /**
@@ -61,7 +61,7 @@ class ExceptionHandlerTest extends TestCase
     public function HandlesAuthorizationException(): void
     {
         $exception = new AuthorizationException('Unauthorized action.');
-        $this->assertExceptionHandling($exception, 403, 'Unauthorized!', 'you are not authorized to preform this actions');
+        $this->assertExceptionHandling($exception, 403, 'Unauthorized!', 'you are not authorized to perform this action');
     }
 
     /**

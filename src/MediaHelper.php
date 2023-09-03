@@ -12,7 +12,7 @@ class MediaHelper
 
     public function __construct()
     {
-        self::$disk = config('filesystems.default') ?: self::$disk;
+        self::$disk = empty(config('filesystems.default')) ?: self::$disk;
     }
 
     public static function disk(string $name): static

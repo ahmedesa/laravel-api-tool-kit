@@ -17,7 +17,6 @@ class MediaHelperTest extends TestCase
     public function itUploadsFile(): void
     {
         Storage::fake('public');
-        Config::set('filesystems.default', 'public');
 
         $file = $this->getUploadedFile();
 
@@ -51,7 +50,6 @@ class MediaHelperTest extends TestCase
     public function itUploadsFileWithOriginalName(): void
     {
         Storage::fake('public');
-        Config::set('filesystems.default', 'public');
 
         $file = $this->getUploadedFile();
 
@@ -87,7 +85,6 @@ class MediaHelperTest extends TestCase
     public function itUploadsFileWithCustomName(): void
     {
         Storage::fake('public');
-        Config::set('filesystems.default', 'public');
 
         $file = $this->getUploadedFile();
 
@@ -127,7 +124,6 @@ class MediaHelperTest extends TestCase
     public function itUploadsMultipleFiles(): void
     {
         Storage::fake('public');
-        Config::set('filesystems.default', 'public');
 
         $files = [
             $this->getUploadedFile('test1.jpg'),
@@ -171,7 +167,6 @@ class MediaHelperTest extends TestCase
     public function itUploadsMultipleFilesWithCustomNames(): void
     {
         Storage::fake('public');
-        Config::set('filesystems.default', 'public');
 
         $files = [
             $this->getUploadedFile('test1.jpg'),
@@ -225,7 +220,6 @@ class MediaHelperTest extends TestCase
     public function itUploadsBase64Image(): void
     {
         Storage::fake('public');
-        Config::set('filesystems.default', 'public');
 
         $base64Image = self::BASE_64_IMAGE;
 
@@ -259,7 +253,6 @@ class MediaHelperTest extends TestCase
     public function itUploadsBase64ImageWithCustomName(): void
     {
         Storage::fake('public');
-        Config::set('filesystems.default', 'public');
 
         $base64Image = self::BASE_64_IMAGE;
 
@@ -299,7 +292,6 @@ class MediaHelperTest extends TestCase
     public function itDeletesFile(): void
     {
         Storage::fake('public');
-        Config::set('filesystems.default', 'public');
 
         $file = $this->getUploadedFile();
 
@@ -337,7 +329,6 @@ class MediaHelperTest extends TestCase
     public function itGetsFileFullPath(): void
     {
         Storage::fake('public');
-        Config::set('filesystems.default', 'public');
 
         $file = $this->getUploadedFile();
 
@@ -386,7 +377,6 @@ class MediaHelperTest extends TestCase
     public function itUploadsAndDeletesBase64Images(): void
     {
         Storage::fake('public');
-        Config::set('filesystems.default', 'public');
 
         $base64Image = self::BASE_64_IMAGE;
         $path = 'uploads/images';

@@ -2,23 +2,31 @@
 
 namespace Essa\APIToolKit;
 
+use Essa\APIToolKit\Enum\FileSystemDisk;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
 class MediaHelper
 {
+    protected static string $disk = FileSystemDisk::PUBLIC_DISK_NAME;
+
+    public static function disk(string $name): static
+    {
+        self::$disk = $name;
+        return new self();
+    }
+
     public static function uploadFile(
         UploadedFile $file,
         string $path,
         ?string $fileName = null,
-        bool $withOriginalName = false,
-        string $disk = "public"
+        bool $withOriginalName = false
     ): string {
         $fileName = $fileName ?: ($withOriginalName ? $file->getClientOriginalName() : $file->hashName());
 
         $fullFilePath = static::getBasePathPrefix() . $path;
 
-        return Storage::disk($disk)->putFileAs($fullFilePath, $file, $fileName);
+        return Storage::disk(self::$disk)->putFileAs($fullFilePath, $file, $fileName);
 
     }
 
@@ -29,8 +37,7 @@ class MediaHelper
         array $files,
         string $path,
         ?array $filesNames = null,
-        bool $withOriginalNames = false,
-        string $disk = "public"
+        bool $withOriginalNames = false
     ): array {
         $filesPaths = [];
 
@@ -41,8 +48,7 @@ class MediaHelper
                 $file,
                 $path,
                 $fileName,
-                $withOriginalNames,
-                $disk
+                $withOriginalNames
             );
         }
 
@@ -53,7 +59,6 @@ class MediaHelper
         string $decodedFile,
         string $path,
         ?string $fileName = null,
-        string $disk = "public"
     ): string {
         @[$type, $fileData] = explode(';', $decodedFile);
 
@@ -63,7 +68,7 @@ class MediaHelper
 
         $fullFilePath = static::getBasePathPrefix() . $path . '/' . $fileName;
 
-        Storage::disk($disk)->put(
+        Storage::disk(self::$disk)->put(
             $fullFilePath,
             base64_decode($fileData)
         );
@@ -71,16 +76,16 @@ class MediaHelper
         return $fullFilePath;
     }
 
-    public static function deleteFile(string $filePath, string $disk = "public"): void
+    public static function deleteFile(string $filePath): void
     {
-        if (Storage::disk($disk)->exists($filePath)) {
-            Storage::disk($disk)->delete($filePath);
+        if (Storage::disk(self::$disk)->exists($filePath)) {
+            Storage::disk(self::$disk)->delete($filePath);
         }
     }
 
-    public static function getFileFullPath(?string $filePath, string $disk = "public"): ?string
+    public static function getFileFullPath(?string $filePath): ?string
     {
-        return null === $filePath ? null : Storage::disk($disk)->url($filePath);
+        return null === $filePath ? null : Storage::disk(self::$disk)->url($filePath);
     }
 
     protected static function getBasePathPrefix(): string

@@ -15,7 +15,7 @@ class MediaHelperTest extends TestCase
     /** @test */
     public function itUploadsFile(): void
     {
-        Storage::fake();
+        Storage::fake('public');
 
         $file = $this->getUploadedFile();
 
@@ -23,7 +23,7 @@ class MediaHelperTest extends TestCase
 
         $disk = 'public';
 
-        $uploadedPath = MediaHelper::uploadFile(file: $file, path: $path, disk: $disk);
+        $uploadedPath = MediaHelper::disk($disk)->uploadFile(file: $file, path: $path);
 
         Storage::disk($disk)->assertExists($uploadedPath);
     }
@@ -31,7 +31,7 @@ class MediaHelperTest extends TestCase
     /** @test */
     public function itUploadsFileWithOriginalName(): void
     {
-        Storage::fake();
+        Storage::fake('public');
 
         $file = $this->getUploadedFile();
 
@@ -39,7 +39,7 @@ class MediaHelperTest extends TestCase
 
         $disk = 'public';
 
-        $uploadedPath = MediaHelper::uploadFile(file: $file, path: $path, withOriginalName: true, disk: $disk);
+        $uploadedPath = MediaHelper::disk($disk)->uploadFile(file: $file, path: $path, withOriginalName: true);
 
         Storage::disk($disk)->assertExists($uploadedPath);
         Storage::disk($disk)->assertExists($path . '/test1.jpg');
@@ -48,7 +48,7 @@ class MediaHelperTest extends TestCase
     /** @test */
     public function itUploadsFileWithCustomName(): void
     {
-        Storage::fake();
+        Storage::fake('public');
 
         $file = $this->getUploadedFile();
 
@@ -58,7 +58,7 @@ class MediaHelperTest extends TestCase
 
         $disk = 'public';
 
-        $uploadedPath = MediaHelper::uploadFile(file: $file, path: $path, fileName: $customFileName, disk: $disk);
+        $uploadedPath = MediaHelper::disk($disk)->uploadFile(file: $file, path: $path, fileName: $customFileName);
 
         Storage::disk($disk)->assertExists($uploadedPath);
         Storage::disk($disk)->assertExists($path . '/' . $customFileName);
@@ -78,7 +78,7 @@ class MediaHelperTest extends TestCase
 
         $disk = 'public';
 
-        $uploadedPaths = MediaHelper::uploadMultiple(files: $files, path: $path, disk: $disk);
+        $uploadedPaths = MediaHelper::disk($disk)->uploadMultiple(files: $files, path: $path);
 
         foreach ($uploadedPaths as $uploadedPath) {
             Storage::disk($disk)->assertExists($uploadedPath);
@@ -88,7 +88,7 @@ class MediaHelperTest extends TestCase
     /** @test */
     public function itUploadsMultipleFilesWithCustomNames(): void
     {
-        Storage::fake();
+        Storage::fake('public');
 
         $files = [
             $this->getUploadedFile('test1.jpg'),
@@ -101,7 +101,7 @@ class MediaHelperTest extends TestCase
 
         $disk = 'public';
 
-        $uploadedPaths = MediaHelper::uploadMultiple(files: $files, path: $path, filesNames: $customFileNames, disk: $disk);
+        $uploadedPaths = MediaHelper::disk($disk)->uploadMultiple(files: $files, path: $path, filesNames: $customFileNames);
 
         foreach ($uploadedPaths as $uploadedPath) {
             Storage::disk($disk)->assertExists($uploadedPath);
@@ -114,7 +114,7 @@ class MediaHelperTest extends TestCase
     /** @test */
     public function itUploadsBase64Image(): void
     {
-        Storage::fake();
+        Storage::fake('public');
 
         $base64Image = self::BASE_64_IMAGE;
 
@@ -122,7 +122,7 @@ class MediaHelperTest extends TestCase
 
         $disk = 'public';
 
-        $uploadedPath = MediaHelper::uploadBase64Image(decodedFile:  $base64Image, path: $path, disk: $disk);
+        $uploadedPath = MediaHelper::disk($disk)->uploadBase64Image(decodedFile:  $base64Image, path: $path);
 
         Storage::disk($disk)->assertExists($uploadedPath);
     }
@@ -130,7 +130,7 @@ class MediaHelperTest extends TestCase
     /** @test */
     public function itUploadsBase64ImageWithCustomName(): void
     {
-        Storage::fake();
+        Storage::fake('public');
 
         $base64Image = self::BASE_64_IMAGE;
 
@@ -140,7 +140,7 @@ class MediaHelperTest extends TestCase
 
         $disk = 'public';
 
-        $uploadedPath = MediaHelper::uploadBase64Image(decodedFile: $base64Image, path: $path, fileName: $customFileName, disk: $disk);
+        $uploadedPath = MediaHelper::disk($disk)->uploadBase64Image(decodedFile: $base64Image, path: $path, fileName: $customFileName);
 
         Storage::disk($disk)->assertExists($uploadedPath);
         Storage::disk($disk)->assertExists($path . '/' . $customFileName);
@@ -149,7 +149,7 @@ class MediaHelperTest extends TestCase
     /** @test */
     public function itDeletesFile(): void
     {
-        Storage::fake();
+        Storage::fake('public');
 
         $file = $this->getUploadedFile();
 
@@ -157,9 +157,9 @@ class MediaHelperTest extends TestCase
 
         $disk = 'public';
 
-        $uploadedPath = MediaHelper::uploadFile(file: $file, path: $path, disk: $disk);
+        $uploadedPath = MediaHelper::disk($disk)->uploadFile(file: $file, path: $path);
 
-        MediaHelper::deleteFile($uploadedPath);
+        MediaHelper::disk($disk)->deleteFile($uploadedPath);
 
         Storage::disk($disk)->assertMissing($uploadedPath);
     }
@@ -167,7 +167,7 @@ class MediaHelperTest extends TestCase
     /** @test */
     public function itGetsFileFullPath(): void
     {
-        Storage::fake();
+        Storage::fake('public');
 
         $file = $this->getUploadedFile();
 
@@ -175,7 +175,7 @@ class MediaHelperTest extends TestCase
 
         $disk = 'public';
 
-        $uploadedPath = MediaHelper::uploadFile(file: $file, path: $path, disk: $disk);
+        $uploadedPath = MediaHelper::disk($disk)->uploadFile(file: $file, path: $path);
 
         $fullPath = MediaHelper::getFileFullPath($uploadedPath);
 
@@ -185,7 +185,7 @@ class MediaHelperTest extends TestCase
     /** @test */
     public function itGetsNullFileFullPathForNullFilePath(): void
     {
-        Storage::fake();
+        Storage::fake('public');
 
         $fileFullPath = MediaHelper::getFileFullPath(null);
 
@@ -195,15 +195,15 @@ class MediaHelperTest extends TestCase
     /** @test */
     public function itUploadsAndDeletesBase64Images(): void
     {
-        Storage::fake();
+        Storage::fake('public');
 
         $base64Image = self::BASE_64_IMAGE;
         $path = 'uploads/images';
         $disk = 'public';
-        $uploadedPath = MediaHelper::uploadBase64Image(decodedFile: $base64Image, path: $path, disk: $disk);
+        $uploadedPath = MediaHelper::disk($disk)->uploadBase64Image(decodedFile: $base64Image, path: $path);
         Storage::disk($disk)->assertExists($uploadedPath);
 
-        MediaHelper::deleteFile(filePath: $uploadedPath, disk: $disk);
+        MediaHelper::disk($disk)->deleteFile(filePath: $uploadedPath);
         Storage::disk($disk)->assertMissing($uploadedPath);
     }
 

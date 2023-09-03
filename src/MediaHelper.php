@@ -10,6 +10,11 @@ class MediaHelper
 {
     protected static string $disk = FileSystemDisk::PUBLIC_DISK_NAME;
 
+    public function __construct()
+    {
+        self::$disk = config('filesystems.default') ?: self::$disk;
+    }
+
     public static function disk(string $name): static
     {
         self::$disk = $name;

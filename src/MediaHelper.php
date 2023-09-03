@@ -11,13 +11,15 @@ class MediaHelper
         UploadedFile $file,
         string $path,
         ?string $fileName = null,
-        bool $withOriginalName = false
+        bool $withOriginalName = false,
+        string $disk = "public"
     ): string {
         $fileName = $fileName ?: ($withOriginalName ? $file->getClientOriginalName() : $file->hashName());
 
         $fullFilePath = static::getBasePathPrefix() . $path;
 
-        return $file->storeAs($fullFilePath, $fileName);
+        return Storage::disk($disk)->putFileAs($fullFilePath, $file, $fileName);
+
     }
 
     /**
@@ -27,7 +29,8 @@ class MediaHelper
         array $files,
         string $path,
         ?array $filesNames = null,
-        bool $withOriginalNames = false
+        bool $withOriginalNames = false,
+        string $disk = "public"
     ): array {
         $filesPaths = [];
 
@@ -38,7 +41,8 @@ class MediaHelper
                 $file,
                 $path,
                 $fileName,
-                $withOriginalNames
+                $withOriginalNames,
+                $disk
             );
         }
 
@@ -48,17 +52,18 @@ class MediaHelper
     public static function uploadBase64Image(
         string $decodedFile,
         string $path,
-        ?string $fileName = null
+        ?string $fileName = null,
+        string $disk = "public"
     ): string {
         @[$type, $fileData] = explode(';', $decodedFile);
 
         @[, $fileData] = explode(',', $fileData);
 
-        $fileName = $fileName ?: time() . uniqid() . '.png';
+        $fileName = $fileName ?: time() . uniqid('', true) . '.png';
 
         $fullFilePath = static::getBasePathPrefix() . $path . '/' . $fileName;
 
-        Storage::put(
+        Storage::disk($disk)->put(
             $fullFilePath,
             base64_decode($fileData)
         );
@@ -66,16 +71,16 @@ class MediaHelper
         return $fullFilePath;
     }
 
-    public static function deleteFile(string $filePath): void
+    public static function deleteFile(string $filePath, string $disk = "public"): void
     {
-        if (Storage::exists($filePath)) {
-            Storage::delete($filePath);
+        if (Storage::disk($disk)->exists($filePath)) {
+            Storage::disk($disk)->delete($filePath);
         }
     }
 
-    public static function getFileFullPath(?string $filePath): ?string
+    public static function getFileFullPath(?string $filePath, string $disk = "public"): ?string
     {
-        return null === $filePath ? null : Storage::url($filePath);
+        return null === $filePath ? null : Storage::disk($disk)->url($filePath);
     }
 
     protected static function getBasePathPrefix(): string

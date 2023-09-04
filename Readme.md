@@ -85,3 +85,5 @@ Access our documentation to unlock the full potential of the Laravel API Toolkit
 
 [Explore the Documentation](https://laravelapitoolkit.com/)
 
+## Contributing
+We welcome your contributions to help make this package even better. Please refer to our [CONTRIBUTING.md](CONTRIBUTING.md) file for contribution guidelines.

@@ -12,7 +12,7 @@ class CreateFormRequestGeneratorCommand extends GeneratorCommand implements HasD
     public function getContent(): array
     {
         return [
-            'createValidationRules' => (new CreateValidationRulesParser($this->apiGenerationCommandInputs->getSchema()))->parse(),
+            '{{createValidationRules}}' => (new CreateValidationRulesParser($this->apiGenerationCommandInputs->getSchema()))->parse(),
         ];
     }
 

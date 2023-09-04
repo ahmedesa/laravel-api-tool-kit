@@ -12,7 +12,7 @@ class UpdateFormRequestGeneratorCommand extends GeneratorCommand implements HasD
     public function getContent(): array
     {
         return [
-            'updateValidationRules' => (new UpdateValidationRulesParser($this->apiGenerationCommandInputs->getSchema()))->parse(),
+            '{{updateValidationRules}}' => (new UpdateValidationRulesParser($this->apiGenerationCommandInputs->getSchema()))->parse(),
         ];
     }
     protected function getStubName(): string

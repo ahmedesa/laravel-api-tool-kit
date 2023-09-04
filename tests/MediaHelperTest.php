@@ -103,18 +103,17 @@ class MediaHelperTest extends TestCase
     /** @test */
     public function itUploadsFileWithCustomNameWithoutDisk(): void
     {
-        $disk = 'local';
+        $disk = 'public';
+
+        Config::set('filesystems.default', $disk);
 
         Storage::fake($disk);
-        Config::set('filesystems.default', $disk);
 
         $file = $this->getUploadedFile();
 
         $path = 'uploads/images';
 
         $customFileName = 'custom_name.jpg';
-
-        $disk = 'public';
 
         $uploadedPath = MediaHelper::uploadFile(file: $file, path: $path, fileName: $customFileName);
 
@@ -146,9 +145,10 @@ class MediaHelperTest extends TestCase
     /** @test */
     public function itUploadsMultipleFilesWithoutDisk(): void
     {
-        $disk = 'local';
+        $disk = 'public';
 
         Storage::fake($disk);
+
         Config::set('filesystems.default', $disk);
 
         $files = [
@@ -157,8 +157,6 @@ class MediaHelperTest extends TestCase
         ];
 
         $path = 'uploads/images';
-
-        $disk = 'public';
 
         $uploadedPaths = MediaHelper::uploadMultiple(files: $files, path: $path);
 
@@ -196,7 +194,7 @@ class MediaHelperTest extends TestCase
     /** @test */
     public function itUploadsMultipleFilesWithCustomNamesWithoutDisk(): void
     {
-        $disk = 'local';
+        $disk = 'public';
 
         Storage::fake($disk);
         Config::set('filesystems.default', $disk);
@@ -209,8 +207,6 @@ class MediaHelperTest extends TestCase
         $path = 'uploads/images';
 
         $customFileNames = ['custom_name_1.jpg', 'custom_name_2.jpg'];
-
-        $disk = 'public';
 
         $uploadedPaths = MediaHelper::uploadMultiple(files: $files, path: $path, filesNames: $customFileNames);
 
@@ -241,7 +237,7 @@ class MediaHelperTest extends TestCase
     /** @test */
     public function itUploadsBase64ImageWithoutDisk(): void
     {
-        $disk = 'local';
+        $disk = 'public';
 
         Storage::fake($disk);
         Config::set('filesystems.default', $disk);
@@ -249,8 +245,6 @@ class MediaHelperTest extends TestCase
         $base64Image = self::BASE_64_IMAGE;
 
         $path = 'uploads/images';
-
-        $disk = 'public';
 
         $uploadedPath = MediaHelper::uploadBase64Image(decodedFile:  $base64Image, path: $path);
 
@@ -279,7 +273,7 @@ class MediaHelperTest extends TestCase
     /** @test */
     public function itUploadsBase64ImageWithCustomNameWithoutDisk(): void
     {
-        $disk = 'local';
+        $disk = 'public';
 
         Storage::fake($disk);
         Config::set('filesystems.default', $disk);
@@ -289,8 +283,6 @@ class MediaHelperTest extends TestCase
         $path = 'uploads/images';
 
         $customFileName = 'custom_image.png';
-
-        $disk = 'public';
 
         $uploadedPath = MediaHelper::uploadBase64Image(decodedFile: $base64Image, path: $path, fileName: $customFileName);
 
@@ -319,7 +311,7 @@ class MediaHelperTest extends TestCase
     /** @test */
     public function itDeletesFileWithoutDisk(): void
     {
-        $disk = 'local';
+        $disk = 'public';
 
         Storage::fake($disk);
         Config::set('filesystems.default', $disk);
@@ -327,8 +319,6 @@ class MediaHelperTest extends TestCase
         $file = $this->getUploadedFile();
 
         $path = 'uploads/images';
-
-        $disk = 'public';
 
         $uploadedPath = MediaHelper::uploadFile(file: $file, path: $path);
 
@@ -358,7 +348,7 @@ class MediaHelperTest extends TestCase
     /** @test */
     public function itGetsFileFullPathWithoutDisk(): void
     {
-        $disk = 'local';
+        $disk = 'public';
 
         Storage::fake($disk);
         Config::set('filesystems.default', $disk);
@@ -366,8 +356,6 @@ class MediaHelperTest extends TestCase
         $file = $this->getUploadedFile();
 
         $path = 'uploads/images';
-
-        $disk = 'public';
 
         $uploadedPath = MediaHelper::uploadFile(file: $file, path: $path);
 
@@ -379,7 +367,7 @@ class MediaHelperTest extends TestCase
     /** @test */
     public function itGetsNullFileFullPathForNullFilePath(): void
     {
-        $disk = 'local';
+        $disk = 'public';
 
         Storage::fake($disk);
         Config::set('filesystems.default', $disk);

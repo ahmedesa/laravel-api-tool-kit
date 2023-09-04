@@ -9,12 +9,6 @@ class MediaHelper
 {
     protected static ?string $disk = null;
 
-    public static function disk(string $name): static
-    {
-        self::$disk = $name;
-        return new self();
-    }
-
     public static function uploadFile(
         UploadedFile $file,
         string $path,
@@ -85,6 +79,13 @@ class MediaHelper
     public static function getFileFullPath(?string $filePath): ?string
     {
         return null === $filePath ? null : Storage::disk(self::$disk)->url($filePath);
+    }
+
+    public static function disk(string $name): static
+    {
+        self::$disk = $name;
+
+        return new self();
     }
 
     protected static function getBasePathPrefix(): string

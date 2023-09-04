@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Http\Resources\Dummy;
+namespace App\Http\Resources\{{Dummy}};
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class DummyResource extends JsonResource
+class {{Dummy}}Resource extends JsonResource
 {
     public function toArray($request): array
     {
         return [
             'id' => $this->id,
-            resourceContent
+            {{resourceContent}}
             'created_at' => dateTimeFormat($this->created_at),
             'updated_at' => dateTimeFormat($this->updated_at),
         ];

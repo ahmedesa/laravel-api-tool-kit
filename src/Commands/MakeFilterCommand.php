@@ -47,7 +47,7 @@ class MakeFilterCommand extends GeneratorCommand
     {
         $class = str_replace($this->getNamespace($name) . '\\', '', $name);
 
-        return str_replace(['DummyFilters', '{{ class }}', '{{class}}'], $class, $stub);
+        return str_replace(['{{DummyFilters}}', '{{ class }}', '{{class}}'], $class, $stub);
     }
 
     protected function replaceNamespace(&$stub, $name): MakeFilterCommand

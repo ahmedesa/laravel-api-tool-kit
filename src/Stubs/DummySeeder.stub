@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Dummy;
+use App\Models\{{Dummy}};
 use Illuminate\Database\Seeder;
 
-class DummySeeder extends Seeder
+class {{Dummy}}Seeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,6 +14,6 @@ class DummySeeder extends Seeder
      */
     public function run(): void
     {
-        Dummy::factory(10)->create();
+        {{Dummy}}::factory(10)->create();
     }
 }

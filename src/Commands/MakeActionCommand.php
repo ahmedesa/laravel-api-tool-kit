@@ -52,4 +52,30 @@ class MakeActionCommand extends GeneratorCommand
             ['name', InputArgument::REQUIRED, 'The name of the action.'],
         ];
     }
+
+    protected function replaceClass($stub, $name): array|string
+    {
+        $class = str_replace($this->getNamespace($name) . '\\', '', $name);
+
+        return str_replace(['{{DummyClass}}', '{{ class }}', '{{class}}'], $class, $stub);
+    }
+
+    protected function replaceNamespace(&$stub, $name): MakeEnumCommand|static
+    {
+        $searches = [
+            ['{{DummyNamespace}}', 'DummyRootNamespace', 'NamespacedDummyUserModel'],
+            ['{{ namespace }}', '{{ rootNamespace }}', '{{ namespacedUserModel }}'],
+            ['{{namespace}}', '{{rootNamespace}}', '{{namespacedUserModel}}'],
+        ];
+
+        foreach ($searches as $search) {
+            $stub = str_replace(
+                $search,
+                [$this->getNamespace($name), $this->rootNamespace(), $this->userProviderModel()],
+                $stub
+            );
+        }
+
+        return $this;
+    }
 }

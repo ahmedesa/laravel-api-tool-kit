@@ -7,6 +7,14 @@ use Illuminate\Support\Facades\Storage;
 
 class MediaHelper
 {
+    protected static ?string $disk = null;
+
+    public static function disk(string $name): static
+    {
+        self::$disk = $name;
+        return new self();
+    }
+
     public static function uploadFile(
         UploadedFile $file,
         string $path,
@@ -17,7 +25,8 @@ class MediaHelper
 
         $fullFilePath = static::getBasePathPrefix() . $path;
 
-        return $file->storeAs($fullFilePath, $fileName);
+        return Storage::disk(self::$disk)->putFileAs($fullFilePath, $file, $fileName);
+
     }
 
     /**
@@ -48,17 +57,17 @@ class MediaHelper
     public static function uploadBase64Image(
         string $decodedFile,
         string $path,
-        ?string $fileName = null
+        ?string $fileName = null,
     ): string {
         @[$type, $fileData] = explode(';', $decodedFile);
 
         @[, $fileData] = explode(',', $fileData);
 
-        $fileName = $fileName ?: time() . uniqid() . '.png';
+        $fileName = $fileName ?: time() . uniqid('', true) . '.png';
 
         $fullFilePath = static::getBasePathPrefix() . $path . '/' . $fileName;
 
-        Storage::put(
+        Storage::disk(self::$disk)->put(
             $fullFilePath,
             base64_decode($fileData)
         );
@@ -68,14 +77,14 @@ class MediaHelper
 
     public static function deleteFile(string $filePath): void
     {
-        if (Storage::exists($filePath)) {
-            Storage::delete($filePath);
+        if (Storage::disk(self::$disk)->exists($filePath)) {
+            Storage::disk(self::$disk)->delete($filePath);
         }
     }
 
     public static function getFileFullPath(?string $filePath): ?string
     {
-        return null === $filePath ? null : Storage::url($filePath);
+        return null === $filePath ? null : Storage::disk(self::$disk)->url($filePath);
     }
 
     protected static function getBasePathPrefix(): string

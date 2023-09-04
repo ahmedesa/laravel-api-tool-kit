@@ -2,18 +2,12 @@
 
 namespace Essa\APIToolKit;
 
-use Essa\APIToolKit\Enum\FileSystemDisk;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
 class MediaHelper
 {
-    protected static string $disk = FileSystemDisk::PUBLIC_DISK_NAME;
-
-    public function __construct()
-    {
-        self::$disk = empty(config('filesystems.default')) ?: self::$disk;
-    }
+    protected static ?string $disk = null;
 
     public static function disk(string $name): static
     {

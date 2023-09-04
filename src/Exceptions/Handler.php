@@ -5,11 +5,13 @@ namespace Essa\APIToolKit\Exceptions;
 use Essa\APIToolKit\Api\ApiResponse;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request as RequestAlias;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Psr\Log\LoggerInterface;
@@ -18,7 +20,13 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotAcceptableHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use Throwable;
 
+/**
+ * Class Handler
+ *
+ * @package Essa\APIToolKit\Exceptions
+ */
 class Handler extends ExceptionHandler
 {
     use ApiResponse;
@@ -37,6 +45,14 @@ class Handler extends ExceptionHandler
      */
     protected $dontFlash = ['password', 'password_confirmation'];
 
+    /**
+     * Render an exception into an HTTP response.
+     *
+     * @param RequestAlias $request
+     * @param Throwable $e
+     * @return Response
+     * @throws Throwable
+     */
     public function render($request, $e): Response
     {
         $this->log($e);
@@ -86,7 +102,14 @@ class Handler extends ExceptionHandler
         return parent::render($request, $e);
     }
 
-    protected function log($exception): void
+    /**
+     * Log the given exception.
+     *
+     * @param Throwable $exception
+     * @return void
+     * @throws BindingResolutionException
+     */
+    protected function log(Throwable $exception): void
     {
         $logger = $this->container->make(LoggerInterface::class);
 
@@ -95,6 +118,12 @@ class Handler extends ExceptionHandler
         ]));
     }
 
+    /**
+     * Response for NotAcceptableHttpException.
+     *
+     * @param  NotAcceptableHttpException  $e
+     * @return JsonResponse
+     */
     protected function responseForNotAcceptableHttpException(NotAcceptableHttpException $e): JsonResponse
     {
         return $this->responseWithCustomError(
@@ -104,6 +133,12 @@ class Handler extends ExceptionHandler
         );
     }
 
+    /**
+     * Response for BadRequestHttpException.
+     *
+     * @param  BadRequestHttpException  $e
+     * @return JsonResponse
+     */
     protected function responseForBadRequestHttpException(BadRequestHttpException $e): JsonResponse
     {
         return $this->responseBadRequest(
@@ -112,11 +147,23 @@ class Handler extends ExceptionHandler
         );
     }
 
+    /**
+     * Response for AuthenticationException.
+     *
+     * @param  AuthenticationException  $e
+     * @return JsonResponse
+     */
     protected function responseForAuthenticationException(AuthenticationException $e): JsonResponse
     {
         return $this->responseUnAuthenticated($e->getMessage());
     }
 
+    /**
+     * Response for UnprocessableEntityHttpException.
+     *
+     * @param  UnprocessableEntityHttpException  $e
+     * @return JsonResponse
+     */
     protected function responseForUnprocessableEntityHttpException(UnprocessableEntityHttpException $e): JsonResponse
     {
         return $this->responseUnprocessable(
@@ -125,16 +172,33 @@ class Handler extends ExceptionHandler
         );
     }
 
+    /**
+     * Response for NotFoundHttpException.
+     *
+     * @param  NotFoundHttpException  $e
+     * @return JsonResponse
+     */
     protected function responseForNotFoundHttpException(NotFoundHttpException $e): JsonResponse
     {
         return $this->responseNotFound($e->getMessage());
     }
 
+    /**
+     * Response for AuthorizationException.
+     *
+     * @return JsonResponse
+     */
     protected function responseForAuthorizationException(): JsonResponse
     {
         return $this->responseUnAuthorized();
     }
 
+    /**
+     * Response for QueryException.
+     *
+     * @param  QueryException  $e
+     * @return JsonResponse
+     */
     protected function responseForQueryException(QueryException $e): JsonResponse
     {
         if (app()->isProduction()) {
@@ -147,6 +211,12 @@ class Handler extends ExceptionHandler
         );
     }
 
+    /**
+     * Response for ModelNotFoundException.
+     *
+     * @param  ModelNotFoundException  $e
+     * @return JsonResponse
+     */
     protected function responseForModelNotFoundException(ModelNotFoundException $e): JsonResponse
     {
         $id = [] !== $e->getIds() ? ' ' . implode(', ', $e->getIds()) : '.';
@@ -156,11 +226,22 @@ class Handler extends ExceptionHandler
         return $this->responseNotFound("{$model} with id {$id} not found", 'Record not found!');
     }
 
+    /**
+     * Response for ValidationException.
+     *
+     * @param  ValidationException  $e
+     * @return JsonResponse
+     */
     protected function responseForValidationException(ValidationException $e): JsonResponse
     {
         return $this->ResponseValidationError($e);
     }
 
+    /**
+     * Response for ThrottleRequestsException.
+     *
+     * @return JsonResponse
+     */
     protected function responseForThrottleRequestsException(): JsonResponse
     {
         return $this->responseWithCustomError(

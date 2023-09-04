@@ -7,6 +7,11 @@ use Essa\APIToolKit\Filters\DTO\QueryFiltersOptionsDTO;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pipeline\Pipeline;
 
+/**
+ * Class QueryFilters
+ *
+ * @package Essa\APIToolKit\Filters
+ */
 class QueryFilters
 {
     protected FiltersDTO $filtersDTO;
@@ -19,6 +24,11 @@ class QueryFilters
     protected array $columnSearch = [];
     protected array $relationSearch = [];
 
+    /**
+     * Apply the query filters to the builder.
+     *
+     * @return Builder
+     */
     public function apply(): Builder
     {
         $this->runBeforeMethod();
@@ -40,11 +50,22 @@ class QueryFilters
             ->getBuilder();
     }
 
+    /**
+     * Get the underlying builder.
+     *
+     * @return Builder
+     */
     public function getBuilder(): Builder
     {
         return $this->builder;
     }
 
+    /**
+     * Set the underlying builder.
+     *
+     * @param  Builder  $builder
+     * @return $this
+     */
     public function setBuilder(Builder $builder): self
     {
         $this->builder = $builder;
@@ -52,11 +73,22 @@ class QueryFilters
         return $this;
     }
 
+    /**
+     * Get the filters DTO.
+     *
+     * @return FiltersDTO
+     */
     public function getFiltersDTO(): FiltersDTO
     {
         return $this->filtersDTO;
     }
 
+    /**
+     * Set the filters DTO.
+     *
+     * @param  FiltersDTO  $filtersDTO
+     * @return $this
+     */
     public function setFiltersDTO(FiltersDTO $filtersDTO): self
     {
         $this->filtersDTO = $filtersDTO;
@@ -64,6 +96,11 @@ class QueryFilters
         return $this;
     }
 
+    /**
+     * Run any custom filter methods before applying filters.
+     *
+     * @return void
+     */
     protected function runBeforeMethod(): void
     {
         if (method_exists($this, 'before')) {
@@ -71,6 +108,11 @@ class QueryFilters
         }
     }
 
+    /**
+     * Apply custom filters based on filter names and values.
+     *
+     * @return void
+     */
     protected function applyCustomFilters(): void
     {
         foreach ($this->getFiltersDTO()->getFilters() as $name => $value) {

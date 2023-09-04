@@ -14,13 +14,11 @@ class FactoryMethodGuesser implements Guesser
     public function guess(): string
     {
         if ($this->isEmailColumn($this->definition)) {
-            return 'safeEmail()';
+            return $this->getEmailFactoryMethod();
         }
 
         if ($this->definition->isEnum()) {
-            $enumValuesString = "'" . implode("', '", $this->definition->getEnumValues()) . "'";
-
-            return "randomElement([{$enumValuesString}])";
+            return $this->getEnumFactoryMethod();
         }
 
         return $this->guessByType() . "()";
@@ -44,5 +42,17 @@ class FactoryMethodGuesser implements Guesser
             'uuid' => 'uuid',
             default => 'text',
         };
+    }
+
+    private function getEnumFactoryMethod(): string
+    {
+        $enumValuesString = "'" . implode("', '", $this->definition->getEnumValues()) . "'";
+
+        return "randomElement([{$enumValuesString}])";
+    }
+
+    private function getEmailFactoryMethod(): string
+    {
+        return 'safeEmail()';
     }
 }

@@ -407,14 +407,14 @@ class MediaHelperTest extends TestCase
     /** @test */
     public function itUploadsAndDeletesBase64ImagesWithoutDisk(): void
     {
-        $disk = 'local';
+        $disk = 'public';
 
         Storage::fake($disk);
         Config::set('filesystems.default', $disk);
 
         $base64Image = self::BASE_64_IMAGE;
         $path = 'uploads/images';
-        $disk = 'public';
+
         $uploadedPath = MediaHelper::uploadBase64Image(decodedFile: $base64Image, path: $path);
         Storage::disk($disk)->assertExists($uploadedPath);
 

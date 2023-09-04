@@ -11,7 +11,7 @@ class FilterGeneratorCommand extends GeneratorCommand implements HasDynamicConte
     public function getContent(): array
     {
         return [
-            '{{DummyFilters}}' => "{$this->apiGenerationCommandInputs->getModel()}Filters"
+            '{{DummyFilters}}' => "{$this->apiGenerationCommandInputs->getModel()}Filters",
         ];
     }
 

@@ -61,7 +61,6 @@ class ApiGenerateCommandTest extends TestCase
         $this->assertFileExists((new RoutesPathResolver($model))->getFullPath());
         $this->assertFileExists((new MigrationPathResolver($model))->getFullPath());
 
-
         $this->assertStringContainsString(
             "Route::apiResource('/generatedModels'",
             file_get_contents((new RoutesPathResolver($model))->getFullPath())
@@ -93,7 +92,6 @@ class ApiGenerateCommandTest extends TestCase
             $generatedModelContent
         );
     }
-
 
     /**
      * @test
@@ -199,7 +197,7 @@ class ApiGenerateCommandTest extends TestCase
         $this->artisan('api:generate', [
             'model' => 'CustomSoftDeleteModel',
             '--all' => true,
-            '--soft-delete' => true
+            '--soft-delete' => true,
         ])
             ->assertExitCode(Command::SUCCESS);
 

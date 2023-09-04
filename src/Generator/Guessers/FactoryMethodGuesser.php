@@ -21,7 +21,7 @@ class FactoryMethodGuesser implements Guesser
             return $this->getEnumFactoryMethod();
         }
 
-        return $this->guessByType() . "()";
+        return $this->guessByType() . '()';
     }
 
     private function isEmailColumn(ColumnDefinition $definition): bool

@@ -18,6 +18,7 @@ trait HasCache
             $model->flushCache();
         });
     }
+
     public function flushCache(): void
     {
         Cache::forget($this->cacheKey());

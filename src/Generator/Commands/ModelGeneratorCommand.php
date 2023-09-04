@@ -17,6 +17,7 @@ class ModelGeneratorCommand extends GeneratorCommand implements HasDynamicConten
             '{{modelRelations}}' => (new RelationshipMethodsParser($this->apiGenerationCommandInputs->getSchema()))->parse(),
         ];
     }
+
     protected function getStubName(): string
     {
         return 'DummyModel';

@@ -19,9 +19,13 @@ class QueryFilters
     protected Builder $builder;
 
     protected array $allowedFilters = [];
+
     protected array $allowedSorts = [];
+
     protected array $allowedIncludes = [];
+
     protected array $columnSearch = [];
+
     protected array $relationSearch = [];
 
     /**

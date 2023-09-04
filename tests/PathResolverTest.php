@@ -48,7 +48,7 @@ class PathResolverTest extends TestCase
         $model = 'User';
         $resolver = new CreateFormRequestPathResolver($model);
 
-        $expectedPath = app_path("Http/Requests/User/CreateUserRequest.php");
+        $expectedPath = app_path('Http/Requests/User/CreateUserRequest.php');
         $this->assertEquals($expectedPath, $resolver->getFullPath());
     }
 
@@ -84,7 +84,7 @@ class PathResolverTest extends TestCase
         $model = 'User';
         $resolver = new MigrationPathResolver($model);
 
-        $expectedPath = database_path("migrations/" . date('Y_m_d_His') . "_create_users_table.php");
+        $expectedPath = database_path('migrations/' . date('Y_m_d_His') . '_create_users_table.php');
 
         $this->assertEquals($expectedPath, $resolver->getFullPath());
     }
@@ -97,7 +97,7 @@ class PathResolverTest extends TestCase
         $model = 'User';
         $resolver = new ResourcePathResolver($model);
 
-        $expectedPath = app_path("Http/Resources/User/UserResource.php");
+        $expectedPath = app_path('Http/Resources/User/UserResource.php');
         $this->assertEquals($expectedPath, $resolver->getFullPath());
     }
 
@@ -145,7 +145,7 @@ class PathResolverTest extends TestCase
         $model = 'User';
         $resolver = new UpdateFormRequestPathResolver($model);
 
-        $expectedPath = app_path("Http/Requests/User/UpdateUserRequest.php");
+        $expectedPath = app_path('Http/Requests/User/UpdateUserRequest.php');
         $this->assertEquals($expectedPath, $resolver->getFullPath());
     }
 }

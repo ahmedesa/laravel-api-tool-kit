@@ -51,7 +51,7 @@ class ExceptionHandlerTest extends TestCase
     {
         $exception = new ModelNotFoundException();
 
-        $exception->setModel('User', [1,2,3]);
+        $exception->setModel('User', [1, 2, 3]);
         $this->assertExceptionHandling($exception, 404, 'Record not found!', 'User with id  1, 2, 3 not found');
     }
 

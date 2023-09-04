@@ -15,6 +15,7 @@ class UpdateFormRequestGeneratorCommand extends GeneratorCommand implements HasD
             '{{updateValidationRules}}' => (new UpdateValidationRulesParser($this->apiGenerationCommandInputs->getSchema()))->parse(),
         ];
     }
+
     protected function getStubName(): string
     {
         return 'UpdateDummyRequest';

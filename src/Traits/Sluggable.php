@@ -25,6 +25,7 @@ trait Sluggable
             }
         });
     }
+
     /**
      * find model by slug.
      */

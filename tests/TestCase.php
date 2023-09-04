@@ -51,7 +51,6 @@ abstract class TestCase extends OrchestraTestCase
         });
     }
 
-
     protected function normalizeWhitespaceAndNewlines(string $content): string
     {
         $content = preg_replace('/\s+/', ' ', $content);

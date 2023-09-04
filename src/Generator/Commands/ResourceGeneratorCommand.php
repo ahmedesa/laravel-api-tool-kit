@@ -15,6 +15,7 @@ class ResourceGeneratorCommand extends GeneratorCommand implements HasDynamicCon
             '{{resourceContent}}' => (new ResourceAttributesParser($this->apiGenerationCommandInputs->getSchema()))->parse(),
         ];
     }
+
     protected function getStubName(): string
     {
         return 'DummyResource';

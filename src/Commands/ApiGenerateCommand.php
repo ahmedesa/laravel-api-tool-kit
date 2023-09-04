@@ -123,7 +123,6 @@ class ApiGenerateCommand extends Command
         return self::SUCCESS;
     }
 
-
     protected function getArguments(): array
     {
         return [
@@ -158,7 +157,7 @@ class ApiGenerateCommand extends Command
         $extraOptions = [
             'update-request' => $this->option('request'),
             'create-request' => $this->option('request'),
-            'model' => true
+            'model' => true,
         ];
 
         return $this->options() + $extraOptions;

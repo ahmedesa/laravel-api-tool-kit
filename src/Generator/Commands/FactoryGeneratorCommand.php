@@ -15,6 +15,7 @@ class FactoryGeneratorCommand extends GeneratorCommand implements HasDynamicCont
             '{{factoryContent}}' => (new FactoryColumnsParser($this->apiGenerationCommandInputs->getSchema()))->parse(),
         ];
     }
+
     protected function getStubName(): string
     {
         return 'DummyFactory';

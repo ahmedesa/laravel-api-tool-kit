@@ -13,49 +13,49 @@ return [
         'options' => [
             'model' => [
                 'command' => \Essa\APIToolKit\Generator\Commands\ModelGeneratorCommand::class,
-                'path_resolver' => \Essa\APIToolKit\Generator\PathResolver\ModelPathResolver::class
+                'path_resolver' => \Essa\APIToolKit\Generator\PathResolver\ModelPathResolver::class,
             ],
             'factory' => [
                 'command' => \Essa\APIToolKit\Generator\Commands\FactoryGeneratorCommand::class,
-                'path_resolver' => \Essa\APIToolKit\Generator\PathResolver\FactoryPathResolver::class
+                'path_resolver' => \Essa\APIToolKit\Generator\PathResolver\FactoryPathResolver::class,
             ],
             'seeder' => [
                 'command' => \Essa\APIToolKit\Generator\Commands\SeederGeneratorCommand::class,
-                'path_resolver' => \Essa\APIToolKit\Generator\PathResolver\SeederPathResolver::class
+                'path_resolver' => \Essa\APIToolKit\Generator\PathResolver\SeederPathResolver::class,
             ],
             'controller' => [
                 'command' => \Essa\APIToolKit\Generator\Commands\ControllerGeneratorCommand::class,
-                'path_resolver' => \Essa\APIToolKit\Generator\PathResolver\ControllerPathResolver::class
+                'path_resolver' => \Essa\APIToolKit\Generator\PathResolver\ControllerPathResolver::class,
             ],
             'resource' => [
                 'command' => \Essa\APIToolKit\Generator\Commands\ResourceGeneratorCommand::class,
-                'path_resolver' => \Essa\APIToolKit\Generator\PathResolver\ResourcePathResolver::class
+                'path_resolver' => \Essa\APIToolKit\Generator\PathResolver\ResourcePathResolver::class,
             ],
             'test' => [
                 'command' => \Essa\APIToolKit\Generator\Commands\TestGeneratorCommand::class,
-                'path_resolver' => \Essa\APIToolKit\Generator\PathResolver\TestPathResolver::class
+                'path_resolver' => \Essa\APIToolKit\Generator\PathResolver\TestPathResolver::class,
             ],
             'create-request' => [
                 'command' => \Essa\APIToolKit\Generator\Commands\CreateFormRequestGeneratorCommand::class,
-                'path_resolver' => \Essa\APIToolKit\Generator\PathResolver\CreateFormRequestPathResolver::class
+                'path_resolver' => \Essa\APIToolKit\Generator\PathResolver\CreateFormRequestPathResolver::class,
             ],
             'update-request' => [
                 'command' => \Essa\APIToolKit\Generator\Commands\UpdateFormRequestGeneratorCommand::class,
-                'path_resolver' => \Essa\APIToolKit\Generator\PathResolver\UpdateFormRequestPathResolver::class
+                'path_resolver' => \Essa\APIToolKit\Generator\PathResolver\UpdateFormRequestPathResolver::class,
             ],
             'filter' => [
                 'command' => \Essa\APIToolKit\Generator\Commands\FilterGeneratorCommand::class,
-                'path_resolver' => \Essa\APIToolKit\Generator\PathResolver\FilterPathResolver::class
+                'path_resolver' => \Essa\APIToolKit\Generator\PathResolver\FilterPathResolver::class,
             ],
             'migration' => [
                 'command' => \Essa\APIToolKit\Generator\Commands\MigrationGeneratorCommand::class,
-                'path_resolver' => \Essa\APIToolKit\Generator\PathResolver\MigrationPathResolver::class
+                'path_resolver' => \Essa\APIToolKit\Generator\PathResolver\MigrationPathResolver::class,
             ],
             'routes' => [
                 'command' => \Essa\APIToolKit\Generator\Commands\RoutesGeneratorCommand::class,
-                'path_resolver' => \Essa\APIToolKit\Generator\PathResolver\RoutesPathResolver::class
+                'path_resolver' => \Essa\APIToolKit\Generator\PathResolver\RoutesPathResolver::class,
             ],
-        ]
+        ],
     ],
     /*
     |--------------------------------------------------------------------------

@@ -10,6 +10,6 @@ abstract class PathResolver
 
     public function getFullPath(): string
     {
-        return $this->folderPath() . "/" . $this->fileName();
+        return $this->folderPath() . '/' . $this->fileName();
     }
 }

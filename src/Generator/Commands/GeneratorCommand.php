@@ -17,7 +17,9 @@ abstract class GeneratorCommand implements GeneratorCommandInterface
         'resource',
         'filter',
     ];
+
     protected string $type;
+
     protected ApiGenerationCommandInputs $apiGenerationCommandInputs;
 
     public function __construct(protected Filesystem $filesystem)

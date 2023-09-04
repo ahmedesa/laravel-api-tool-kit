@@ -29,7 +29,6 @@ class MediaHelper
         $fullFilePath = static::getBasePathPrefix() . $path;
 
         return Storage::disk(self::$disk)->putFileAs($fullFilePath, $file, $fileName);
-
     }
 
     /**

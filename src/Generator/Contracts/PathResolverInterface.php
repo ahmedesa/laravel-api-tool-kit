@@ -9,5 +9,4 @@ interface PathResolverInterface
     public function fileName(): string;
 
     public function getFullPath(): string;
-
 }

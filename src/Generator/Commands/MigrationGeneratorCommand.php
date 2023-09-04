@@ -15,6 +15,7 @@ class MigrationGeneratorCommand extends GeneratorCommand implements HasDynamicCo
             '{{migrationContent}}' => (new MigrationContentParser($this->apiGenerationCommandInputs->getSchema()))->parse(),
         ];
     }
+
     protected function getStubName(): string
     {
         return 'DummyMigration';

@@ -12,6 +12,7 @@ class TestModelFilters extends QueryFilters
     use TimeFilter;
 
     protected array $columnSearch = ['name'];
+
     protected array $allowedFilters = ['id'];
 
     protected array $allowedSorts = ['created_at', 'name'];

@@ -8,8 +8,8 @@ class FiltersDTO
 {
     public function __construct(
         private ?string $sorts = null,
-        private ?array  $filters = null,
-        private ?array  $includes = null,
+        private ?array $filters = null,
+        private ?array $includes = null,
         private ?string $search = null
     ) {
     }

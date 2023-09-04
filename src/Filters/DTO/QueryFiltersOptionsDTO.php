@@ -7,13 +7,13 @@ use Illuminate\Database\Eloquent\Builder;
 class QueryFiltersOptionsDTO
 {
     public function __construct(
-        private Builder    $builder,
+        private Builder $builder,
         private FiltersDTO $filtersDTO,
-        private array      $allowedFilters = [],
-        private array      $allowedSorts = [],
-        private array      $allowedIncludes = [],
-        private array      $columnSearch = [],
-        private array      $relationSearch = []
+        private array $allowedFilters = [],
+        private array $allowedSorts = [],
+        private array $allowedIncludes = [],
+        private array $columnSearch = [],
+        private array $relationSearch = []
     ) {
     }
 

@@ -19,7 +19,7 @@ class GeneratedFilesConsoleTable implements ConsoleTableInterface
                 $resolverFilePath = $config['path_resolver'];
                 $tableData[] = [
                     $option,
-                    (new $resolverFilePath($apiGenerationCommandInputs->getModel()))->getFullPath()
+                    (new $resolverFilePath($apiGenerationCommandInputs->getModel()))->getFullPath(),
                 ];
             }
         }

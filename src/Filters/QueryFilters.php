@@ -29,6 +29,15 @@ class QueryFilters
     protected array $relationSearch = [];
 
     /**
+     * QueryFilters constructor.
+     *
+     * @param Pipeline $pipeline The Laravel pipeline instance.
+     */
+    public function __construct(private Pipeline $pipeline)
+    {
+    }
+
+    /**
      * Apply the query filters to the builder.
      *
      * @return Builder
@@ -39,19 +48,7 @@ class QueryFilters
 
         $this->applyCustomFilters();
 
-        return app(Pipeline::class)
-            ->send(new QueryFiltersOptionsDTO(
-                builder: $this->builder,
-                filtersDTO: $this->filtersDTO,
-                allowedFilters: $this->allowedFilters,
-                allowedSorts: $this->allowedSorts,
-                allowedIncludes: $this->allowedIncludes,
-                columnSearch: $this->columnSearch,
-                relationSearch: $this->relationSearch
-            ))
-            ->through(config('api-tool-kit-internal.filters.handlers'))
-            ->thenReturn()
-            ->getBuilder();
+        return $this->processFiltersPipeline();
     }
 
     /**
@@ -124,5 +121,29 @@ class QueryFilters
                 $this->{$name}($value);
             }
         }
+    }
+
+    /**
+     * Process the filters pipeline.
+     *
+     * @return Builder
+     */
+    protected function processFiltersPipeline(): Builder
+    {
+        $options = new QueryFiltersOptionsDTO(
+            builder: $this->builder,
+            filtersDTO: $this->filtersDTO,
+            allowedFilters: $this->allowedFilters,
+            allowedSorts: $this->allowedSorts,
+            allowedIncludes: $this->allowedIncludes,
+            columnSearch: $this->columnSearch,
+            relationSearch: $this->relationSearch
+        );
+
+        return $this->pipeline
+            ->send($options)
+            ->through(config('api-tool-kit-internal.filters.handlers'))
+            ->thenReturn()
+            ->getBuilder();
     }
 }

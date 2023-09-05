@@ -12,7 +12,7 @@ class MigrationContentParser extends SchemaParser
     {
         return collect($schemaDefinition->getColumns())
             ->map(fn (ColumnDefinition $definition): string => $this->generateColumnDefinition($definition))
-            ->implode(PHP_EOL);
+            ->implode(PHP_EOL . "\t\t\t");
     }
 
     private function generateColumnDefinition(ColumnDefinition $definition): string
@@ -20,7 +20,7 @@ class MigrationContentParser extends SchemaParser
         $columnDefinition = $this->getColumnDefinition($definition);
         $optionsString = $this->getOptionString($definition->getOptions());
 
-        return "\t\t\t" . $columnDefinition . $optionsString . ';';
+        return $columnDefinition . $optionsString . ';';
     }
 
     private function getColumnDefinition(ColumnDefinition $definition): string

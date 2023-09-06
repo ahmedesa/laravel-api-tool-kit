@@ -18,7 +18,7 @@ class ResourceAttributesParser extends SchemaParser
     {
         $value = "\$this->{$definition->getName()}";
 
-        if ($definition->isTimeType()) {
+        if ($definition->isDateType()) {
             return "dateTimeFormat({$value})";
         }
 

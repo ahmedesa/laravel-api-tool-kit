@@ -13,20 +13,15 @@ class FactoryMethodGuesser implements Guesser
 
     public function guess(): string
     {
-        if ($this->isEmailColumn($this->definition)) {
+        if ($this->definition->isEmailType()) {
             return $this->getEmailFactoryMethod();
         }
 
-        if ($this->definition->isEnum()) {
+        if ($this->definition->isEnumType()) {
             return $this->getEnumFactoryMethod();
         }
 
         return $this->guessByType() . '()';
-    }
-
-    private function isEmailColumn(ColumnDefinition $definition): bool
-    {
-        return str_contains($definition->getName(), 'email');
     }
 
     private function guessByType(): string

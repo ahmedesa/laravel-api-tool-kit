@@ -29,7 +29,7 @@ class MigrationContentParser extends SchemaParser
             return $this->getForeignKeyColumnDefinition($definition->getName());
         }
 
-        if ($definition->isEnum()) {
+        if ($definition->isEnumType()) {
             return $this->getEnumColumnDefinition($definition);
         }
 

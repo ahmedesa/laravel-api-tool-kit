@@ -25,26 +25,6 @@ class ColumnDefinition
         return [$name, $type, $options];
     }
 
-    public function getOptionsAsString(): string
-    {
-        return implode(' , ', $this->options);
-    }
-
-    public function isForeignKey(): bool
-    {
-        return 'foreignId' === $this->type;
-    }
-
-    public function isEnum(): bool
-    {
-        return str_contains($this->type, 'enum(');
-    }
-
-    public function getEnumValues(): array
-    {
-        return array_map('trim', explode(',', trim($this->type, 'enum() ')));
-    }
-
     public function getName(): string
     {
         return $this->name;
@@ -52,7 +32,7 @@ class ColumnDefinition
 
     public function getType(): string
     {
-        if ($this->isEnum()) {
+        if ($this->isEnumType()) {
             return 'enum';
         }
 
@@ -64,8 +44,78 @@ class ColumnDefinition
         return $this->options;
     }
 
+    public function getOptionsAsString(): string
+    {
+        return implode(' , ', $this->options);
+    }
+
+    public function isForeignKey(): bool
+    {
+        return 'foreignId' === $this->type;
+    }
+
+    public function isEnumType(): bool
+    {
+        return str_contains($this->type, 'enum(');
+    }
+
+    public function getEnumValues(): array
+    {
+        return array_map('trim', explode(',', trim($this->type, 'enum() ')));
+    }
+
+    public function isEmailType(): bool
+    {
+        return str_contains($this->name, 'email');
+    }
+
+    public function isImageType(): bool
+    {
+        return str_contains($this->name, 'image');
+    }
+
+    public function isBooleanType(): bool
+    {
+        return 'boolean' === $this->type;
+    }
+
+    public function isUuidType(): bool
+    {
+        return in_array($this->type, ['uuid', 'uuidBinary']);
+    }
+
+    public function isIpAddressType(): bool
+    {
+        return 'ipAddress' === $this->type;
+    }
+
+    public function isJsonType(): bool
+    {
+        return in_array($this->type, ['json', 'jsonb']);
+    }
+
+    public function isIntegerType(): bool
+    {
+        return in_array($this->type, ['integer', 'bigInteger', 'unsignedBigInteger', 'mediumInteger', 'tinyInteger', 'smallInteger']);
+    }
+
+    public function isNumericType(): bool
+    {
+        return in_array($this->type, ['decimal', 'double', 'float']);
+    }
+
+    public function isStringOrTextType(): bool
+    {
+        return in_array($this->type, ['string', 'text']) && ! $this->isImageType();
+    }
+
+    public function isDateType(): bool
+    {
+        return in_array($this->type, ['date', 'dateTime', 'dateTimeTz', 'timestamp', 'timestampTz' , 'datetime']);
+    }
+
     public function isTimeType(): bool
     {
-        return in_array($this->getType(), ['date', 'dateTime', 'dateTimeTz', 'timestamp', 'timestampTz', 'datetime']);
+        return in_array($this->type, ['time', 'timeTz']);
     }
 }

@@ -15,51 +15,51 @@ class ValidationRuleGuesser implements Guesser
     {
         $rules = $this->addExtraValidationToTheRules();
 
-        if ($this->definition->isEnum()) {
+        if ($this->definition->isEnumType()) {
             $rules[] = 'in:' . implode(',', $this->definition->getEnumValues());
         }
 
-        if ($this->isEmailColumn()) {
+        if ($this->definition->isEmailType()) {
             $rules[] = 'email';
         }
 
-        if ($this->isImageColumn()) {
+        if ($this->definition->isImageType()) {
             $rules[] = 'image';
         }
 
-        if ($this->isStringOrText()) {
+        if ($this->definition->isStringOrTextType()) {
             $rules[] = 'string';
         }
 
-        if ($this->isIntegerType()) {
+        if ($this->definition->isIntegerType()) {
             $rules[] = 'integer';
         }
 
-        if ($this->isBooleanType()) {
+        if ($this->definition->isBooleanType()) {
             $rules[] = 'boolean';
         }
 
-        if ($this->isNumericType()) {
+        if ($this->definition->isNumericType()) {
             $rules[] = 'numeric';
         }
 
-        if ($this->isDateType()) {
+        if ($this->definition->isDateType()) {
             $rules[] = 'date';
         }
 
-        if ($this->isTimeType()) {
+        if ($this->definition->isTimeType()) {
             $rules[] = 'date_format:H:i:s';
         }
 
-        if ($this->isUuidType()) {
+        if ($this->definition->isUuidType()) {
             $rules[] = 'uuid';
         }
 
-        if ($this->isIpAddressType()) {
+        if ($this->definition->isIpAddressType()) {
             $rules[] = 'ip';
         }
 
-        if ($this->isJsonType()) {
+        if ($this->definition->isJsonType()) {
             $rules[] = 'json';
         }
 
@@ -78,60 +78,5 @@ class ValidationRuleGuesser implements Guesser
         }
 
         return ['nullable'];
-    }
-
-    private function isEmailColumn(): bool
-    {
-        return str_contains($this->definition->getName(), 'email');
-    }
-
-    private function isImageColumn(): bool
-    {
-        return str_contains($this->definition->getName(), 'image');
-    }
-
-    private function isStringOrText(): bool
-    {
-        return in_array($this->definition->getType(), ['string', 'text']) && ! $this->isImageColumn();
-    }
-
-    private function isIntegerType(): bool
-    {
-        return in_array($this->definition->getType(), ['integer', 'bigInteger', 'unsignedBigInteger', 'mediumInteger', 'tinyInteger', 'smallInteger']);
-    }
-
-    private function isBooleanType(): bool
-    {
-        return 'boolean' === $this->definition->getType();
-    }
-
-    private function isNumericType(): bool
-    {
-        return in_array($this->definition->getType(), ['decimal', 'double', 'float']);
-    }
-
-    private function isDateType(): bool
-    {
-        return in_array($this->definition->getType(), ['date', 'dateTime', 'dateTimeTz', 'timestamp', 'timestampTz']);
-    }
-
-    private function isTimeType(): bool
-    {
-        return in_array($this->definition->getType(), ['time', 'timeTz']);
-    }
-
-    private function isUuidType(): bool
-    {
-        return in_array($this->definition->getType(), ['uuid', 'uuidBinary']);
-    }
-
-    private function isIpAddressType(): bool
-    {
-        return 'ipAddress' === $this->definition->getType();
-    }
-
-    private function isJsonType(): bool
-    {
-        return in_array($this->definition->getType(), ['json', 'jsonb']);
     }
 }

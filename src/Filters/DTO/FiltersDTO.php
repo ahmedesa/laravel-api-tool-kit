@@ -16,7 +16,7 @@ class FiltersDTO
 
     public static function buildFromRequest(Request $request): FiltersDTO
     {
-        return new static(
+        return new self(
             $request->all('sorts')['sorts'],
             $request->except('includes', 'sorts'),
             explode(',', $request->get('includes')),

@@ -60,7 +60,7 @@ class GeneratePermissions extends Command
         $this->info('permissions generated successfully!');
     }
 
-    public function addPermissionsToConfigFile($permissions): void
+    public function addPermissionsToConfigFile(array $permissions): void
     {
         $model = $this->argument('model');
 

@@ -106,7 +106,7 @@ abstract class GeneratorCommand implements GeneratorCommandInterface
         return file_get_contents(__DIR__ . "/../../Stubs/{$stubName}.stub");
     }
 
-    protected function removeTagBlock(string $string, $condition, string $tag): string
+    protected function removeTagBlock(string $string, bool $condition, string $tag): string
     {
         $pattern = $condition
             ? "/@if\(\'{$tag}\'\)|@endif\(\'{$tag}\'\)/"

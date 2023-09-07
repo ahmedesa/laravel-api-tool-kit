@@ -2,9 +2,7 @@
 
 namespace Essa\APIToolKit\Generator\PathResolver;
 
-use Essa\APIToolKit\Generator\Contracts\PathResolverInterface;
-
-class SeederPathResolver extends PathResolver implements PathResolverInterface
+class SeederPathResolver extends PathResolver
 {
     public function folderPath(): string
     {

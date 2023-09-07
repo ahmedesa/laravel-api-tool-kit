@@ -2,7 +2,9 @@
 
 namespace Essa\APIToolKit\Generator\PathResolver;
 
-abstract class PathResolver
+use Essa\APIToolKit\Generator\Contracts\PathResolverInterface;
+
+abstract class PathResolver implements PathResolverInterface
 {
     public function __construct(protected string $model)
     {

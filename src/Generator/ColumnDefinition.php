@@ -8,7 +8,7 @@ class ColumnDefinition
     {
     }
 
-    public static function createFromDefinitionString($columnDefinitions): ColumnDefinition
+    public static function createFromDefinitionString(string $columnDefinitions): ColumnDefinition
     {
         [$name, $type, $options] = self::parseColumnDefinition($columnDefinitions);
 

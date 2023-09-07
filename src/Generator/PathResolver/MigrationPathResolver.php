@@ -2,10 +2,9 @@
 
 namespace Essa\APIToolKit\Generator\PathResolver;
 
-use Essa\APIToolKit\Generator\Contracts\PathResolverInterface;
 use Illuminate\Support\Str;
 
-class MigrationPathResolver extends PathResolver implements PathResolverInterface
+class MigrationPathResolver extends PathResolver
 {
     public function folderPath(): string
     {

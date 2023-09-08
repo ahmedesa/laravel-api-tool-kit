@@ -2,18 +2,9 @@
 
 namespace Essa\APIToolKit\Generator\Commands;
 
-use Essa\APIToolKit\Generator\Contracts\HasDynamicContent;
-
-class FilterGeneratorCommand extends GeneratorCommand implements HasDynamicContent
+class FilterGeneratorCommand extends GeneratorCommand
 {
     protected string $type = 'filter';
-
-    public function getContent(): array
-    {
-        return [
-            '{{DummyFilters}}' => "{$this->apiGenerationCommandInputs->getModel()}Filters",
-        ];
-    }
 
     protected function getStubName(): string
     {

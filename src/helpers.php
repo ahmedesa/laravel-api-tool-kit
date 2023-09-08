@@ -35,7 +35,7 @@ if ( ! function_exists('createOrRandomFactory')) {
             return $class::inRandomOrder()->first();
         }
 
-        /** @var Model $class */
+        /** @var Model $className */
         return $className::factory()->create();
     }
 }

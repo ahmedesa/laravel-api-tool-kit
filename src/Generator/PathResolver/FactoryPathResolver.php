@@ -2,7 +2,9 @@
 
 namespace Essa\APIToolKit\Generator\PathResolver;
 
-class FactoryPathResolver extends PathResolver
+use Essa\APIToolKit\Generator\Contracts\PathHasClass;
+
+class FactoryPathResolver extends PathResolver implements PathHasClass
 {
     public function folderPath(): string
     {
@@ -12,5 +14,15 @@ class FactoryPathResolver extends PathResolver
     public function fileName(): string
     {
         return "{$this->model}Factory.php";
+    }
+
+    public function getNameSpace(): string
+    {
+        return 'Database\Factories';
+    }
+
+    public function getClassName(): string
+    {
+        return "{$this->model}Factory";
     }
 }

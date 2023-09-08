@@ -1,17 +1,20 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace {{DummyControllerNameSpace}};
 
 use App\Http\Controllers\Controller;
-@if('request')use App\Http\Requests\{{Dummy}}\Create{{Dummy}}Request;@endif('request')
-@if('request')use App\Http\Requests\{{Dummy}}\Update{{Dummy}}Request;@endif('request')
-@if('resource')use App\Http\Resources\{{Dummy}}\{{Dummy}}Resource;@endif('resource')
-use App\Models\{{Dummy}};
+@if('request')
+use {{DummyUpdateRequestWithNameSpace}};
+use {{DummyCreateRequestWithNameSpace}};
+@else
+use Illuminate\Http\Request;
+@endif('request')
+@if('resource')use {{DummyResourceWithNameSpace}};@endif('resource')
+use {{DummyModelWithNameSpace}};
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Illuminate\Http\Request;
 
-class {{Dummy}}Controller extends Controller
+class {{DummyController}} extends Controller
 {
     public function __construct()
     {
@@ -20,40 +23,40 @@ class {{Dummy}}Controller extends Controller
 
     public function index()@if('resource'): AnonymousResourceCollection @endif('resource')
     {
-        ${{dummies}} = {{Dummy}}::@if('filter')useFilters()->@endif('filter')dynamicPaginate();
+        ${{dummies}} = {{DummyModel}}::@if('filter')useFilters()->@endif('filter')dynamicPaginate();
 
-        return @if('resource'){{Dummy}}Resource::collection(@endif('resource')${{dummies}}@if('resource'))@endif('resource');
+        return @if('resource'){{DummyResource}}::collection(@endif('resource')${{dummies}}@if('resource'))@endif('resource');
     }
 
-    public function store(@if('request')Create{{Dummy}}@endif('request')Request $request): JsonResponse
+    public function store(@if('request'){{DummyCreateRequest}} @else Request @endif('request') $request): JsonResponse
     {
-        ${{dummy}} = {{Dummy}}::create($request->validated());
+        ${{dummy}} = {{DummyModel}}::create($request->validated());
 
-        return $this->responseCreated('{{Dummy}} created successfully', @if('resource')new {{Dummy}}Resource(@endif('resource')${{dummy}}@if('resource'))@endif('resource'));
+        return $this->responseCreated('{{Dummy}} created successfully', @if('resource')new {{DummyResource}}(@endif('resource')${{dummy}}@if('resource'))@endif('resource'));
     }
 
-    public function show({{Dummy}} ${{dummy}}): JsonResponse
+    public function show({{DummyModel}} ${{dummy}}): JsonResponse
     {
-        return $this->responseSuccess(null, @if('resource')new {{Dummy}}Resource(@endif('resource')${{dummy}}@if('resource'))@endif('resource'));
+        return $this->responseSuccess(null, @if('resource')new {{DummyResource}}(@endif('resource')${{dummy}}@if('resource'))@endif('resource'));
     }
 
-    public function update(@if('request')Update{{Dummy}}@endif('request')Request $request, {{Dummy}} ${{dummy}}): JsonResponse
+    public function update(@if('request'){{DummyUpdateRequest}} @else Request @endif('request') $request, {{DummyModel}} ${{dummy}}): JsonResponse
     {
         ${{dummy}}->update($request->validated());
 
-        return $this->responseSuccess('{{Dummy}} updated Successfully', @if('resource')new {{Dummy}}Resource(@endif('resource')${{dummy}}@if('resource'))@endif('resource'));
+        return $this->responseSuccess('{{Dummy}} updated Successfully', @if('resource')new {{DummyResource}}(@endif('resource')${{dummy}}@if('resource'))@endif('resource'));
     }
 
-    public function destroy({{Dummy}} ${{dummy}}): JsonResponse
+    public function destroy({{DummyModel}} ${{dummy}}): JsonResponse
     {
         ${{dummy}}->delete();
 
         return $this->responseDeleted();
     }
-@if('soft-delete')
-    public function restore($id): JsonResponse
+
+   @if('soft-delete') public function restore($id): JsonResponse
     {
-        ${{dummy}} = {{Dummy}}::onlyTrashed()->findOrFail($id);
+        ${{dummy}} = {{DummyModel}}::onlyTrashed()->findOrFail($id);
 
         ${{dummy}}->restore();
 
@@ -62,7 +65,7 @@ class {{Dummy}}Controller extends Controller
 
     public function permanentDelete($id): JsonResponse
     {
-        ${{dummy}} = {{Dummy}}::withTrashed()->findOrFail($id);
+        ${{dummy}} = {{DummyModel}}::withTrashed()->findOrFail($id);
 
         ${{dummy}}->forceDelete();
 

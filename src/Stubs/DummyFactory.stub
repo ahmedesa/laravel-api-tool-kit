@@ -1,10 +1,10 @@
 <?php
 
-namespace Database\Factories;
+namespace {{DummyFactoryNameSpace}};
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class {{Dummy}}Factory extends Factory
+class {{DummyFactory}} extends Factory
 {
     public function definition(): array
     {

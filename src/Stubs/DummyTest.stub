@@ -1,13 +1,13 @@
 <?php
 
-namespace Tests\Feature;
+namespace {{DummyTestNameSpace}};
 
 use Tests\TestCase;
 use App\Models\User;
-use App\Models\{{Dummy}};
+use {{DummyModelWithNameSpace}};
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class {{Dummy}}Test extends TestCase
+class {{DummyTest}} extends TestCase
 {
     use  RefreshDatabase;
 
@@ -25,7 +25,7 @@ class {{Dummy}}Test extends TestCase
 
         $this->actingAs(User::factory()->create());
 
-        $payload = {{Dummy}}::factory()->make([])->toArray();
+        $payload = {{DummyModel}}::factory()->make([])->toArray();
 
         $this->json('POST', $this->endpoint, $payload)
              ->assertStatus(201)
@@ -34,27 +34,27 @@ class {{Dummy}}Test extends TestCase
         $this->assertDatabaseHas($this->tableName, ['id' => 1]);
     }
 
-    public function testViewAllDummiesSuccessfully(): void
+    public function testViewAll{{Dummies}}Successfully(): void
     {
         $this->markTestIncomplete('This test case needs review.');
 
         $this->actingAs(User::factory()->create());
 
-        {{Dummy}}::factory(5)->create();
+        {{DummyModel}}::factory(5)->create();
 
         $this->json('GET', $this->endpoint)
              ->assertStatus(200)
              ->assertJsonCount(5, 'data')
-             ->assertSee({{Dummy}}::first(rand(1, 5))->name);
+             ->assertSee({{DummyModel}}::first(rand(1, 5))->name);
     }
 
-    public function testViewAllDummiesByFooFilter(): void
+    public function testViewAll{{Dummies}}ByFooFilter(): void
     {
         $this->markTestIncomplete('This test case needs review.');
 
         $this->actingAs(User::factory()->create());
 
-        {{Dummy}}::factory(5)->create();
+        {{DummyModel}}::factory(5)->create();
 
         $this->json('GET', $this->endpoint.'?foo=1')
              ->assertStatus(200)
@@ -81,10 +81,10 @@ class {{Dummy}}Test extends TestCase
 
         $this->actingAs(User::factory()->create());
 
-        {{Dummy}}::factory()->create();
+        {{DummyModel}}::factory()->create();
 
         $this->json('GET', $this->endpoint.'/1')
-             ->assertSee({{Dummy}}::first()->name)
+             ->assertSee({{DummyModel}}::first()->name)
              ->assertStatus(200);
     }
 
@@ -94,7 +94,7 @@ class {{Dummy}}Test extends TestCase
 
         $this->actingAs(User::factory()->create());
 
-        {{Dummy}}::factory()->create();
+        {{DummyModel}}::factory()->create();
 
         $payload = [
             'name' => 'Random'
@@ -111,12 +111,12 @@ class {{Dummy}}Test extends TestCase
 
         $this->actingAs(User::factory()->create());
 
-        {{Dummy}}::factory()->create();
+        {{DummyModel}}::factory()->create();
 
         $this->json('DELETE', $this->endpoint.'/1')
              ->assertStatus(204);
 
-        $this->assertEquals(0, {{Dummy}}::count());
+        $this->assertEquals(0, {{DummyModel}}::count());
     }
     @if('soft-delete')
     public function testRestore{{Dummy}}(): void
@@ -125,7 +125,7 @@ class {{Dummy}}Test extends TestCase
 
         $this->actingAs(User::factory()->create());
 
-        {{Dummy}}::factory()->create();
+        {{DummyModel}}::factory()->create();
 
         $this->json('DELETE', $this->endpoint.'/1')
              ->assertStatus(204);
@@ -145,7 +145,7 @@ class {{Dummy}}Test extends TestCase
 
         $this->actingAs(User::factory()->create());
 
-        {{Dummy}}::factory()->create();
+        {{DummyModel}}::factory()->create();
 
         $this->json('DELETE', $this->endpoint.'/1')
              ->assertStatus(204);

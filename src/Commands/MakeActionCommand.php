@@ -57,13 +57,13 @@ class MakeActionCommand extends GeneratorCommand
     {
         $class = str_replace($this->getNamespace($name) . '\\', '', $name);
 
-        return str_replace(['{{DummyClass}}', '{{ class }}', '{{class}}'], $class, $stub);
+        return str_replace(['{{DummyAction}}', '{{ class }}', '{{class}}'], $class, $stub);
     }
 
     protected function replaceNamespace(&$stub, $name): MakeEnumCommand|static
     {
         $searches = [
-            ['{{DummyNamespace}}', 'DummyRootNamespace', 'NamespacedDummyUserModel'],
+            ['{{DummyActionNamespace}}', 'DummyRootNamespace', 'NamespacedDummyUserModel'],
             ['{{ namespace }}', '{{ rootNamespace }}', '{{ namespacedUserModel }}'],
             ['{{namespace}}', '{{rootNamespace}}', '{{namespacedUserModel}}'],
         ];

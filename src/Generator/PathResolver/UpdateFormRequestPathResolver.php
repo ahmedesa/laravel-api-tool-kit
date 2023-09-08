@@ -8,4 +8,9 @@ class UpdateFormRequestPathResolver extends CreateFormRequestPathResolver
     {
         return "Update{$this->model}Request.php";
     }
+
+    public function getClassName(): string
+    {
+        return "Update{$this->model}Request";
+    }
 }

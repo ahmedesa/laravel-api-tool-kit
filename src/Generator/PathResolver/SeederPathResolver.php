@@ -2,7 +2,9 @@
 
 namespace Essa\APIToolKit\Generator\PathResolver;
 
-class SeederPathResolver extends PathResolver
+use Essa\APIToolKit\Generator\Contracts\PathHasClass;
+
+class SeederPathResolver extends PathResolver implements PathHasClass
 {
     public function folderPath(): string
     {
@@ -12,5 +14,15 @@ class SeederPathResolver extends PathResolver
     public function fileName(): string
     {
         return "{$this->model}Seeder.php";
+    }
+
+    public function getNameSpace(): string
+    {
+        return 'Database\Seeders';
+    }
+
+    public function getClassName(): string
+    {
+        return "{$this->model}Seeder";
     }
 }

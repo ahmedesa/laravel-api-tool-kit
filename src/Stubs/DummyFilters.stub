@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Filters;
+namespace {{DummyFilterNameSpace}};
 
 use Essa\APIToolKit\Filters\QueryFilters;
 
-class {{DummyFilters}} extends QueryFilters
+class {{DummyFilter}} extends QueryFilters
 {
     protected array $allowedFilters = [];
 

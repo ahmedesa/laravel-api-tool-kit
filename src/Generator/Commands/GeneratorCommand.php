@@ -6,8 +6,8 @@ use Essa\APIToolKit\Generator\ApiGenerationCommandInputs;
 use Essa\APIToolKit\Generator\Contracts\GeneratorCommandInterface;
 use Essa\APIToolKit\Generator\Contracts\HasDynamicContent;
 use Essa\APIToolKit\Generator\Contracts\PathResolverInterface;
+use Essa\APIToolKit\Generator\PlaceholderReplacements;
 use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Str;
 
 abstract class GeneratorCommand implements GeneratorCommandInterface
 {
@@ -30,16 +30,21 @@ abstract class GeneratorCommand implements GeneratorCommandInterface
     {
         $this->apiGenerationCommandInputs = $apiGenerationCommandInputs;
 
-        if ( ! file_exists($this->getOutputFilePath()->folderPath())) {
+        $this->generateFiles();
+    }
+
+    abstract protected function getStubName(): string;
+
+    protected function generateFiles(): void
+    {
+        if ( ! file_exists($this->getPathResolver()->folderPath())) {
             $this->createFolder();
         }
 
         $this->saveContentToFile();
     }
 
-    abstract protected function getStubName(): string;
-
-    protected function getOutputFilePath(): PathResolverInterface
+    protected function getPathResolver(): PathResolverInterface
     {
         $pathResolverClass = config("api-tool-kit-internal.api_generators.options.{$this->type}.path_resolver");
 
@@ -50,7 +55,7 @@ abstract class GeneratorCommand implements GeneratorCommandInterface
     {
         $this->filesystem
             ->makeDirectory(
-                path: $this->getOutputFilePath()->folderPath(),
+                path: $this->getPathResolver()->folderPath(),
                 mode: 0777,
                 recursive: true,
                 force: true
@@ -60,7 +65,7 @@ abstract class GeneratorCommand implements GeneratorCommandInterface
     protected function saveContentToFile(): void
     {
         file_put_contents(
-            filename: $this->getOutputFilePath()->getFullPath(),
+            filename: $this->getPathResolver()->getFullPath(),
             data: $this->parseStub($this->getStubName())
         );
     }
@@ -74,7 +79,7 @@ abstract class GeneratorCommand implements GeneratorCommandInterface
 
     protected function replacePatternsInTheStub(string $type): array|string|null
     {
-        $replacements = $this->getPlaceholderReplacements();
+        $replacements = PlaceholderReplacements::generate($this->apiGenerationCommandInputs->getModel());
 
         if ($this instanceof HasDynamicContent) {
             $replacements = array_merge($replacements, $this->getContent());
@@ -91,7 +96,7 @@ abstract class GeneratorCommand implements GeneratorCommandInterface
         $processedContent = $content;
 
         foreach (self::TAGS as $option) {
-            $processedContent = $this->removeTagBlock(
+            $processedContent = $this->extractConditionalBlock(
                 $processedContent,
                 $this->apiGenerationCommandInputs->getUserChoices()[$option],
                 $option
@@ -106,22 +111,13 @@ abstract class GeneratorCommand implements GeneratorCommandInterface
         return file_get_contents(__DIR__ . "/../../Stubs/{$stubName}.stub");
     }
 
-    protected function removeTagBlock(string $string, bool $condition, string $tag): string
+    function extractConditionalBlock(string $string, bool $condition, string $tag): string
     {
-        $pattern = $condition
-            ? "/@if\(\'{$tag}\'\)|@endif\(\'{$tag}\'\)/"
-            : "/@if\(\'{$tag}\'\)((?>[^@]++))*@endif\(\'{$tag}\'\)/";
+        $pattern = "/@if\('{$tag}'\)(.*?)@endif\('{$tag}'\)/s";
 
-        return preg_replace($pattern, '', $string);
-    }
-
-    protected function getPlaceholderReplacements(): array
-    {
-        return [
-            '{{Dummy}}' => $this->apiGenerationCommandInputs->getModel(),
-            '{{Dummies}}' => Str::plural($this->apiGenerationCommandInputs->getModel()),
-            '{{dummy}}' => lcfirst($this->apiGenerationCommandInputs->getModel()),
-            '{{dummies}}' => lcfirst(Str::plural($this->apiGenerationCommandInputs->getModel())),
-        ];
+        return preg_replace_callback($pattern, function($matches) use ($condition) {
+            $parts = explode('@else', $matches[1], 2);
+            return $condition ? trim($parts[0]) : (isset($parts[1]) ? trim($parts[1]) : '');
+        }, $string);
     }
 }

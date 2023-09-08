@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\{{Dummy}};
+namespace {{DummyUpdateRequestNameSpace}};
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class Update{{Dummy}}Request extends FormRequest
+class {{DummyUpdateRequest}} extends FormRequest
 {
     public function rules(): array
     {

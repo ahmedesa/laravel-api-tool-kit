@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\{{Dummy}};
+namespace {{DummyCreateRequestNameSpace}};
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class Create{{Dummy}}Request extends FormRequest
+class {{DummyCreateRequest}} extends FormRequest
 {
     public function rules(): array
     {

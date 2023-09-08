@@ -33,6 +33,16 @@ abstract class GeneratorCommand implements GeneratorCommandInterface
         $this->generateFiles();
     }
 
+    public function extractConditionalBlock(string $string, bool $condition, string $tag): string
+    {
+        $pattern = "/@if\('{$tag}'\)(.*?)@endif\('{$tag}'\)/s";
+
+        return preg_replace_callback($pattern, function ($matches) use ($condition) {
+            $parts = explode('@else', $matches[1], 2);
+            return $condition ? trim($parts[0]) : (isset($parts[1]) ? trim($parts[1]) : '');
+        }, $string);
+    }
+
     abstract protected function getStubName(): string;
 
     protected function generateFiles(): void
@@ -109,15 +119,5 @@ abstract class GeneratorCommand implements GeneratorCommandInterface
     protected function getStubContent(string $stubName): string
     {
         return file_get_contents(__DIR__ . "/../../Stubs/{$stubName}.stub");
-    }
-
-    function extractConditionalBlock(string $string, bool $condition, string $tag): string
-    {
-        $pattern = "/@if\('{$tag}'\)(.*?)@endif\('{$tag}'\)/s";
-
-        return preg_replace_callback($pattern, function($matches) use ($condition) {
-            $parts = explode('@else', $matches[1], 2);
-            return $condition ? trim($parts[0]) : (isset($parts[1]) ? trim($parts[1]) : '');
-        }, $string);
     }
 }

@@ -3,7 +3,6 @@
 namespace Essa\APIToolKit\Generator\PathResolver;
 
 use Essa\APIToolKit\Generator\Contracts\PathHasClass;
-use Essa\APIToolKit\Generator\Contracts\PathResolverInterface;
 
 class TestPathResolver extends PathResolver implements PathHasClass
 {

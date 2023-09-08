@@ -53,7 +53,7 @@ class MakeFilterCommand extends GeneratorCommand
     protected function replaceNamespace(&$stub, $name): MakeFilterCommand
     {
         $searches = [
-            ['DummyFilterNameSpace'],
+            ['{{DummyFilterNameSpace}}'],
         ];
 
         foreach ($searches as $search) {

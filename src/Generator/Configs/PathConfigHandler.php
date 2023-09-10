@@ -87,4 +87,25 @@ class PathConfigHandler
     {
         return Config::get('api-tool-kit.default_path_groups', 'default');
     }
+
+    /**
+     * Get all path groups names from configuration.
+     *
+     * @return array The name of all path groups.
+     */
+    public static function getAllPathGroups(): array
+    {
+        return array_keys(Config::get('api-tool-kit.generator_path_groups'));
+    }
+
+    /**
+     * check if path group exist or not
+     *
+     * @param string $groupName
+     * @return bool
+     */
+    public static function isValidPathGroup(string $groupName): bool
+    {
+        return (bool) Config::get("api-tool-kit.generator_path_groups.{$groupName}");
+    }
 }

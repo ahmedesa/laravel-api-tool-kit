@@ -39,6 +39,19 @@ class ApiGenerateCommandTest extends TestCase
 
     /**
      * @test
+     */
+    public function invalidGroupName(): void
+    {
+        $this->artisan('api:generate', [
+            'model' => 'newModel',
+            '--group' => 'not-exist',
+        ])
+            ->expectsOutput('The path group you entered is not valid')
+            ->assertExitCode(Command::FAILURE);
+    }
+
+    /**
+     * @test
      * @dataProvider pathResolverProvider
      */
     public function generateCommandWithAllDefaults($resolverClass): void

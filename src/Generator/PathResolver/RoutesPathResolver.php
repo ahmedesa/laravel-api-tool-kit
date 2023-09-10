@@ -6,16 +6,11 @@ class RoutesPathResolver extends PathResolver
 {
     public function folderPath(): string
     {
-        return base_path('routes/api.php');
+        return base_path('routes');
     }
 
     public function fileName(): string
     {
-        return base_path('routes/api.php');
-    }
-
-    public function getFullPath(): string
-    {
-        return base_path('routes/api.php');
+        return 'api.php';
     }
 }

@@ -24,8 +24,9 @@ class PathResolverTest extends TestCase
         $model = 'User';
         $resolver = new ModelPathResolver($model);
 
-        $expectedPath = app_path('Models/User.php');
-        $this->assertEquals($expectedPath, $resolver->getFullPath());
+        $this->assertEquals(app_path('Models/User.php'), $resolver->getFullPath());
+        $this->assertEquals('User', $resolver->getClassName());
+        $this->assertEquals('App\Models', $resolver->getNameSpace());
     }
 
     /**
@@ -36,8 +37,8 @@ class PathResolverTest extends TestCase
         $model = 'User';
         $resolver = new ControllerPathResolver($model);
 
-        $expectedPath = app_path('Http/Controllers/API/UserController.php');
-        $this->assertEquals($expectedPath, $resolver->getFullPath());
+        $this->assertEquals(app_path('Http/Controllers/API/UserController.php'), $resolver->getFullPath());
+        $this->assertEquals('UserController', $resolver->getClassName());
     }
 
     /**
@@ -50,6 +51,7 @@ class PathResolverTest extends TestCase
 
         $expectedPath = app_path('Http/Requests/User/CreateUserRequest.php');
         $this->assertEquals($expectedPath, $resolver->getFullPath());
+        $this->assertEquals('CreateUserRequest', $resolver->getClassName());
     }
 
     /**
@@ -62,6 +64,7 @@ class PathResolverTest extends TestCase
 
         $expectedPath = database_path('factories/UserFactory.php');
         $this->assertEquals($expectedPath, $resolver->getFullPath());
+        $this->assertEquals('UserFactory', $resolver->getClassName());
     }
 
     /**
@@ -72,8 +75,8 @@ class PathResolverTest extends TestCase
         $model = 'User';
         $resolver = new FilterPathResolver($model);
 
-        $expectedPath = app_path('Filters/UserFilters.php');
-        $this->assertEquals($expectedPath, $resolver->getFullPath());
+        $this->assertEquals(app_path('Filters/UserFilters.php'), $resolver->getFullPath());
+        $this->assertEquals('UserFilters', $resolver->getClassName());
     }
 
     /**
@@ -84,9 +87,7 @@ class PathResolverTest extends TestCase
         $model = 'User';
         $resolver = new MigrationPathResolver($model);
 
-        $expectedPath = database_path('migrations/' . date('Y_m_d_His') . '_create_users_table.php');
-
-        $this->assertEquals($expectedPath, $resolver->getFullPath());
+        $this->assertEquals(database_path('migrations/' . date('Y_m_d_His') . '_create_users_table.php'), $resolver->getFullPath());
     }
 
     /**
@@ -97,8 +98,8 @@ class PathResolverTest extends TestCase
         $model = 'User';
         $resolver = new ResourcePathResolver($model);
 
-        $expectedPath = app_path('Http/Resources/User/UserResource.php');
-        $this->assertEquals($expectedPath, $resolver->getFullPath());
+        $this->assertEquals(app_path('Http/Resources/User/UserResource.php'), $resolver->getFullPath());
+        $this->assertEquals('UserResource', $resolver->getClassName());
     }
 
     /**
@@ -109,8 +110,7 @@ class PathResolverTest extends TestCase
         $model = 'User';
         $resolver = new RoutesPathResolver($model);
 
-        $expectedPath = base_path('routes/api.php');
-        $this->assertEquals($expectedPath, $resolver->getFullPath());
+        $this->assertEquals(base_path('routes/api.php'), $resolver->getFullPath());
     }
 
     /**
@@ -121,8 +121,8 @@ class PathResolverTest extends TestCase
         $model = 'User';
         $resolver = new SeederPathResolver($model);
 
-        $expectedPath = database_path('seeders/UserSeeder.php');
-        $this->assertEquals($expectedPath, $resolver->getFullPath());
+        $this->assertEquals(database_path('seeders/UserSeeder.php'), $resolver->getFullPath());
+        $this->assertEquals('UserSeeder', $resolver->getClassName());
     }
 
     /**
@@ -133,8 +133,8 @@ class PathResolverTest extends TestCase
         $model = 'User';
         $resolver = new TestPathResolver($model);
 
-        $expectedPath = base_path('tests/Feature/UserTest.php');
-        $this->assertEquals($expectedPath, $resolver->getFullPath());
+        $this->assertEquals(base_path('tests/Feature/UserTest.php'), $resolver->getFullPath());
+        $this->assertEquals('UserTest', $resolver->getClassName());
     }
 
     /**
@@ -145,7 +145,7 @@ class PathResolverTest extends TestCase
         $model = 'User';
         $resolver = new UpdateFormRequestPathResolver($model);
 
-        $expectedPath = app_path('Http/Requests/User/UpdateUserRequest.php');
-        $this->assertEquals($expectedPath, $resolver->getFullPath());
+        $this->assertEquals(app_path('Http/Requests/User/UpdateUserRequest.php'), $resolver->getFullPath());
+        $this->assertEquals('UpdateUserRequest', $resolver->getClassName());
     }
 }

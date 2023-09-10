@@ -3,6 +3,8 @@
 namespace Essa\APIToolKit\Commands;
 
 use Essa\APIToolKit\Generator\ApiGenerationCommandInputs;
+use Essa\APIToolKit\Generator\Configs\CommandConfigHandler;
+use Essa\APIToolKit\Generator\Configs\PathConfigHandler;
 use Essa\APIToolKit\Generator\ConsoleTable\GeneratedFilesConsoleTable;
 use Essa\APIToolKit\Generator\ConsoleTable\SchemaConsoleTable;
 use Essa\APIToolKit\Generator\Contracts\ConsoleTableInterface;
@@ -107,7 +109,8 @@ class ApiGenerateCommand extends Command
         $apiGenerationCommandInputs = new ApiGenerationCommandInputs(
             model: $model,
             userChoices: $this->getUserChoices(),
-            schema: SchemaDefinition::createFromSchemaString($this->argument('schema'))
+            schema: SchemaDefinition::createFromSchemaString($this->argument('schema')),
+            pathGroup: $this->option('group')
         );
 
         $this->executeCommands($apiGenerationCommandInputs);
@@ -145,6 +148,7 @@ class ApiGenerateCommand extends Command
             ['seeder', 's', InputOption::VALUE_NONE, 'Create a new seeder for the model'],
             ['resource', 'r', InputOption::VALUE_NONE, 'Generate a resource controller for the model'],
             ['request', 'R', InputOption::VALUE_NONE, 'Create new form request classes for the model and use them in the resource controller'],
+            ['group', 'g', InputOption::VALUE_OPTIONAL, 'Specify the group for the generated files', PathConfigHandler::getDefaultPathGroup()],
         ];
     }
 
@@ -179,12 +183,12 @@ class ApiGenerateCommand extends Command
 
     private function executeCommands(ApiGenerationCommandInputs $apiGenerationCommandInputs): void
     {
-        $apiGeneratorOptions = config('api-tool-kit-internal.api_generators.options');
+        $apiGeneratorCommands = CommandConfigHandler::getAllCommands();
 
-        foreach ($apiGeneratorOptions as $option => $config) {
-            if ($apiGenerationCommandInputs->isOptionSelected($option)) {
+        foreach ($apiGeneratorCommands as $type => $commandClass) {
+            if ($apiGenerationCommandInputs->isOptionSelected($type)) {
                 $this->container
-                    ->get($config['command'])
+                    ->get($commandClass)
                     ->run($apiGenerationCommandInputs);
             }
         }

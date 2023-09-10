@@ -3,10 +3,11 @@
 namespace Essa\APIToolKit\Generator\Commands;
 
 use Essa\APIToolKit\Generator\ApiGenerationCommandInputs;
+use Essa\APIToolKit\Generator\Configs\PathConfigHandler;
 use Essa\APIToolKit\Generator\Contracts\GeneratorCommandInterface;
 use Essa\APIToolKit\Generator\Contracts\HasDynamicContent;
 use Essa\APIToolKit\Generator\Contracts\PathResolverInterface;
-use Essa\APIToolKit\Generator\PlaceholderReplacements;
+use Essa\APIToolKit\Generator\Helpers\StubVariablesProvider;
 use Illuminate\Filesystem\Filesystem;
 
 abstract class GeneratorCommand implements GeneratorCommandInterface
@@ -33,16 +34,6 @@ abstract class GeneratorCommand implements GeneratorCommandInterface
         $this->generateFiles();
     }
 
-    public function extractConditionalBlock(string $string, bool $condition, string $tag): string
-    {
-        $pattern = "/@if\('{$tag}'\)(.*?)@endif\('{$tag}'\)/s";
-
-        return preg_replace_callback($pattern, function ($matches) use ($condition) {
-            $parts = explode('@else', $matches[1], 2);
-            return $condition ? trim($parts[0]) : (isset($parts[1]) ? trim($parts[1]) : '');
-        }, $string);
-    }
-
     abstract protected function getStubName(): string;
 
     protected function generateFiles(): void
@@ -56,9 +47,11 @@ abstract class GeneratorCommand implements GeneratorCommandInterface
 
     protected function getPathResolver(): PathResolverInterface
     {
-        $pathResolverClass = config("api-tool-kit-internal.api_generators.options.{$this->type}.path_resolver");
-
-        return new $pathResolverClass($this->apiGenerationCommandInputs->getModel());
+        return PathConfigHandler::createPathResolverInstance(
+            pathGroup: $this->apiGenerationCommandInputs->getPathGroup(),
+            type: $this->type,
+            model: $this->apiGenerationCommandInputs->getModel()
+        );
     }
 
     protected function createFolder(): void
@@ -89,7 +82,10 @@ abstract class GeneratorCommand implements GeneratorCommandInterface
 
     protected function replacePatternsInTheStub(string $type): array|string|null
     {
-        $replacements = PlaceholderReplacements::generate($this->apiGenerationCommandInputs->getModel());
+        $replacements = StubVariablesProvider::generate(
+            modelName: $this->apiGenerationCommandInputs->getModel(),
+            pathGroup: $this->apiGenerationCommandInputs->getPathGroup()
+        );
 
         if ($this instanceof HasDynamicContent) {
             $replacements = array_merge($replacements, $this->getContent());
@@ -114,6 +110,16 @@ abstract class GeneratorCommand implements GeneratorCommandInterface
         }
 
         return $processedContent;
+    }
+
+    protected function extractConditionalBlock(string $string, bool $condition, string $tag): string
+    {
+        $pattern = "/@if\('{$tag}'\)(.*?)@endif\('{$tag}'\)/s";
+
+        return preg_replace_callback($pattern, function ($matches) use ($condition) {
+            $parts = explode('@else', $matches[1], 2);
+            return $condition ? trim($parts[0]) : (isset($parts[1]) ? trim($parts[1]) : '');
+        }, $string);
     }
 
     protected function getStubContent(string $stubName): string

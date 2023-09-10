@@ -6,56 +6,21 @@ return [
     | API Generators Commands
     |--------------------------------------------------------------------------
     |
-    | Define API generator commands and their path resolvers.
+    | Define API generator commands.
     |
     */
-    'api_generators' => [
-        'options' => [
-            'model' => [
-                'command' => \Essa\APIToolKit\Generator\Commands\ModelGeneratorCommand::class,
-                'path_resolver' => \Essa\APIToolKit\Generator\PathResolver\ModelPathResolver::class,
-            ],
-            'factory' => [
-                'command' => \Essa\APIToolKit\Generator\Commands\FactoryGeneratorCommand::class,
-                'path_resolver' => \Essa\APIToolKit\Generator\PathResolver\FactoryPathResolver::class,
-            ],
-            'seeder' => [
-                'command' => \Essa\APIToolKit\Generator\Commands\SeederGeneratorCommand::class,
-                'path_resolver' => \Essa\APIToolKit\Generator\PathResolver\SeederPathResolver::class,
-            ],
-            'controller' => [
-                'command' => \Essa\APIToolKit\Generator\Commands\ControllerGeneratorCommand::class,
-                'path_resolver' => \Essa\APIToolKit\Generator\PathResolver\ControllerPathResolver::class,
-            ],
-            'resource' => [
-                'command' => \Essa\APIToolKit\Generator\Commands\ResourceGeneratorCommand::class,
-                'path_resolver' => \Essa\APIToolKit\Generator\PathResolver\ResourcePathResolver::class,
-            ],
-            'test' => [
-                'command' => \Essa\APIToolKit\Generator\Commands\TestGeneratorCommand::class,
-                'path_resolver' => \Essa\APIToolKit\Generator\PathResolver\TestPathResolver::class,
-            ],
-            'create-request' => [
-                'command' => \Essa\APIToolKit\Generator\Commands\CreateFormRequestGeneratorCommand::class,
-                'path_resolver' => \Essa\APIToolKit\Generator\PathResolver\CreateFormRequestPathResolver::class,
-            ],
-            'update-request' => [
-                'command' => \Essa\APIToolKit\Generator\Commands\UpdateFormRequestGeneratorCommand::class,
-                'path_resolver' => \Essa\APIToolKit\Generator\PathResolver\UpdateFormRequestPathResolver::class,
-            ],
-            'filter' => [
-                'command' => \Essa\APIToolKit\Generator\Commands\FilterGeneratorCommand::class,
-                'path_resolver' => \Essa\APIToolKit\Generator\PathResolver\FilterPathResolver::class,
-            ],
-            'migration' => [
-                'command' => \Essa\APIToolKit\Generator\Commands\MigrationGeneratorCommand::class,
-                'path_resolver' => \Essa\APIToolKit\Generator\PathResolver\MigrationPathResolver::class,
-            ],
-            'routes' => [
-                'command' => \Essa\APIToolKit\Generator\Commands\RoutesGeneratorCommand::class,
-                'path_resolver' => \Essa\APIToolKit\Generator\PathResolver\RoutesPathResolver::class,
-            ],
-        ],
+    'api_generator_commands' => [
+        'model' => Essa\APIToolKit\Generator\Commands\ModelGeneratorCommand::class,
+        'factory' => Essa\APIToolKit\Generator\Commands\FactoryGeneratorCommand::class,
+        'seeder' => Essa\APIToolKit\Generator\Commands\SeederGeneratorCommand::class,
+        'controller' => Essa\APIToolKit\Generator\Commands\ControllerGeneratorCommand::class,
+        'resource' => Essa\APIToolKit\Generator\Commands\ResourceGeneratorCommand::class,
+        'test' => Essa\APIToolKit\Generator\Commands\TestGeneratorCommand::class,
+        'create-request' => Essa\APIToolKit\Generator\Commands\CreateFormRequestGeneratorCommand::class,
+        'update-request' => Essa\APIToolKit\Generator\Commands\UpdateFormRequestGeneratorCommand::class,
+        'filter' => Essa\APIToolKit\Generator\Commands\FilterGeneratorCommand::class,
+        'migration' => Essa\APIToolKit\Generator\Commands\MigrationGeneratorCommand::class,
+        'routes' => Essa\APIToolKit\Generator\Commands\RoutesGeneratorCommand::class,
     ],
     /*
     |--------------------------------------------------------------------------
@@ -67,10 +32,10 @@ return [
     */
     'filters' => [
         'handlers' => [
-            \Essa\APIToolKit\Filters\Handlers\FiltersHandler::class,
-            \Essa\APIToolKit\Filters\Handlers\SortHandler::class,
-            \Essa\APIToolKit\Filters\Handlers\IncludesHandler::class,
-            \Essa\APIToolKit\Filters\Handlers\SearchHandler::class,
+            Essa\APIToolKit\Filters\Handlers\FiltersHandler::class,
+            Essa\APIToolKit\Filters\Handlers\SortHandler::class,
+            Essa\APIToolKit\Filters\Handlers\IncludesHandler::class,
+            Essa\APIToolKit\Filters\Handlers\SearchHandler::class,
         ],
     ],
 ];

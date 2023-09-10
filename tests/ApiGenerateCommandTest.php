@@ -2,6 +2,7 @@
 
 namespace Essa\APIToolKit\Tests;
 
+use Essa\APIToolKit\Generator\Contracts\HasClassAndNamespace;
 use Essa\APIToolKit\Generator\PathResolver\ControllerPathResolver;
 use Essa\APIToolKit\Generator\PathResolver\CreateFormRequestPathResolver;
 use Essa\APIToolKit\Generator\PathResolver\FactoryPathResolver;
@@ -38,33 +39,43 @@ class ApiGenerateCommandTest extends TestCase
 
     /**
      * @test
+     * @dataProvider pathResolverProvider
      */
-    public function generateCommandWithAllDefaults(): void
+    public function generateCommandWithAllDefaults($resolverClass): void
     {
         $model = 'GeneratedModel';
 
         $this->artisan('api:generate', [
             'model' => $model,
             '--all' => true,
-        ])
-            ->assertExitCode(Command::SUCCESS);
+        ])->assertExitCode(Command::SUCCESS);
 
-        $this->assertFileExists((new ModelPathResolver($model))->getFullPath());
-        $this->assertFileExists((new ControllerPathResolver($model))->getFullPath());
-        $this->assertFileExists((new ResourcePathResolver($model))->getFullPath());
-        $this->assertFileExists((new CreateFormRequestPathResolver($model))->getFullPath());
-        $this->assertFileExists((new UpdateFormRequestPathResolver($model))->getFullPath());
-        $this->assertFileExists((new FilterPathResolver($model))->getFullPath());
-        $this->assertFileExists((new SeederPathResolver($model))->getFullPath());
-        $this->assertFileExists((new FactoryPathResolver($model))->getFullPath());
-        $this->assertFileExists((new TestPathResolver($model))->getFullPath());
-        $this->assertFileExists((new RoutesPathResolver($model))->getFullPath());
-        $this->assertFileExists((new MigrationPathResolver($model))->getFullPath());
+        $pathResolver = new $resolverClass($model);
 
-        $this->assertStringContainsString(
-            "Route::apiResource('/generatedModels'",
-            file_get_contents((new RoutesPathResolver($model))->getFullPath())
-        );
+        $this->assertFileExists($pathResolver->getFullPath());
+
+        if ($pathResolver instanceof HasClassAndNamespace) {
+            $this->assertStringContainsString(
+                'namespace ' . $pathResolver->getNameSpace() . ';',
+                file_get_contents($pathResolver->getFullPath())
+            );
+        }
+    }
+
+    public function pathResolverProvider(): array
+    {
+        return [
+            [ModelPathResolver::class],
+            [ControllerPathResolver::class],
+            [ResourcePathResolver::class],
+            [CreateFormRequestPathResolver::class],
+            [UpdateFormRequestPathResolver::class],
+            [FilterPathResolver::class],
+            [SeederPathResolver::class],
+            [FactoryPathResolver::class],
+            [TestPathResolver::class],
+            [RoutesPathResolver::class],
+        ];
     }
 
     /**

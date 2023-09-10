@@ -14,4 +14,9 @@ abstract class PathResolver implements PathResolverInterface
     {
         return $this->folderPath() . '/' . $this->fileName();
     }
+
+    public function getClassName(): string
+    {
+        return str_replace('.php', '', $this->fileName());
+    }
 }

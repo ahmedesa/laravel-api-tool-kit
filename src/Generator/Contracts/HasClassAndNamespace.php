@@ -2,7 +2,7 @@
 
 namespace Essa\APIToolKit\Generator\Contracts;
 
-interface PathHasClass
+interface HasClassAndNamespace
 {
     public function getNameSpace(): string;
 

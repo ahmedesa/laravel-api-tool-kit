@@ -2,9 +2,9 @@
 
 namespace Essa\APIToolKit\Generator\PathResolver;
 
-use Essa\APIToolKit\Generator\Contracts\PathHasClass;
+use Essa\APIToolKit\Generator\Contracts\HasClassAndNamespace;
 
-class FilterPathResolver extends PathResolver implements PathHasClass
+class FilterPathResolver extends PathResolver implements HasClassAndNamespace
 {
     public function folderPath(): string
     {
@@ -19,10 +19,5 @@ class FilterPathResolver extends PathResolver implements PathHasClass
     public function getNameSpace(): string
     {
         return 'App\Filters';
-    }
-
-    public function getClassName(): string
-    {
-        return "{$this->model}Filters";
     }
 }

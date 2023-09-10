@@ -1,22 +1,20 @@
 <?php
 
-namespace Essa\APIToolKit\Generator;
+namespace Essa\APIToolKit\Generator\Helpers;
 
-use Essa\APIToolKit\Generator\Contracts\PathHasClass;
+use Essa\APIToolKit\Generator\Configs\PathConfigHandler;
+use Essa\APIToolKit\Generator\Contracts\HasClassAndNamespace;
 use Essa\APIToolKit\Generator\PathResolver\PathResolver;
 use Illuminate\Support\Str;
 
-class PlaceholderReplacements
+class StubVariablesProvider
 {
-    public static function generate(string $modelName): array
+    public static function generate(string $modelName, string $pathGroup): array
     {
-        $replacements = [];
-
-        $config = config('api-tool-kit-internal.api_generators.options');
-
-        foreach ($config as $type => $options) {
-            $replacements += self::generateReplacementsForType($type, $options['path_resolver'], $modelName);
-        }
+        $replacements = PathConfigHandler::iterateOverTypesPathsFromConfig(
+            pathGroup: $pathGroup,
+            callback: fn (string $type, string $pathResolver) => self::generateReplacementsForType($type, $pathResolver, $modelName)
+        );
 
         return $replacements + self::generateBasicReplacements($modelName);
     }
@@ -26,7 +24,7 @@ class PlaceholderReplacements
         /** @var PathResolver $resolver */
         $resolver = new $pathResolverClass($modelName);
 
-        if ( ! $resolver instanceof PathHasClass) {
+        if ( ! $resolver instanceof HasClassAndNamespace) {
             return [];
         }
 

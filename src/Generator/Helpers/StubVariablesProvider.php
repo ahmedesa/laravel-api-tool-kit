@@ -11,10 +11,13 @@ class StubVariablesProvider
 {
     public static function generate(string $modelName, string $pathGroup): array
     {
-        $replacements = PathConfigHandler::iterateOverTypesPathsFromConfig(
-            pathGroup: $pathGroup,
-            callback: fn (string $type, string $pathResolver) => self::generateReplacementsForType($type, $pathResolver, $modelName)
-        );
+        $configForPathGroup = PathConfigHandler::getConfigForPathGroup($pathGroup);
+
+        $replacements = [];
+
+        foreach ($configForPathGroup as $type => $pathResolver) {
+            $replacements += self::generateReplacementsForType($type, $pathResolver, $modelName);
+        }
 
         return $replacements + self::generateBasicReplacements($modelName);
     }

@@ -12,28 +12,27 @@ class GeneratedFilesConsoleTable implements ConsoleTableInterface
     public function generate(ApiGenerationCommandInputs $apiGenerationCommandInputs): TableDate
     {
         $tableData = $this->generateTableData($apiGenerationCommandInputs);
+
         $headers = ['Type', 'File Path'];
 
-        return new TableDate($headers, [$tableData]);
+        return new TableDate($headers, $tableData);
     }
 
     private function generateTableData(ApiGenerationCommandInputs $apiGenerationCommandInputs): array
     {
-        return PathConfigHandler::iterateOverTypesPathsFromConfig(
-            pathGroup: $apiGenerationCommandInputs->getPathGroup(),
-            callback: fn (string $type, string $pathResolver) => $this->generateTableRow($type, $pathResolver, $apiGenerationCommandInputs)
-        );
-    }
+        $configForPathGroup = PathConfigHandler::getConfigForPathGroup($apiGenerationCommandInputs->getPathGroup());
 
-    private function generateTableRow(string $type, string $pathResolver, ApiGenerationCommandInputs $apiGenerationCommandInputs): array
-    {
-        if ( ! $apiGenerationCommandInputs->isOptionSelected($type)) {
-            return [];
+        $tableData = [];
+
+        foreach ($configForPathGroup as $type => $pathResolver) {
+            if ($apiGenerationCommandInputs->isOptionSelected($type)) {
+                $tableData[] = [
+                    $type,
+                    (new $pathResolver($apiGenerationCommandInputs->getModel()))->getFullPath(),
+                ];
+            }
         }
 
-        return [
-            $type,
-            (new $pathResolver($apiGenerationCommandInputs->getModel()))->getFullPath(),
-        ];
+        return $tableData;
     }
 }

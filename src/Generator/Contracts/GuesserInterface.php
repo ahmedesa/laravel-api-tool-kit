@@ -2,7 +2,7 @@
 
 namespace Essa\APIToolKit\Generator\Contracts;
 
-interface Guesser
+interface GuesserInterface
 {
     public function guess(): string;
 }

@@ -3,9 +3,9 @@
 namespace Essa\APIToolKit\Generator\Guessers;
 
 use Essa\APIToolKit\Generator\ColumnDefinition;
-use Essa\APIToolKit\Generator\Contracts\Guesser;
+use Essa\APIToolKit\Generator\Contracts\GuesserInterface;
 
-class ValidationRuleGuesser implements Guesser
+class ValidationRuleGuesserInterface implements GuesserInterface
 {
     public function __construct(private ColumnDefinition $definition, private array $extraValidation)
     {

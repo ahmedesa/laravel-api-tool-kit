@@ -2,10 +2,10 @@
 
 namespace Essa\APIToolKit\Generator\Commands;
 
-use Essa\APIToolKit\Generator\Contracts\HasDynamicContent;
+use Essa\APIToolKit\Generator\Contracts\HasDynamicContentInterface;
 use Essa\APIToolKit\Generator\SchemaParsers\FactoryColumnsParser;
 
-class FactoryGeneratorCommand extends GeneratorCommand implements HasDynamicContent
+class FactoryGeneratorCommand extends GeneratorCommand implements HasDynamicContentInterface
 {
     protected string $type = 'factory';
 

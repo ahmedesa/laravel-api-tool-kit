@@ -5,7 +5,7 @@ namespace Essa\APIToolKit\Generator\Commands;
 use Essa\APIToolKit\Generator\ApiGenerationCommandInputs;
 use Essa\APIToolKit\Generator\Configs\PathConfigHandler;
 use Essa\APIToolKit\Generator\Contracts\GeneratorCommandInterface;
-use Essa\APIToolKit\Generator\Contracts\HasDynamicContent;
+use Essa\APIToolKit\Generator\Contracts\HasDynamicContentInterface;
 use Essa\APIToolKit\Generator\Contracts\PathResolverInterface;
 use Essa\APIToolKit\Generator\Helpers\StubVariablesProvider;
 use Illuminate\Filesystem\Filesystem;
@@ -87,7 +87,7 @@ abstract class GeneratorCommand implements GeneratorCommandInterface
             pathGroup: $this->apiGenerationCommandInputs->getPathGroup()
         );
 
-        if ($this instanceof HasDynamicContent) {
+        if ($this instanceof HasDynamicContentInterface) {
             $replacements = array_merge($replacements, $this->getContent());
         }
 

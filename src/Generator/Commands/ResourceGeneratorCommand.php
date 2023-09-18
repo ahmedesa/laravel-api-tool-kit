@@ -2,10 +2,10 @@
 
 namespace Essa\APIToolKit\Generator\Commands;
 
-use Essa\APIToolKit\Generator\Contracts\HasDynamicContent;
+use Essa\APIToolKit\Generator\Contracts\HasDynamicContentInterface;
 use Essa\APIToolKit\Generator\SchemaParsers\ResourceAttributesParser;
 
-class ResourceGeneratorCommand extends GeneratorCommand implements HasDynamicContent
+class ResourceGeneratorCommand extends GeneratorCommand implements HasDynamicContentInterface
 {
     protected string $type = 'resource';
 

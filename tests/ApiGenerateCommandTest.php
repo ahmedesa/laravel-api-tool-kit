@@ -2,7 +2,7 @@
 
 namespace Essa\APIToolKit\Tests;
 
-use Essa\APIToolKit\Generator\Contracts\HasClassAndNamespace;
+use Essa\APIToolKit\Generator\Contracts\ClassInfoInterface;
 use Essa\APIToolKit\Generator\PathResolver\ControllerPathResolver;
 use Essa\APIToolKit\Generator\PathResolver\CreateFormRequestPathResolver;
 use Essa\APIToolKit\Generator\PathResolver\FactoryPathResolver;
@@ -67,7 +67,7 @@ class ApiGenerateCommandTest extends TestCase
 
         $this->assertFileExists($pathResolver->getFullPath());
 
-        if ($pathResolver instanceof HasClassAndNamespace) {
+        if ($pathResolver instanceof ClassInfoInterface) {
             $this->assertStringContainsString(
                 'namespace ' . $pathResolver->getNameSpace() . ';',
                 file_get_contents($pathResolver->getFullPath())

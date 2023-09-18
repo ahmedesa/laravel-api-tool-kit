@@ -3,7 +3,7 @@
 namespace Essa\APIToolKit\Generator\Helpers;
 
 use Essa\APIToolKit\Generator\Configs\PathConfigHandler;
-use Essa\APIToolKit\Generator\Contracts\HasClassAndNamespace;
+use Essa\APIToolKit\Generator\Contracts\ClassInfoInterface;
 use Essa\APIToolKit\Generator\PathResolver\PathResolver;
 use Illuminate\Support\Str;
 
@@ -27,7 +27,7 @@ class StubVariablesProvider
         /** @var PathResolver $resolver */
         $resolver = new $pathResolverClass($modelName);
 
-        if ( ! $resolver instanceof HasClassAndNamespace) {
+        if ( ! $resolver instanceof ClassInfoInterface) {
             return [];
         }
 

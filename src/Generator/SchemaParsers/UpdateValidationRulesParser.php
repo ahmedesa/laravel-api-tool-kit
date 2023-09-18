@@ -3,7 +3,7 @@
 namespace Essa\APIToolKit\Generator\SchemaParsers;
 
 use Essa\APIToolKit\Generator\ColumnDefinition;
-use Essa\APIToolKit\Generator\Guessers\ValidationRuleGuesser;
+use Essa\APIToolKit\Generator\Guessers\ValidationRuleGuesserInterface;
 use Essa\APIToolKit\Generator\SchemaDefinition;
 
 class UpdateValidationRulesParser extends SchemaParser
@@ -12,7 +12,7 @@ class UpdateValidationRulesParser extends SchemaParser
     {
         return collect($schemaDefinition->getColumns())
             ->map(function (ColumnDefinition $definition): string {
-                $guesser = new ValidationRuleGuesser($definition, ['sometimes']);
+                $guesser = new ValidationRuleGuesserInterface($definition, ['sometimes']);
 
                 return "'{$definition->getName()}' => [{$guesser->guess()}],";
             })

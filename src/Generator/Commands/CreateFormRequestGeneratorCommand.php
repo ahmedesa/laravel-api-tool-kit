@@ -2,10 +2,10 @@
 
 namespace Essa\APIToolKit\Generator\Commands;
 
-use Essa\APIToolKit\Generator\Contracts\HasDynamicContent;
+use Essa\APIToolKit\Generator\Contracts\HasDynamicContentInterface;
 use Essa\APIToolKit\Generator\SchemaParsers\CreateValidationRulesParser;
 
-class CreateFormRequestGeneratorCommand extends GeneratorCommand implements HasDynamicContent
+class CreateFormRequestGeneratorCommand extends GeneratorCommand implements HasDynamicContentInterface
 {
     protected string $type = 'create-request';
 

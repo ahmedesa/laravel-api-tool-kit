@@ -2,7 +2,7 @@
 
 namespace Essa\APIToolKit\Generator\Contracts;
 
-interface HasDynamicContent
+interface HasDynamicContentInterface
 {
     public function getContent(): array;
 }

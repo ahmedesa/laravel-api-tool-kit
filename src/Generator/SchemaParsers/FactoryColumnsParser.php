@@ -3,7 +3,7 @@
 namespace Essa\APIToolKit\Generator\SchemaParsers;
 
 use Essa\APIToolKit\Generator\ColumnDefinition;
-use Essa\APIToolKit\Generator\Guessers\FactoryMethodGuesser;
+use Essa\APIToolKit\Generator\Guessers\FactoryMethodGuesserInterface;
 use Essa\APIToolKit\Generator\SchemaDefinition;
 use Illuminate\Support\Str;
 
@@ -22,7 +22,7 @@ class FactoryColumnsParser extends SchemaParser
             return "'{$definition->getName()}' => {$this->getRelationFactoryMethod($definition)},";
         }
 
-        $factoryMethodGuesser = new FactoryMethodGuesser($definition);
+        $factoryMethodGuesser = new FactoryMethodGuesserInterface($definition);
         $factoryMethod = $factoryMethodGuesser->guess();
 
         return "'{$definition->getName()}' => \$this->faker->{$factoryMethod},";

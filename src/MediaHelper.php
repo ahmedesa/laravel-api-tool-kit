@@ -95,13 +95,15 @@ class MediaHelper
      * Deletes a file from the storage disk if it exists.
      *
      * @param string $filePath The path of the file to be deleted.
-     * @return void
+     * @return bool return true if file deleted fasle if not
      */
-    public static function deleteFile(string $filePath): void
+    public static function deleteFile(string $filePath): bool
     {
         if (Storage::disk(self::$disk)->exists($filePath)) {
-            Storage::disk(self::$disk)->delete($filePath);
+            return Storage::disk(self::$disk)->delete($filePath);
         }
+
+        return false;
     }
 
     /**

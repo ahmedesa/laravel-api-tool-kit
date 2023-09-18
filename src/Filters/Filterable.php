@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 /**
- * @method static useFilters(string $filterClass = null, ?FiltersDTO $filteredDTO = null) filter class
+ * @method static Builder useFilters(string $filterClass = null, ?FiltersDTO $filteredDTO = null) filter class
  */
 trait Filterable
 {

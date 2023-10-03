@@ -6,7 +6,7 @@ use Essa\APIToolKit\Generator\ApiGenerationCommandInputs;
 use Essa\APIToolKit\Generator\Configs\PathConfigHandler;
 use Essa\APIToolKit\Generator\Contracts\GeneratorCommandInterface;
 use Essa\APIToolKit\Generator\Contracts\HasDynamicContentInterface;
-use Essa\APIToolKit\Generator\Contracts\PathResolverInterface;
+use Essa\APIToolKit\Generator\GeneratedFileInfo;
 use Essa\APIToolKit\Generator\Helpers\StubVariablesProvider;
 use Illuminate\Filesystem\Filesystem;
 
@@ -38,19 +38,19 @@ abstract class GeneratorCommand implements GeneratorCommandInterface
 
     protected function generateFiles(): void
     {
-        if ( ! file_exists($this->getPathResolver()->folderPath())) {
+        if ( ! file_exists($this->generatedFileInfo()->getFolderPath())) {
             $this->createFolder();
         }
 
         $this->saveContentToFile();
     }
 
-    protected function getPathResolver(): PathResolverInterface
+    protected function generatedFileInfo(): GeneratedFileInfo
     {
-        return PathConfigHandler::createPathResolverInstance(
-            pathGroup: $this->apiGenerationCommandInputs->getPathGroup(),
-            type: $this->type,
-            model: $this->apiGenerationCommandInputs->getModel()
+        return PathConfigHandler::generateFilePathInfo(
+            pathGroupName: $this->apiGenerationCommandInputs->getPathGroup(),
+            generatedFileType: $this->type,
+            modelName: $this->apiGenerationCommandInputs->getModel()
         );
     }
 
@@ -58,7 +58,7 @@ abstract class GeneratorCommand implements GeneratorCommandInterface
     {
         $this->filesystem
             ->makeDirectory(
-                path: $this->getPathResolver()->folderPath(),
+                path: $this->generatedFileInfo()->getFolderPath(),
                 mode: 0777,
                 recursive: true,
                 force: true
@@ -68,7 +68,7 @@ abstract class GeneratorCommand implements GeneratorCommandInterface
     protected function saveContentToFile(): void
     {
         file_put_contents(
-            filename: $this->getPathResolver()->getFullPath(),
+            filename: $this->generatedFileInfo()->getFullPath(),
             data: $this->parseStub($this->getStubName())
         );
     }

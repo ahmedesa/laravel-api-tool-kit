@@ -2,6 +2,7 @@
 
 namespace Essa\APIToolKit\Commands;
 
+use Essa\APIToolKit\Enum\GeneratorFilesType;
 use Essa\APIToolKit\Generator\ApiGenerationCommandInputs;
 use Essa\APIToolKit\Generator\Configs\CommandConfigHandler;
 use Essa\APIToolKit\Generator\Configs\PathConfigHandler;
@@ -165,8 +166,8 @@ class ApiGenerateCommand extends Command
         }
 
         $extraOptions = [
-            'update-request' => $this->option('request'),
-            'create-request' => $this->option('request'),
+            GeneratorFilesType::UPDATE_REQUEST => $this->option('request'),
+            GeneratorFilesType::CREATE_REQUEST => $this->option('request'),
             'model' => true,
         ];
 

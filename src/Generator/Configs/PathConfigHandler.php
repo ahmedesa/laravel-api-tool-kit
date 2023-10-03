@@ -2,9 +2,10 @@
 
 namespace Essa\APIToolKit\Generator\Configs;
 
-use Essa\APIToolKit\Generator\Contracts\PathResolverInterface;
 use Essa\APIToolKit\Generator\Exception\ConfigNotFoundException;
+use Essa\APIToolKit\Generator\GeneratedFileInfo;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Str;
 
 class PathConfigHandler
 {
@@ -21,61 +22,68 @@ class PathConfigHandler
     }
 
     /**
-     * Get the class name (as a string) of a path resolver associated with a specific path group and type.
+     * Get information about the file path associated with a specific path group and type.
      *
-     * @param string $pathGroup The name of the path group.
-     * @param string $type      The type of the path resolver.
+     * @param string $pathGroupName The name of the path group.
+     * @param string $fileType The type of the file.
      *
-     * @return string|null The class name of the path resolver or null if not found.
+     * @throws ConfigNotFoundException If the path information is not found for the specified type in the config file.
      */
-    public static function getPathResolverClass(string $pathGroup, string $type): ?string
+    public static function getFilePathInfo(string $pathGroupName, string $fileType): array
     {
-        $config = self::getConfigForPathGroup($pathGroup);
+        $config = self::getConfigForPathGroup($pathGroupName);
 
-        return $config[$type] ?? null;
+        $filePathInfo = $config[$fileType] ?? null;
+
+        if ( ! $filePathInfo) {
+            throw new ConfigNotFoundException("File path information not found for type: {$fileType}");
+        }
+
+        return $filePathInfo;
     }
 
     /**
-     * Create an instance of a path resolver class based on the specified path group, type, and model.
+     * Create an instance of a GeneratedFileInfo based on the specified path group, type, and model.
      *
-     * @param string $pathGroup      The name of the path group.
-     * @param string $type           The type of the path resolver.
-     * @param string $model          The model associated with the path resolver.
+     * @param string $pathGroupName The name of the path group.
+     * @param string $generatedFileType The type of the generated file.
+     * @param string $modelName The model associated with the path resolver.
      *
-     * @return PathResolverInterface An instance of the path resolver implementing PathResolverInterface.
+     * @return GeneratedFileInfo An instance of GeneratedFileInfo.
      *
-     * @throws ConfigNotFoundException If the path resolver class is not found for the specified type.
+     * @throws ConfigNotFoundException If the path information is not found for the specified type in the config file.
      */
-    public static function createPathResolverInstance(string $pathGroup, string $type, string $model): PathResolverInterface
+    public static function generateFilePathInfo(string $pathGroupName, string $generatedFileType, string $modelName): GeneratedFileInfo
     {
-        $pathResolverClass = self::getPathResolverClass($pathGroup, $type);
+        $pathInfo = self::getFilePathInfo($pathGroupName, $generatedFileType);
 
-        if ( ! $pathResolverClass) {
-            throw new ConfigNotFoundException("Path resolver class not found for type: {$type}");
-        }
-
-        return new $pathResolverClass($model);
+        return new GeneratedFileInfo(
+            fileName: self::replaceModelNames($modelName, $pathInfo['file_name']),
+            folderPath: self::replaceModelNames($modelName, $pathInfo['folder_path']),
+            namespace: $pathInfo['namespace'] ? self::replaceModelNames($modelName, $pathInfo['namespace']) : null
+        );
     }
 
     /**
-     * Process different path types within a path group using a callback function.
+     * Get an array of GeneratedFileInfo instances for all types in a specific path group.
      *
-     * @param string   $pathGroup The name of the path group.
-     * @param callable $callback  The callback function to process each path type.
+     * @param string $pathGroupName The name of the path group.
+     * @param string $modelName The model associated with the path resolver.
      *
-     * @return array An array of results produced by the callback for each path type.
+     * @return GeneratedFileInfo[] An array of GeneratedFileInfo instances for all types in the specified group.
+     *
+     * @throws ConfigNotFoundException
      */
-    public static function iterateOverTypesPathsFromConfig(string $pathGroup, callable $callback): array
+    public static function generateFilePathsForAllTypes(string $pathGroupName, string $modelName): array
     {
-        $configForPathGroup = self::getConfigForPathGroup($pathGroup);
+        $config = self::getConfigForPathGroup($pathGroupName);
+        $generatedFilePaths = [];
 
-        $results = [];
-
-        foreach ($configForPathGroup as $type => $pathResolver) {
-            $results = $results + call_user_func($callback, $type, $pathResolver);
+        foreach ($config as $fileType => $filePathInfo) {
+            $generatedFilePaths[$fileType] = self::generateFilePathInfo($pathGroupName, $fileType, $modelName);
         }
 
-        return $results;
+        return $generatedFilePaths;
     }
 
     /**
@@ -89,9 +97,9 @@ class PathConfigHandler
     }
 
     /**
-     * Get all path groups names from configuration.
+     * Get all path group names from the configuration.
      *
-     * @return array The name of all path groups.
+     * @return array The names of all path groups.
      */
     public static function getAllPathGroups(): array
     {
@@ -99,13 +107,31 @@ class PathConfigHandler
     }
 
     /**
-     * check if path group exist or not
+     * Check if a path group exists or not.
      *
-     * @param string $groupName
-     * @return bool
+     * @param string $groupName The name of the path group.
+     * @return bool True if the path group exists, false otherwise.
      */
     public static function isValidPathGroup(string $groupName): bool
     {
         return (bool) Config::get("api-tool-kit.generator_path_groups.{$groupName}");
+    }
+
+    /**
+     * Replace placeholders in a string with actual model-related values.
+     *
+     * @param string $modelName The model name.
+     * @param string $string The string containing placeholders.
+     * @return string The string with placeholders replaced.
+     */
+    public static function replaceModelNames(string $modelName, string $string): string
+    {
+        return strtr(
+            $string,
+            [
+                '{ModelName}' => $modelName,
+                '{{TableName}}' => Str::plural(Str::snake($modelName)),
+            ]
+        );
     }
 }

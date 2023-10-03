@@ -2,12 +2,13 @@
 
 namespace Essa\APIToolKit\Generator\Commands;
 
+use Essa\APIToolKit\Enum\GeneratorFilesType;
 use Essa\APIToolKit\Generator\Contracts\HasDynamicContentInterface;
 use Essa\APIToolKit\Generator\SchemaParsers\FactoryColumnsParser;
 
 class FactoryGeneratorCommand extends GeneratorCommand implements HasDynamicContentInterface
 {
-    protected string $type = 'factory';
+    protected string $type = GeneratorFilesType::FACTORY;
 
     public function getContent(): array
     {

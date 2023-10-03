@@ -20,15 +20,18 @@ class GeneratedFilesConsoleTable implements ConsoleTableInterface
 
     private function generateTableData(ApiGenerationCommandInputs $apiGenerationCommandInputs): array
     {
-        $configForPathGroup = PathConfigHandler::getConfigForPathGroup($apiGenerationCommandInputs->getPathGroup());
+        $configForPathGroup = PathConfigHandler::generateFilePathsForAllTypes(
+            pathGroupName: $apiGenerationCommandInputs->getPathGroup(),
+            modelName: $apiGenerationCommandInputs->getModel()
+        );
 
         $tableData = [];
 
-        foreach ($configForPathGroup as $type => $pathResolver) {
+        foreach ($configForPathGroup as $type => $generatedFileInfo) {
             if ($apiGenerationCommandInputs->isOptionSelected($type)) {
                 $tableData[] = [
                     $type,
-                    (new $pathResolver($apiGenerationCommandInputs->getModel()))->getFullPath(),
+                    $generatedFileInfo->getFullPath(),
                 ];
             }
         }

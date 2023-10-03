@@ -2,18 +2,9 @@
 
 namespace Essa\APIToolKit\Tests;
 
-use Essa\APIToolKit\Generator\Contracts\ClassInfoInterface;
-use Essa\APIToolKit\Generator\PathResolver\ControllerPathResolver;
-use Essa\APIToolKit\Generator\PathResolver\CreateFormRequestPathResolver;
-use Essa\APIToolKit\Generator\PathResolver\FactoryPathResolver;
-use Essa\APIToolKit\Generator\PathResolver\FilterPathResolver;
-use Essa\APIToolKit\Generator\PathResolver\MigrationPathResolver;
-use Essa\APIToolKit\Generator\PathResolver\ModelPathResolver;
-use Essa\APIToolKit\Generator\PathResolver\ResourcePathResolver;
-use Essa\APIToolKit\Generator\PathResolver\RoutesPathResolver;
-use Essa\APIToolKit\Generator\PathResolver\SeederPathResolver;
-use Essa\APIToolKit\Generator\PathResolver\TestPathResolver;
-use Essa\APIToolKit\Generator\PathResolver\UpdateFormRequestPathResolver;
+use Essa\APIToolKit\Enum\GeneratorFilesType;
+use Essa\APIToolKit\Generator\Configs\PathConfigHandler;
+use Essa\APIToolKit\Generator\GeneratedFileInfo;
 use Essa\APIToolKit\Generator\SchemaDefinition;
 use Essa\APIToolKit\Generator\SchemaParsers\CreateValidationRulesParser;
 use Essa\APIToolKit\Generator\SchemaParsers\FactoryColumnsParser;
@@ -52,9 +43,9 @@ class ApiGenerateCommandTest extends TestCase
 
     /**
      * @test
-     * @dataProvider pathResolverProvider
+     * @dataProvider generatedTypeProvider
      */
-    public function generateCommandWithAllDefaults($resolverClass): void
+    public function generateCommandWithAllDefaults(string $fileType): void
     {
         $model = 'GeneratedModel';
 
@@ -63,31 +54,32 @@ class ApiGenerateCommandTest extends TestCase
             '--all' => true,
         ])->assertExitCode(Command::SUCCESS);
 
-        $pathResolver = new $resolverClass($model);
+        $generatedFilePath = PathConfigHandler::generateFilePathInfo('default', $fileType, $model);
 
-        $this->assertFileExists($pathResolver->getFullPath());
+        $this->assertFileExists($generatedFilePath->getFullPath());
 
-        if ($pathResolver instanceof ClassInfoInterface) {
+        if ($generatedFilePath->getNamespace()) {
             $this->assertStringContainsString(
-                'namespace ' . $pathResolver->getNameSpace() . ';',
-                file_get_contents($pathResolver->getFullPath())
+                'namespace ' . $generatedFilePath->getNameSpace() . ';',
+                file_get_contents($generatedFilePath->getFullPath())
             );
         }
     }
 
-    public function pathResolverProvider(): array
+    public function generatedTypeProvider(): array
     {
         return [
-            [ModelPathResolver::class],
-            [ControllerPathResolver::class],
-            [ResourcePathResolver::class],
-            [CreateFormRequestPathResolver::class],
-            [UpdateFormRequestPathResolver::class],
-            [FilterPathResolver::class],
-            [SeederPathResolver::class],
-            [FactoryPathResolver::class],
-            [TestPathResolver::class],
-            [RoutesPathResolver::class],
+            [GeneratorFilesType::MODEL],
+            [GeneratorFilesType::CONTROLLER],
+            [GeneratorFilesType::RESOURCE],
+            [GeneratorFilesType::FACTORY],
+            [GeneratorFilesType::SEEDER],
+            [GeneratorFilesType::TEST],
+            [GeneratorFilesType::FILTER],
+            [GeneratorFilesType::MIGRATION],
+            [GeneratorFilesType::ROUTES],
+            [GeneratorFilesType::CREATE_REQUEST],
+            [GeneratorFilesType::UPDATE_REQUEST],
         ];
     }
 
@@ -104,7 +96,7 @@ class ApiGenerateCommandTest extends TestCase
         ])
             ->assertExitCode(Command::SUCCESS);
 
-        $generatedModelContent = file_get_contents((new ModelPathResolver($model))->getFullPath());
+        $generatedModelContent = $this->getFileContentsForType($model, GeneratorFilesType::MODEL);
 
         $this->assertStringContainsString(
             $this->normalizeWhitespaceAndNewlines("protected \$fillable = [ 'username', 'email', 'company_data_id', ];"),
@@ -131,7 +123,7 @@ class ApiGenerateCommandTest extends TestCase
         ])
             ->assertExitCode(Command::SUCCESS);
 
-        $migrationContent = file_get_contents((new MigrationPathResolver($model))->getFullPath());
+        $migrationContent = $this->getFileContentsForType($model, GeneratorFilesType::MIGRATION);
 
         $this->assertStringContainsString(
             (new MigrationContentParser(SchemaDefinition::createFromSchemaString($schema)))->parse(),
@@ -153,7 +145,7 @@ class ApiGenerateCommandTest extends TestCase
         ])
             ->assertExitCode(Command::SUCCESS);
 
-        $factoryContent = file_get_contents((new FactoryPathResolver($model))->getFullPath());
+        $factoryContent = $this->getFileContentsForType($model, GeneratorFilesType::FACTORY);
 
         $this->assertStringContainsString(
             (new FactoryColumnsParser(SchemaDefinition::createFromSchemaString($schema)))->parse(),
@@ -175,7 +167,7 @@ class ApiGenerateCommandTest extends TestCase
         ])
             ->assertExitCode(Command::SUCCESS);
 
-        $resourceContent = file_get_contents((new ResourcePathResolver($model))->getFullPath());
+        $resourceContent = $this->getFileContentsForType($model, GeneratorFilesType::RESOURCE);
 
         $this->assertStringContainsString(
             (new ResourceAttributesParser(SchemaDefinition::createFromSchemaString($schema)))->parse(),
@@ -197,8 +189,8 @@ class ApiGenerateCommandTest extends TestCase
         ])
             ->assertExitCode(Command::SUCCESS);
 
-        $createRequestContent = file_get_contents((new CreateFormRequestPathResolver($model))->getFullPath());
-        $updateRequestContent = file_get_contents((new UpdateFormRequestPathResolver($model))->getFullPath());
+        $createRequestContent = $this->getFileContentsForType($model, GeneratorFilesType::CREATE_REQUEST);
+        $updateRequestContent = $this->getFileContentsForType($model, GeneratorFilesType::UPDATE_REQUEST);
 
         $this->assertStringContainsString(
             (new CreateValidationRulesParser(SchemaDefinition::createFromSchemaString($schema)))->parse(),
@@ -225,10 +217,10 @@ class ApiGenerateCommandTest extends TestCase
         ])
             ->assertExitCode(Command::SUCCESS);
 
-        $this->assertStringContainsString('SoftDeletes', file_get_contents((new ModelPathResolver($model))->getFullPath()));
-        $this->assertStringContainsString('permanent-delete', file_get_contents((new RoutesPathResolver($model))->getFullPath()));
-        $this->assertStringContainsString('restore', file_get_contents((new RoutesPathResolver($model))->getFullPath()));
-        $this->assertStringContainsString('forceDelete', file_get_contents((new ControllerPathResolver($model))->getFullPath()));
+        $this->assertStringContainsString('SoftDeletes', $this->getFileContentsForType($model, GeneratorFilesType::MODEL));
+        $this->assertStringContainsString('permanent-delete', $this->getFileContentsForType($model, GeneratorFilesType::ROUTES));
+        $this->assertStringContainsString('restore', $this->getFileContentsForType($model, GeneratorFilesType::ROUTES));
+        $this->assertStringContainsString('forceDelete', $this->getFileContentsForType($model, GeneratorFilesType::CONTROLLER));
     }
 
     public function generateCommandWithoutDefaultOptionsButWithoutSoftDelete(): void
@@ -241,10 +233,10 @@ class ApiGenerateCommandTest extends TestCase
         ])
             ->assertExitCode(Command::SUCCESS);
 
-        $this->assertStringNotContainsString('SoftDeletes', file_get_contents((new ModelPathResolver($model))->getFullPath()));
-        $this->assertStringNotContainsString('permanent-delete', file_get_contents((new RoutesPathResolver($model))->getFullPath()));
-        $this->assertStringNotContainsString('restore', file_get_contents((new RoutesPathResolver($model))->getFullPath()));
-        $this->assertStringNotContainsString('forceDelete', file_get_contents((new ControllerPathResolver($model))->getFullPath()));
+        $this->assertStringNotContainsString('SoftDeletes', $this->getFileContentsForType($model, GeneratorFilesType::MODEL));
+        $this->assertStringNotContainsString('permanent-delete', $this->getFileContentsForType($model, GeneratorFilesType::ROUTES));
+        $this->assertStringNotContainsString('restore', $this->getFileContentsForType($model, GeneratorFilesType::ROUTES));
+        $this->assertStringNotContainsString('forceDelete', $this->getFileContentsForType($model, GeneratorFilesType::CONTROLLER));
     }
 
     /**
@@ -269,13 +261,23 @@ class ApiGenerateCommandTest extends TestCase
         ])
             ->assertExitCode(Command::SUCCESS);
 
-        $this->assertFileExists((new ModelPathResolver($model))->getFullPath());
-        $this->assertFileExists((new ResourcePathResolver($model))->getFullPath());
-        $this->assertFileExists((new SeederPathResolver($model))->getFullPath());
-        $this->assertFileExists((new TestPathResolver($model))->getFullPath());
+        $this->assertFileExists($this->getGeneratedFilePathForDefaultGroup($model, GeneratorFilesType::MODEL)->getFullPath());
+        $this->assertFileExists($this->getGeneratedFilePathForDefaultGroup($model, GeneratorFilesType::RESOURCE)->getFullPath());
+        $this->assertFileExists($this->getGeneratedFilePathForDefaultGroup($model, GeneratorFilesType::SEEDER)->getFullPath());
+        $this->assertFileExists($this->getGeneratedFilePathForDefaultGroup($model, GeneratorFilesType::TEST)->getFullPath());
 
-        $this->assertFileDoesNotExist((new ControllerPathResolver($model))->getFullPath());
-        $this->assertFileDoesNotExist((new FilterPathResolver($model))->getFullPath());
-        $this->assertFileDoesNotExist((new FactoryPathResolver($model))->getFullPath());
+        $this->assertFileDoesNotExist($this->getGeneratedFilePathForDefaultGroup($model, GeneratorFilesType::CONTROLLER)->getFullPath());
+        $this->assertFileDoesNotExist($this->getGeneratedFilePathForDefaultGroup($model, GeneratorFilesType::FILTER)->getFullPath());
+        $this->assertFileDoesNotExist($this->getGeneratedFilePathForDefaultGroup($model, GeneratorFilesType::FACTORY)->getFullPath());
+    }
+
+    private function getFileContentsForType(string $model, string $type): string|false
+    {
+        return file_get_contents($this->getGeneratedFilePathForDefaultGroup($model, $type)->getFullPath());
+    }
+
+    private function getGeneratedFilePathForDefaultGroup(string $model, string $type): GeneratedFileInfo
+    {
+        return PathConfigHandler::generateFilePathInfo('default', $type, $model);
     }
 }

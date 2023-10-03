@@ -2,12 +2,13 @@
 
 namespace Essa\APIToolKit\Generator\Commands;
 
+use Essa\APIToolKit\Enum\GeneratorFilesType;
 use Essa\APIToolKit\Generator\Contracts\HasDynamicContentInterface;
 use Essa\APIToolKit\Generator\SchemaParsers\UpdateValidationRulesParser;
 
 class UpdateFormRequestGeneratorCommand extends GeneratorCommand implements HasDynamicContentInterface
 {
-    protected string $type = 'update-request';
+    protected string $type = GeneratorFilesType::UPDATE_REQUEST;
 
     public function getContent(): array
     {

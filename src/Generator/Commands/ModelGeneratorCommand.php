@@ -2,13 +2,14 @@
 
 namespace Essa\APIToolKit\Generator\Commands;
 
+use Essa\APIToolKit\Enum\GeneratorFilesType;
 use Essa\APIToolKit\Generator\Contracts\HasDynamicContentInterface;
 use Essa\APIToolKit\Generator\SchemaParsers\FillableColumnsParser;
 use Essa\APIToolKit\Generator\SchemaParsers\RelationshipMethodsParser;
 
 class ModelGeneratorCommand extends GeneratorCommand implements HasDynamicContentInterface
 {
-    protected string $type = 'model';
+    protected string $type = GeneratorFilesType::MODEL;
 
     public function getContent(): array
     {

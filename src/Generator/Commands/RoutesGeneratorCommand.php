@@ -2,9 +2,11 @@
 
 namespace Essa\APIToolKit\Generator\Commands;
 
+use Essa\APIToolKit\Enum\GeneratorFilesType;
+
 class RoutesGeneratorCommand extends GeneratorCommand
 {
-    protected string $type = 'routes';
+    protected string $type = GeneratorFilesType::ROUTES;
 
     protected function getStubName(): string
     {

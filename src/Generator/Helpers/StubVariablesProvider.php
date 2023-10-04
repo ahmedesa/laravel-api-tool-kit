@@ -10,7 +10,7 @@ class StubVariablesProvider
 {
     public static function generate(string $modelName, string $pathGroup): array
     {
-        $configForPathGroup = PathConfigHandler::generateFilePathsForAllTypes(
+        $configForPathGroup = PathConfigHandler::getFileInfoForAllTypes(
             pathGroupName: $pathGroup,
             modelName: $modelName
         );

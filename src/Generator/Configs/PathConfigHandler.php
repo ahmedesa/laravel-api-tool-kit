@@ -74,7 +74,7 @@ class PathConfigHandler
      *
      * @throws ConfigNotFoundException
      */
-    public static function generateFilePathsForAllTypes(string $pathGroupName, string $modelName): array
+    public static function getFileInfoForAllTypes(string $pathGroupName, string $modelName): array
     {
         $config = self::getConfigForPathGroup($pathGroupName);
         $generatedFilePaths = [];

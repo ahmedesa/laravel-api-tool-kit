@@ -23,6 +23,11 @@ class GeneratedFileInfo
         return $this->namespace;
     }
 
+    public function shouldSaveAsSeparateClass(): bool
+    {
+        return (bool) $this->namespace;
+    }
+
     public function getFullPath(): string
     {
         return $this->folderPath . '/' . $this->fileName;

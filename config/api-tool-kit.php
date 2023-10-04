@@ -73,7 +73,7 @@ return [
                 'namespace' => 'App\Models',
             ],
             GeneratorFilesType::FACTORY => [
-                'folder_path' => database_path('Factories'),
+                'folder_path' => database_path('factories'),
                 'file_name' => '{ModelName}Factory.php',
                 'namespace' => 'Database\Factories',
             ],

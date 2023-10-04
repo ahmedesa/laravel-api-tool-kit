@@ -16,7 +16,7 @@ class RoutesGeneratorCommand extends GeneratorCommand
     protected function saveContentToFile(): void
     {
         $this->filesystem->append(
-            base_path('routes/api.php'),
+            $this->generatedFileInfo()->getFullPath(),
             $this->parseStub('DummyRoutes')
         );
     }

@@ -58,9 +58,9 @@ class PathConfigHandler
         $pathInfo = self::getFilePathInfo($pathGroupName, $generatedFileType);
 
         return new GeneratedFileInfo(
-            fileName: self::replaceModelNames($modelName, $pathInfo['file_name']),
-            folderPath: self::replaceModelNames($modelName, $pathInfo['folder_path']),
-            namespace: $pathInfo['namespace'] ? self::replaceModelNames($modelName, $pathInfo['namespace']) : null
+            fileName: self::substituteModelValues($modelName, $pathInfo['file_name']),
+            folderPath: self::substituteModelValues($modelName, $pathInfo['folder_path']),
+            namespace: $pathInfo['namespace'] ? self::substituteModelValues($modelName, $pathInfo['namespace']) : null
         );
     }
 
@@ -124,7 +124,7 @@ class PathConfigHandler
      * @param string $string The string containing placeholders.
      * @return string The string with placeholders replaced.
      */
-    public static function replaceModelNames(string $modelName, string $string): string
+    public static function substituteModelValues(string $modelName, string $string): string
     {
         return strtr(
             $string,

@@ -124,4 +124,18 @@ return [
             ],
         ],
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Route Group Base URL Prefixes
+    |--------------------------------------------------------------------------
+    |
+    | Define the base URLs for different route groups in your application.
+    | These base URLs are used as prefixes for routes defined within each
+    | group.
+    |
+    */
+    'route_group_base_url_prefixes' => [
+        'default' => '/api',
+    ],
 ];

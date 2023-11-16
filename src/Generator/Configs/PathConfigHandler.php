@@ -77,6 +77,7 @@ class PathConfigHandler
     public static function getFileInfoForAllTypes(string $pathGroupName, string $modelName): array
     {
         $config = self::getConfigForPathGroup($pathGroupName);
+
         $generatedFilePaths = [];
 
         foreach ($config as $fileType => $filePathInfo) {
@@ -84,6 +85,28 @@ class PathConfigHandler
         }
 
         return $generatedFilePaths;
+    }
+
+    /**
+     * Get the base URL prefix for a specific route group.
+     *
+     * @param string $pathGroupName The name of the path group.
+     *
+     * @return string The base URL prefix for the specified group.
+     *
+     * @throws ConfigNotFoundException If the base URL prefix is not found for the specified group.
+     */
+    public static function getBaseUrlPrefixForGroup(string $pathGroupName): string
+    {
+        $routeGroupBaseURLs = Config::get('api-tool-kit.route_group_base_url_prefixes', []);
+
+        $baseURL = $routeGroupBaseURLs[$pathGroupName] ?? null;
+
+        if (null === $baseURL) {
+            throw new ConfigNotFoundException("Base URL prefix not found for route group: {$pathGroupName}");
+        }
+
+        return $baseURL;
     }
 
     /**
@@ -124,7 +147,7 @@ class PathConfigHandler
      * @param string $string The string containing placeholders.
      * @return string The string with placeholders replaced.
      */
-    public static function substituteModelValues(string $modelName, string $string): string
+    private static function substituteModelValues(string $modelName, string $string): string
     {
         return strtr(
             $string,

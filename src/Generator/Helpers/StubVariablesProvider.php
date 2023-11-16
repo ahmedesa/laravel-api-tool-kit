@@ -21,7 +21,9 @@ class StubVariablesProvider
             $replacements += self::generateReplacementsForType($type, $generatedFileInfo);
         }
 
-        return $replacements + self::generateBasicReplacements($modelName);
+        $baseUrlPrefix = self::getBaseUrlPrefix($pathGroup);
+
+        return $replacements + self::generateBasicReplacements($modelName) + $baseUrlPrefix;
     }
 
     private static function generateReplacementsForType(string $type, GeneratedFileInfo $generatedFileInfo): array
@@ -46,7 +48,13 @@ class StubVariablesProvider
             '{{Dummies}}' => Str::plural($modelName),
             '{{dummy}}' => lcfirst($modelName),
             '{{dummies}}' => lcfirst(Str::plural($modelName)),
-            '{{baseUrlPrefix}}' => '/api',
+        ];
+    }
+
+    private static function getBaseUrlPrefix(string $pathGroupName): array
+    {
+        return [
+            '{{baseUrlPrefix}}' => PathConfigHandler::getBaseUrlPrefixForGroup($pathGroupName),
         ];
     }
 }

@@ -153,7 +153,7 @@ class PathConfigHandler
             $string,
             [
                 '{ModelName}' => $modelName,
-                '{{TableName}}' => Str::plural(Str::snake($modelName)),
+                '{TableName}' => Str::plural(Str::snake($modelName)),
             ]
         );
     }

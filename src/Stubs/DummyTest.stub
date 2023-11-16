@@ -11,7 +11,7 @@ class {{DummyTest}} extends TestCase
 {
     use  RefreshDatabase;
 
-    protected string $endpoint = '/api/{{dummies}}';
+    protected string $endpoint = '{{baseUrlPrefix}}/{{dummies}}';
     protected string $tableName = '{{dummies}}';
 
     public function setUp(): void

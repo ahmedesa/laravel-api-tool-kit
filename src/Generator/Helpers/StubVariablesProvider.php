@@ -46,6 +46,7 @@ class StubVariablesProvider
             '{{Dummies}}' => Str::plural($modelName),
             '{{dummy}}' => lcfirst($modelName),
             '{{dummies}}' => lcfirst(Str::plural($modelName)),
+            '{{baseUrlPrefix}}' => '/api',
         ];
     }
 }

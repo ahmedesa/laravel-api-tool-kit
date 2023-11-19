@@ -45,7 +45,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Default Path Groups
+    | Default Group
     |--------------------------------------------------------------------------
     |
     | Define the default generator group that will be used by default when
@@ -53,19 +53,19 @@ return [
     | groups in addition to this default group.
     |
     */
-    'default_path_groups' => 'default',
+    'default_group' => 'default',
 
     /*
     |--------------------------------------------------------------------------
-    | Generator Path Resolvers
+    | Custom Groups Files Paths
     |--------------------------------------------------------------------------
     |
-    | Define path resolvers for various generator types within custom groups.
-    | Users can assign classes to each generator type for both 'default' and
-    | custom groups.
+    | Define file paths for different file types within custom groups.
+    | Users can assign classes to each generator type for both the 'default' and
+    | custom groups, specifying where the generated files will be stored.
     |
     */
-    'generator_path_groups' => [
+    'groups_files_paths' => [
         'default' => [
             GeneratorFilesType::MODEL => [
                 'folder_path' => app_path('Models'),
@@ -127,15 +127,15 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Route Group Base URL Prefixes
+    | Groups Base URL Prefixes
     |--------------------------------------------------------------------------
     |
-    | Define the base URLs for different route groups in your application.
+    | Define the base URLs for different groups in your application.
     | These base URLs are used as prefixes for routes defined within each
     | group.
     |
     */
-    'route_group_base_url_prefixes' => [
+    'groups_url_prefixes' => [
         'default' => '/api',
     ],
 ];

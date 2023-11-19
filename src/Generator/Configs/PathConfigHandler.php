@@ -18,7 +18,7 @@ class PathConfigHandler
      */
     public static function getConfigForPathGroup(string $pathGroup): array
     {
-        return Config::get("api-tool-kit.generator_path_groups.{$pathGroup}", []);
+        return Config::get("api-tool-kit.groups_files_paths.{$pathGroup}", []);
     }
 
     /**
@@ -98,7 +98,7 @@ class PathConfigHandler
      */
     public static function getBaseUrlPrefixForGroup(string $pathGroupName): string
     {
-        $routeGroupBaseURLs = Config::get('api-tool-kit.route_group_base_url_prefixes', []);
+        $routeGroupBaseURLs = Config::get('api-tool-kit.groups_url_prefixes', []);
 
         $baseURL = $routeGroupBaseURLs[$pathGroupName] ?? null;
 
@@ -116,7 +116,7 @@ class PathConfigHandler
      */
     public static function getDefaultPathGroup(): string
     {
-        return Config::get('api-tool-kit.default_path_groups', 'default');
+        return Config::get('api-tool-kit.default_group', 'default');
     }
 
     /**
@@ -126,7 +126,7 @@ class PathConfigHandler
      */
     public static function getAllPathGroups(): array
     {
-        return array_keys(Config::get('api-tool-kit.generator_path_groups'));
+        return array_keys(Config::get('api-tool-kit.groups_files_paths'));
     }
 
     /**
@@ -137,7 +137,7 @@ class PathConfigHandler
      */
     public static function isValidPathGroup(string $groupName): bool
     {
-        return (bool) Config::get("api-tool-kit.generator_path_groups.{$groupName}");
+        return (bool) Config::get("api-tool-kit.groups_files_paths.{$groupName}");
     }
 
     /**

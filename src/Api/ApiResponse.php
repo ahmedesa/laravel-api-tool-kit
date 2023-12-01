@@ -30,7 +30,7 @@ trait ApiResponse
      *
      * @return JsonResponse Custom error JSON response.
      */
-    public function responseWithCustomError(mixed $title, $details, int $statusCode): JsonResponse
+    public function responseWithCustomError(mixed $title, mixed $details, int $statusCode): JsonResponse
     {
         return $this->APIError($statusCode, $title, $details);
     }
@@ -130,6 +130,7 @@ trait ApiResponse
     public function responseSuccess(?string $message = null, mixed $data = null): JsonResponse
     {
         return new JsonResponse([
+            'status' => Response::HTTP_OK,
             'message' => $message,
             'data' => $data,
         ], Response::HTTP_OK);
@@ -146,6 +147,7 @@ trait ApiResponse
     public function responseCreated(?string $message = 'Record created successfully', mixed $data = null): JsonResponse
     {
         return new JsonResponse([
+            'status' => Response::HTTP_CREATED,
             'message' => $message,
             'data' => $data,
         ], Response::HTTP_CREATED);

@@ -11,11 +11,14 @@ use Illuminate\Http\Request;
 @endif('request')
 @if('resource')use {{DummyResourceWithNameSpace}};@endif('resource')
 use {{DummyModelWithNameSpace}};
+use Essa\APIToolKit\Api\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class {{DummyController}} extends Controller
 {
+
+    use ApiResponse;
     public function __construct()
     {
 

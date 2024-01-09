@@ -10,6 +10,12 @@
 
 ## Introduction
 Elevate your development journey with high-performance APIs using the API Toolkit. Supercharge your API development with standardized responses, dynamic pagination, advanced filtering, and a one-click full CRUD setup. Let's take your APIs to the next level!
+## :film_strip: Video Tour 
+If you'd prefer a more visual review of this package, please watch this video on Laravel Package Tutorial.
+ 
+[<img src="https://img.youtube.com/vi/lZ9PPW-5utw/0.jpg" width="450">](https://youtu.be/lZ9PPW-5utw)
+
+
 ## Installation
 to install the package using Composer:
 ```

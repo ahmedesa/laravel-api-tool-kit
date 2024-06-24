@@ -124,6 +124,12 @@ abstract class GeneratorCommand implements GeneratorCommandInterface
 
     protected function getStubContent(string $stubName): string
     {
+        $customStubPath = base_path("stubs/api-tool-kit/{$stubName}.stub");
+
+        if (file_exists($customStubPath)) {
+            return file_get_contents($customStubPath);
+        }
+
         return file_get_contents(__DIR__ . "/../../Stubs/{$stubName}.stub");
     }
 }

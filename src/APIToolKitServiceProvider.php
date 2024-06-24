@@ -25,9 +25,11 @@ class APIToolKitServiceProvider extends ServiceProvider
         $this->AddConfigFiles();
 
         $this->registerCommands();
+
+        $this->publishStubs();
     }
 
-    public function AddConfigFiles(): void
+    private function AddConfigFiles(): void
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/api-tool-kit.php', 'api-tool-kit');
 
@@ -40,7 +42,7 @@ class APIToolKitServiceProvider extends ServiceProvider
         }
     }
 
-    public function registerCommands(): void
+    private function registerCommands(): void
     {
         if ($this->app->runningInConsole()) {
             $this->commands([
@@ -50,6 +52,15 @@ class APIToolKitServiceProvider extends ServiceProvider
                 GeneratePermissions::class,
                 MakeFilterCommand::class,
             ]);
+        }
+    }
+
+    private function publishStubs(): void
+    {
+        if ($this->app->runningInConsole()) {
+            $this->publishes([
+                __DIR__ . '/Stubs' => base_path('stubs/api-tool-kit'),
+            ], 'stubs');
         }
     }
 }

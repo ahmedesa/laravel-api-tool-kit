@@ -20,6 +20,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotAcceptableHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 use Throwable;
 
 /**
@@ -96,6 +97,9 @@ class Handler extends ExceptionHandler
 
             if ($e instanceof NotAcceptableHttpException) {
                 return $this->responseForNotAcceptableHttpException($e);
+            }
+             if ($e instanceof ConflictHttpException) {
+                return $this->responseForConflictHttpException($e);
             }
         }
 
@@ -250,4 +254,16 @@ class Handler extends ExceptionHandler
             429
         );
     }
+
+    /**
+     * Response for ConflictHttpException.
+     *
+     * @return JsonResponse
+     */
+    protected function responseForConflictHttpException(ConflictHttpException $e): JsonResponse
+    {
+        return $this->responseConflictError($e->getMessage());
+    }
+
+    
 }

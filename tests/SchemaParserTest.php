@@ -14,6 +14,22 @@ use Essa\APIToolKit\Generator\SchemaParsers\UpdateValidationRulesParser;
 
 class SchemaParserTest extends TestCase
 {
+    public static function schemasProvider(): array
+    {
+        return [
+            ['column1:string|column2:integer|column3:datetime', true],
+            ['COLUMN1:string|COLUMN2:int', true],
+            ['COLUMN1:string|COLUMN2:int,COLUMN3:varchar(255)', true],
+            ['COLUMN1:string', true],
+            ["COLUMN1:int|COLUMN2:decimal(10,2)|COLUMN3:varchar(255):default('a')", true],
+            ['COLUMN_NAME::OPTIONS', false], // Empty COLUMN_TYPE
+            ['COLUMN1:', false],            // Empty COLUMN_TYPE with OPTIONS
+            ['COLUMN1:int|:varchar(255)', false], // Empty COLUMN_NAME
+            ['COLUMN1:string||COLUMN2:int', false], // Empty COLUMN_TYPE between two pipes
+            ['COLUMN1:int|COLUMN2:decimal(10,2)|COLUMN3:varchar(255)"quote"', false], // With double quotes in OPTIONS
+        ];
+    }
+
     /**
      * @test
      */
@@ -226,21 +242,5 @@ class SchemaParserTest extends TestCase
             $this->expectException(SchemaNotValidException::class);
             SchemaDefinition::createFromSchemaString($schema);
         }
-    }
-
-    public function schemasProvider(): array
-    {
-        return [
-            ['column1:string|column2:integer|column3:datetime', true],
-            ['COLUMN1:string|COLUMN2:int', true],
-            ['COLUMN1:string|COLUMN2:int,COLUMN3:varchar(255)', true],
-            ['COLUMN1:string', true],
-            ["COLUMN1:int|COLUMN2:decimal(10,2)|COLUMN3:varchar(255):default('a')", true],
-            ['COLUMN_NAME::OPTIONS', false], // Empty COLUMN_TYPE
-            ['COLUMN1:', false],            // Empty COLUMN_TYPE with OPTIONS
-            ['COLUMN1:int|:varchar(255)', false], // Empty COLUMN_NAME
-            ['COLUMN1:string||COLUMN2:int', false], // Empty COLUMN_TYPE between two pipes
-            ['COLUMN1:int|COLUMN2:decimal(10,2)|COLUMN3:varchar(255)"quote"', false], // With double quotes in OPTIONS
-        ];
     }
 }

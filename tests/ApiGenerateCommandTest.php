@@ -16,6 +16,23 @@ use Symfony\Component\Console\Command\Command;
 
 class ApiGenerateCommandTest extends TestCase
 {
+    public static function generatedTypeProvider(): array
+    {
+        return [
+            [GeneratorFilesType::MODEL],
+            [GeneratorFilesType::CONTROLLER],
+            [GeneratorFilesType::RESOURCE],
+            [GeneratorFilesType::FACTORY],
+            [GeneratorFilesType::SEEDER],
+            [GeneratorFilesType::TEST],
+            [GeneratorFilesType::FILTER],
+            [GeneratorFilesType::MIGRATION],
+            [GeneratorFilesType::ROUTES],
+            [GeneratorFilesType::CREATE_REQUEST],
+            [GeneratorFilesType::UPDATE_REQUEST],
+        ];
+    }
+
     /**
      * @test
      */
@@ -64,23 +81,6 @@ class ApiGenerateCommandTest extends TestCase
                 file_get_contents($generatedFilePath->getFullPath())
             );
         }
-    }
-
-    public function generatedTypeProvider(): array
-    {
-        return [
-            [GeneratorFilesType::MODEL],
-            [GeneratorFilesType::CONTROLLER],
-            [GeneratorFilesType::RESOURCE],
-            [GeneratorFilesType::FACTORY],
-            [GeneratorFilesType::SEEDER],
-            [GeneratorFilesType::TEST],
-            [GeneratorFilesType::FILTER],
-            [GeneratorFilesType::MIGRATION],
-            [GeneratorFilesType::ROUTES],
-            [GeneratorFilesType::CREATE_REQUEST],
-            [GeneratorFilesType::UPDATE_REQUEST],
-        ];
     }
 
     /**

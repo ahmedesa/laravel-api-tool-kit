@@ -173,16 +173,14 @@ trait ApiResponse
     public function ResponseValidationError(ValidationException $exception): JsonResponse
     {
         // Extract validation errors and format them into an array.
-        $errors = collect($exception->validator->errors())->map(function ($error, $key) {
-            return [
-                'status' => Response::HTTP_UNPROCESSABLE_ENTITY,
-                'title' => 'Validation Error',
-                'detail' => $error[0],
-                'source' => [
-                    'pointer' => '/' . str_replace('.', '/', $key),
-                ],
-            ];
-        })->values();
+        $errors = collect($exception->validator->errors())->map(fn ($error, $key) => [
+            'status' => Response::HTTP_UNPROCESSABLE_ENTITY,
+            'title' => 'Validation Error',
+            'detail' => $error[0],
+            'source' => [
+                'pointer' => '/' . str_replace('.', '/', $key),
+            ],
+        ])->values();
 
         // Create the JSON response with the formatted errors.
         $responseData = [

@@ -1,4 +1,4 @@
-<h1><center> Laravel API tool kit</center></h1>
+<h1><center> Laravel API tool kit - haudev</center></h1>
 
 <p align="center">
     <img src="laravel-api-tool-kit.png" style="width:70%;">

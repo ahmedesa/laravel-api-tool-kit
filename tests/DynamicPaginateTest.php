@@ -62,4 +62,26 @@ class DynamicPaginateTest extends TestCase
 
         $this->assertCount($randomNumber, $paginatedRecords->all());
     }
+
+    /**
+     * @test
+     */
+    public function itCapsPerPageToMaximumLimit(): void
+    {
+        $maxLimit = 10;
+        $requestedLimit = 20;
+
+        $this->app['config']->set('api-tool-kit.max_pagination_limit', $maxLimit);
+
+        TestModel::factory(20)->create();
+
+        $this->app->bind('request', fn () => new Request([
+            'per_page' => $requestedLimit,
+        ]));
+
+        /** @var LengthAwarePaginator $paginatedRecords */
+        $paginatedRecords = TestModel::dynamicPaginate();
+
+        $this->assertCount($maxLimit, $paginatedRecords->all());
+    }
 }

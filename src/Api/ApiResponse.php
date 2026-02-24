@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Essa\APIToolKit\Api;
 
 use Illuminate\Http\JsonResponse;
@@ -170,7 +172,7 @@ trait ApiResponse
      *
      * @return JsonResponse A JSON response containing validation error information.
      */
-    public function ResponseValidationError(ValidationException $exception): JsonResponse
+    public function responseValidationError(ValidationException $exception): JsonResponse
     {
         // Extract validation errors and format them into an array.
         $errors = collect($exception->validator->errors())->map(fn ($error, $key) => [

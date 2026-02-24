@@ -8,7 +8,7 @@ use Essa\APIToolKit\Generator\SchemaParsers\MigrationContentParser;
 
 class MigrationGeneratorCommand extends GeneratorCommand implements HasDynamicContentInterface
 {
-    protected string $type = GeneratorFilesType::MIGRATION;
+    protected GeneratorFilesType $type = GeneratorFilesType::MIGRATION;
 
     public function getContent(): array
     {

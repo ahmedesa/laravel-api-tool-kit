@@ -6,7 +6,7 @@ use Essa\APIToolKit\Enum\GeneratorFilesType;
 
 class RoutesGeneratorCommand extends GeneratorCommand
 {
-    protected string $type = GeneratorFilesType::ROUTES;
+    protected GeneratorFilesType $type = GeneratorFilesType::ROUTES;
 
     protected function getStubName(): string
     {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Essa\APIToolKit;
 
 use Illuminate\Database\Eloquent\Builder;
@@ -24,6 +26,12 @@ class MacroServiceProvider extends ServiceProvider
             $page = Paginator::resolveCurrentPage();
 
             $perPage = $request->get('per_page', config('api-tool-kit.default_pagination_number'));
+
+            $maxPerPage = config('api-tool-kit.max_pagination_limit');
+
+            if ($maxPerPage && $perPage > $maxPerPage) {
+                $perPage = $maxPerPage;
+            }
 
             $results = ($total = $this->toBase()->getCountForPagination())
                 ? $this->forPage($page, $perPage)->get(['*'])

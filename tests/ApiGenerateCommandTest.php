@@ -62,7 +62,7 @@ class ApiGenerateCommandTest extends TestCase
      * @test
      * @dataProvider generatedTypeProvider
      */
-    public function generateCommandWithAllDefaults(string $fileType): void
+    public function generateCommandWithAllDefaults(GeneratorFilesType $fileType): void
     {
         $model = 'GeneratedModel';
 
@@ -71,7 +71,7 @@ class ApiGenerateCommandTest extends TestCase
             '--all' => true,
         ])->assertExitCode(Command::SUCCESS);
 
-        $generatedFilePath = PathConfigHandler::generateFilePathInfo('default', $fileType, $model);
+        $generatedFilePath = PathConfigHandler::generateFilePathInfo('default', $fileType->value, $model);
 
         $this->assertFileExists($generatedFilePath->getFullPath());
 
@@ -271,13 +271,13 @@ class ApiGenerateCommandTest extends TestCase
         $this->assertFileDoesNotExist($this->getGeneratedFilePathForDefaultGroup($model, GeneratorFilesType::FACTORY)->getFullPath());
     }
 
-    private function getFileContentsForType(string $model, string $type): string|false
+    private function getFileContentsForType(string $model, GeneratorFilesType $type): string|false
     {
         return file_get_contents($this->getGeneratedFilePathForDefaultGroup($model, $type)->getFullPath());
     }
 
-    private function getGeneratedFilePathForDefaultGroup(string $model, string $type): GeneratedFileInfo
+    private function getGeneratedFilePathForDefaultGroup(string $model, GeneratorFilesType $type): GeneratedFileInfo
     {
-        return PathConfigHandler::generateFilePathInfo('default', $type, $model);
+        return PathConfigHandler::generateFilePathInfo('default', $type->value, $model);
     }
 }

@@ -8,7 +8,7 @@ use Essa\APIToolKit\Generator\SchemaParsers\FactoryColumnsParser;
 
 class FactoryGeneratorCommand extends GeneratorCommand implements HasDynamicContentInterface
 {
-    protected string $type = GeneratorFilesType::FACTORY;
+    protected GeneratorFilesType $type = GeneratorFilesType::FACTORY;
 
     public function getContent(): array
     {

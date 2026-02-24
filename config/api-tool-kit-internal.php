@@ -12,17 +12,17 @@ return [
     |
     */
     'api_generator_commands' => [
-        GeneratorFilesType::MODEL => Essa\APIToolKit\Generator\Commands\ModelGeneratorCommand::class,
-        GeneratorFilesType::FACTORY => Essa\APIToolKit\Generator\Commands\FactoryGeneratorCommand::class,
-        GeneratorFilesType::SEEDER => Essa\APIToolKit\Generator\Commands\SeederGeneratorCommand::class,
-        GeneratorFilesType::CONTROLLER => Essa\APIToolKit\Generator\Commands\ControllerGeneratorCommand::class,
-        GeneratorFilesType::RESOURCE => Essa\APIToolKit\Generator\Commands\ResourceGeneratorCommand::class,
-        GeneratorFilesType::TEST => Essa\APIToolKit\Generator\Commands\TestGeneratorCommand::class,
-        GeneratorFilesType::CREATE_REQUEST => Essa\APIToolKit\Generator\Commands\CreateFormRequestGeneratorCommand::class,
-        GeneratorFilesType::UPDATE_REQUEST => Essa\APIToolKit\Generator\Commands\UpdateFormRequestGeneratorCommand::class,
-        GeneratorFilesType::FILTER => Essa\APIToolKit\Generator\Commands\FilterGeneratorCommand::class,
-        GeneratorFilesType::MIGRATION => Essa\APIToolKit\Generator\Commands\MigrationGeneratorCommand::class,
-        GeneratorFilesType::ROUTES => Essa\APIToolKit\Generator\Commands\RoutesGeneratorCommand::class,
+        GeneratorFilesType::MODEL->value => Essa\APIToolKit\Generator\Commands\ModelGeneratorCommand::class,
+        GeneratorFilesType::FACTORY->value => Essa\APIToolKit\Generator\Commands\FactoryGeneratorCommand::class,
+        GeneratorFilesType::SEEDER->value => Essa\APIToolKit\Generator\Commands\SeederGeneratorCommand::class,
+        GeneratorFilesType::CONTROLLER->value => Essa\APIToolKit\Generator\Commands\ControllerGeneratorCommand::class,
+        GeneratorFilesType::RESOURCE->value => Essa\APIToolKit\Generator\Commands\ResourceGeneratorCommand::class,
+        GeneratorFilesType::TEST->value => Essa\APIToolKit\Generator\Commands\TestGeneratorCommand::class,
+        GeneratorFilesType::CREATE_REQUEST->value => Essa\APIToolKit\Generator\Commands\CreateFormRequestGeneratorCommand::class,
+        GeneratorFilesType::UPDATE_REQUEST->value => Essa\APIToolKit\Generator\Commands\UpdateFormRequestGeneratorCommand::class,
+        GeneratorFilesType::FILTER->value => Essa\APIToolKit\Generator\Commands\FilterGeneratorCommand::class,
+        GeneratorFilesType::MIGRATION->value => Essa\APIToolKit\Generator\Commands\MigrationGeneratorCommand::class,
+        GeneratorFilesType::ROUTES->value => Essa\APIToolKit\Generator\Commands\RoutesGeneratorCommand::class,
     ],
     /*
     |--------------------------------------------------------------------------

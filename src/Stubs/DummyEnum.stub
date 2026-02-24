@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace {{DummyEnumNameSpace}};
 
-use Essa\APIToolKit\Enum\Enum;
+use Essa\APIToolKit\Enum\EnumHelpers;
 
-class {{DummyEnum}} extends Enum
+enum {{DummyEnum}}: string
 {
-    /**
-     * EXAMPLE public const FOO = 'foo';
-     */
+    use EnumHelpers;
+
+    case EXAMPLE = 'example';
 }

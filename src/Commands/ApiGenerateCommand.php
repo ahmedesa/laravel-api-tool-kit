@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Essa\APIToolKit\Commands;
 
 use Essa\APIToolKit\Enum\GeneratorFilesType;
@@ -166,8 +168,8 @@ class ApiGenerateCommand extends Command
         }
 
         $extraOptions = [
-            GeneratorFilesType::UPDATE_REQUEST => $this->option('request'),
-            GeneratorFilesType::CREATE_REQUEST => $this->option('request'),
+            GeneratorFilesType::UPDATE_REQUEST->value => $this->option('request'),
+            GeneratorFilesType::CREATE_REQUEST->value => $this->option('request'),
             'model' => true,
         ];
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace {{DummyModelNameSpace}};
 
 @if('filter')use {{DummyFilterWithNameSpace}};

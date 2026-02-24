@@ -1,6 +1,8 @@
 <?php
 
-use Carbon\Carbon;
+declare(strict_types=1);
+
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Model;
 
 if ( ! function_exists('dateTimeFormat')) {
@@ -15,7 +17,7 @@ if ( ! function_exists('dateTimeFormat')) {
     {
         $format ??= config('api-tool-kit.datetime_format');
 
-        return $value ? Carbon::parse($value)->format($format) : null;
+        return $value ? CarbonImmutable::parse($value)->format($format) : null;
     }
 }
 

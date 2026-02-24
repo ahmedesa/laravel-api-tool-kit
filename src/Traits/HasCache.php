@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Essa\APIToolKit\Traits;
 
 use Essa\APIToolKit\Enum\CacheKeys;
@@ -26,6 +28,6 @@ trait HasCache
 
     protected function cacheKey(): string
     {
-        return CacheKeys::DEFAULT_CACHE_KEY;
+        return CacheKeys::DEFAULT_CACHE_KEY->value;
     }
 }

@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Essa\APIToolKit\Generator\Commands;
 
+use Essa\APIToolKit\Enum\GeneratorFilesType;
 use Essa\APIToolKit\Generator\ApiGenerationCommandInputs;
 use Essa\APIToolKit\Generator\Configs\PathConfigHandler;
 use Essa\APIToolKit\Generator\Contracts\GeneratorCommandInterface;
@@ -19,7 +22,7 @@ abstract class GeneratorCommand implements GeneratorCommandInterface
         'filter',
     ];
 
-    protected string $type;
+    protected GeneratorFilesType $type;
 
     protected ApiGenerationCommandInputs $apiGenerationCommandInputs;
 
@@ -49,7 +52,7 @@ abstract class GeneratorCommand implements GeneratorCommandInterface
     {
         return PathConfigHandler::generateFilePathInfo(
             pathGroupName: $this->apiGenerationCommandInputs->getPathGroup(),
-            generatedFileType: $this->type,
+            generatedFileType: $this->type->value,
             modelName: $this->apiGenerationCommandInputs->getModel()
         );
     }

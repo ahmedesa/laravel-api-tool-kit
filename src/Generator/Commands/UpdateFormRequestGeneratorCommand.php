@@ -8,7 +8,7 @@ use Essa\APIToolKit\Generator\SchemaParsers\UpdateValidationRulesParser;
 
 class UpdateFormRequestGeneratorCommand extends GeneratorCommand implements HasDynamicContentInterface
 {
-    protected string $type = GeneratorFilesType::UPDATE_REQUEST;
+    protected GeneratorFilesType $type = GeneratorFilesType::UPDATE_REQUEST;
 
     public function getContent(): array
     {

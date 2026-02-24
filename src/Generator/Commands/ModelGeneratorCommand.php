@@ -9,7 +9,7 @@ use Essa\APIToolKit\Generator\SchemaParsers\RelationshipMethodsParser;
 
 class ModelGeneratorCommand extends GeneratorCommand implements HasDynamicContentInterface
 {
-    protected string $type = GeneratorFilesType::MODEL;
+    protected GeneratorFilesType $type = GeneratorFilesType::MODEL;
 
     public function getContent(): array
     {

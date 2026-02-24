@@ -1,28 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Essa\APIToolKit\Enum;
 
-class GeneratorFilesType extends Enum
+enum GeneratorFilesType: string
 {
-    public const MODEL = 'model';
+    use EnumHelpers;
 
-    public const CONTROLLER = 'controller';
-
-    public const RESOURCE = 'resource';
-
-    public const FACTORY = 'factory';
-
-    public const SEEDER = 'seeder';
-
-    public const TEST = 'test';
-
-    public const FILTER = 'filter';
-
-    public const MIGRATION = 'migration';
-
-    public const ROUTES = 'routes';
-
-    public const CREATE_REQUEST = 'create-request';
-
-    public const UPDATE_REQUEST = 'update-request';
+    case MODEL = 'model';
+    case CONTROLLER = 'controller';
+    case RESOURCE = 'resource';
+    case FACTORY = 'factory';
+    case SEEDER = 'seeder';
+    case TEST = 'test';
+    case FILTER = 'filter';
+    case MIGRATION = 'migration';
+    case ROUTES = 'routes';
+    case CREATE_REQUEST = 'create-request';
+    case UPDATE_REQUEST = 'update-request';
 }

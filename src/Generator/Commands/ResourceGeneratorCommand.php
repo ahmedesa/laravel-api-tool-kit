@@ -8,7 +8,7 @@ use Essa\APIToolKit\Generator\SchemaParsers\ResourceAttributesParser;
 
 class ResourceGeneratorCommand extends GeneratorCommand implements HasDynamicContentInterface
 {
-    protected string $type = GeneratorFilesType::RESOURCE;
+    protected GeneratorFilesType $type = GeneratorFilesType::RESOURCE;
 
     public function getContent(): array
     {

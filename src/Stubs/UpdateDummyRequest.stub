@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace {{DummyUpdateRequestNameSpace}};
 
 use Illuminate\Foundation\Http\FormRequest;

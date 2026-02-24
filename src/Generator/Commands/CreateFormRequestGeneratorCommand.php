@@ -8,7 +8,7 @@ use Essa\APIToolKit\Generator\SchemaParsers\CreateValidationRulesParser;
 
 class CreateFormRequestGeneratorCommand extends GeneratorCommand implements HasDynamicContentInterface
 {
-    protected string $type = GeneratorFilesType::CREATE_REQUEST;
+    protected GeneratorFilesType $type = GeneratorFilesType::CREATE_REQUEST;
 
     public function getContent(): array
     {

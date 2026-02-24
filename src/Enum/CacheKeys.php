@@ -1,8 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Essa\APIToolKit\Enum;
 
-class CacheKeys extends Enum
+enum CacheKeys: string
 {
-    public const DEFAULT_CACHE_KEY = 'default.all';
+    use EnumHelpers;
+
+    case DEFAULT_CACHE_KEY = 'default.all';
 }

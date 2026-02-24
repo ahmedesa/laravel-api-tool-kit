@@ -35,6 +35,14 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Maximum Pagination Limit
+    |--------------------------------------------------------------------------
+    | The maximum number of items per page that can be requested.
+    */
+    'max_pagination_limit' => 100,
+
+    /*
+    |--------------------------------------------------------------------------
     | Default Datetime Format for API Resources
     |--------------------------------------------------------------------------
     | The default format for displaying date and time values in API resources.
@@ -67,57 +75,57 @@ return [
     */
     'groups_files_paths' => [
         'default' => [
-            GeneratorFilesType::MODEL => [
+            GeneratorFilesType::MODEL->value => [
                 'folder_path' => app_path('Models'),
                 'file_name' => '{ModelName}.php',
                 'namespace' => 'App\Models',
             ],
-            GeneratorFilesType::FACTORY => [
+            GeneratorFilesType::FACTORY->value => [
                 'folder_path' => database_path('factories'),
                 'file_name' => '{ModelName}Factory.php',
                 'namespace' => 'Database\Factories',
             ],
-            GeneratorFilesType::SEEDER => [
+            GeneratorFilesType::SEEDER->value => [
                 'folder_path' => database_path('seeders'),
                 'file_name' => '{ModelName}Seeder.php',
                 'namespace' => 'Database\Seeders',
             ],
-            GeneratorFilesType::CONTROLLER => [
+            GeneratorFilesType::CONTROLLER->value => [
                 'folder_path' => app_path('Http/Controllers/API'),
                 'file_name' => '{ModelName}Controller.php',
                 'namespace' => 'App\Http\Controllers\API',
             ],
-            GeneratorFilesType::RESOURCE => [
+            GeneratorFilesType::RESOURCE->value => [
                 'folder_path' => app_path('Http/Resources/{ModelName}'),
                 'file_name' => '{ModelName}Resource.php',
                 'namespace' => "App\Http\Resources\{ModelName}",
             ],
-            GeneratorFilesType::TEST => [
+            GeneratorFilesType::TEST->value => [
                 'folder_path' => base_path('tests/Feature'),
                 'file_name' => '{ModelName}Test.php',
                 'namespace' => 'Tests\Feature',
             ],
-            GeneratorFilesType::CREATE_REQUEST => [
+            GeneratorFilesType::CREATE_REQUEST->value => [
                 'folder_path' => app_path('Http/Requests/{ModelName}'),
                 'file_name' => 'Create{ModelName}Request.php',
                 'namespace' => "App\Http\Requests\{ModelName}",
             ],
-            GeneratorFilesType::UPDATE_REQUEST => [
+            GeneratorFilesType::UPDATE_REQUEST->value => [
                 'folder_path' => app_path('Http/Requests/{ModelName}'),
                 'file_name' => 'Update{ModelName}Request.php',
                 'namespace' => "App\Http\Requests\{ModelName}",
             ],
-            GeneratorFilesType::FILTER => [
+            GeneratorFilesType::FILTER->value => [
                 'folder_path' => app_path('Filters'),
                 'file_name' => '{ModelName}Filters.php',
                 'namespace' => 'App\Filters',
             ],
-            GeneratorFilesType::MIGRATION => [
+            GeneratorFilesType::MIGRATION->value => [
                 'folder_path' => database_path('migrations'),
                 'file_name' => date('Y_m_d_His') . '_create_{TableName}_table.php',
                 'namespace' => null,
             ],
-            GeneratorFilesType::ROUTES => [
+            GeneratorFilesType::ROUTES->value => [
                 'folder_path' => base_path('routes'),
                 'file_name' => 'api.php',
                 'namespace' => null,

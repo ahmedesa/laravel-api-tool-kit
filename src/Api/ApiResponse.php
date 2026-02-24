@@ -196,6 +196,36 @@ trait ApiResponse
     }
 
     /**
+     * Return an accepted response (HTTP 202).
+     *
+     * Useful for async operations where the request has been accepted for processing
+     * but the processing has not been completed.
+     *
+     * @param string|null $message Optional accepted message.
+     * @param mixed|null $data Optional data to include in the response.
+     *
+     * @return JsonResponse Accepted JSON response.
+     */
+    public function responseAccepted(?string $message = 'Request accepted for processing', mixed $data = null): JsonResponse
+    {
+        return new JsonResponse([
+            'status' => Response::HTTP_ACCEPTED,
+            'message' => $message,
+            'data' => $data,
+        ], Response::HTTP_ACCEPTED);
+    }
+
+    /**
+     * Return a no content response (HTTP 204).
+     *
+     * @return JsonResponse No content JSON response.
+     */
+    public function responseNoContent(): JsonResponse
+    {
+        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
+    }
+
+    /**
      * Create a JSON response for API errors.
      *
      * @param int $code The HTTP status code for the error.

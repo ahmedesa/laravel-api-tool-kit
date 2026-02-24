@@ -5,6 +5,10 @@ namespace Essa\APIToolKit\Commands;
 use Illuminate\Console\GeneratorCommand;
 use Symfony\Component\Console\Input\InputArgument;
 
+/**
+ * @deprecated Since v2.1. Use native PHP 8.1+ enums with the EnumHelpers trait instead.
+ *             This command will be removed in v3.0.
+ */
 class MakeEnumCommand extends GeneratorCommand
 {
     /**
@@ -19,7 +23,7 @@ class MakeEnumCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $description = 'Generate a new Enum class';
+    protected $description = 'Generate a new Enum class (deprecated: use native PHP enums instead)';
 
     protected $type = 'Enum';
 

@@ -26,6 +26,9 @@ use Throwable;
 /**
  * Class Handler
  *
+ * @deprecated Since v2.1. For Laravel 11+, use {@see \Essa\APIToolKit\APIToolKit::registerExceptionRenderers()} in bootstrap/app.php.
+ *             This class will be removed in v3.0.
+ *
  * @package Essa\APIToolKit\Exceptions
  */
 class Handler extends ExceptionHandler

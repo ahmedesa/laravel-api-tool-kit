@@ -31,7 +31,7 @@ if ( ! function_exists('createOrRandomFactory')) {
         /** @var Illuminate\Database\Eloquent\Builder $class */
         $class = new $className();
 
-        if ($class::count()) {
+        if ($class::exists()) {
             return $class::inRandomOrder()->first();
         }
 

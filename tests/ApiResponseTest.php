@@ -162,4 +162,44 @@ class ApiResponseTest extends TestCase
             $this->assertEquals(['pointer' => '/field'], (array) $error->source);
         }
     }
+
+    /**
+     * @test
+     */
+    public function responseAccepted(): void
+    {
+        $response = $this->classThatImplementTheTrait->responseAccepted('Processing started', ['job_id' => '123']);
+
+        $this->assertInstanceOf(JsonResponse::class, $response);
+        $this->assertEquals(Response::HTTP_ACCEPTED, $response->getStatusCode());
+        $responseData = $response->getData();
+        $this->assertEquals('Processing started', $responseData->message);
+        $this->assertEquals(['job_id' => '123'], (array) $responseData->data);
+    }
+
+    /**
+     * @test
+     */
+    public function responseAcceptedWithDefaults(): void
+    {
+        $response = $this->classThatImplementTheTrait->responseAccepted();
+
+        $this->assertInstanceOf(JsonResponse::class, $response);
+        $this->assertEquals(Response::HTTP_ACCEPTED, $response->getStatusCode());
+        $responseData = $response->getData();
+        $this->assertEquals('Request accepted for processing', $responseData->message);
+        $this->assertNull($responseData->data);
+    }
+
+    /**
+     * @test
+     */
+    public function responseNoContent(): void
+    {
+        $response = $this->classThatImplementTheTrait->responseNoContent();
+
+        $this->assertInstanceOf(JsonResponse::class, $response);
+        $this->assertEquals(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+        $this->assertEquals('{}', $response->getContent());
+    }
 }

@@ -4,6 +4,10 @@ namespace Essa\APIToolKit\Enum;
 
 use ReflectionClass;
 
+/**
+ * @deprecated Since v2.1. Use native PHP 8.1+ enums with the {@see EnumHelpers} trait instead.
+ *             This class will be removed in v3.0.
+ */
 abstract class Enum
 {
     /**

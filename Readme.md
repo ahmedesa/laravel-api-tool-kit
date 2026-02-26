@@ -21,6 +21,24 @@ to install the package using Composer:
 ```
 composer require essa/api-tool-kit
 ```
+
+## 🤖 AI Skill — Architectural Rules for AI Agents
+
+Ship production-grade APIs faster by giving your AI coding assistant a shared understanding of your architecture. The built-in skill teaches AI agents (Claude Code, Cursor, GitHub Copilot, Antigravity) to follow the same standards you do — so every generated file fits your codebase from the first draft.
+
+### What's included:
+- **19 rule files** — Controllers, Models, Actions, DTOs, Services, Repositories, Filters, Enums, Events, Requests, Resources, Responses, Exceptions, Authorization, Testing, Database, Pagination, Anti-patterns, Code Quality
+- **4 workflows** — New endpoint step-by-step, add filtering, code review checklist, update knowledge base
+- **DDD Friendly** — Supports both standard Laravel and Domain-Driven Design layouts
+- **Project Defaults** — Configure primary key type (ULID / auto-increment), auth guard, and test base class once; the AI applies them everywhere
+
+### How to use:
+Run the following command in your project:
+```bash
+php artisan api-skill:install
+```
+The installer asks which AI tool you use and copies the skill to the correct location automatically (Claude Code, Cursor, GitHub Copilot, or Antigravity).
+
 ## Why Choose the Laravel API Toolkit?
 
 ### Consistent Responses, Less Hassle
@@ -66,7 +84,18 @@ php artisan api:generate ModelName "column1:string|column2:integer|column3:datet
 Tackle complex business logic with Actions. These gems follow the command pattern, boosting readability and maintenance for your code.
 
 ```php
-app(CreateCar::class)->execute($data);
+class CarController extends Controller
+{
+    public function __construct(
+        private readonly CreateCarAction $createCar,
+    ) {}
+
+    public function store(CreateCarRequest $request): JsonResponse
+    {
+        $car = $this->createCar->execute($request->validated());
+        return $this->responseCreated(trans('car.created'), new CarResource($car));
+    }
+}
 ```
 
 ### Media? Handled.

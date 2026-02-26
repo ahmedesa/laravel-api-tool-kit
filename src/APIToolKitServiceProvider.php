@@ -6,6 +6,7 @@ namespace Essa\APIToolKit;
 
 use Essa\APIToolKit\Commands\ApiGenerateCommand;
 use Essa\APIToolKit\Commands\GeneratePermissions;
+use Essa\APIToolKit\Commands\InstallSkillCommand;
 use Essa\APIToolKit\Commands\MakeActionCommand;
 use Essa\APIToolKit\Commands\MakeFilterCommand;
 use Illuminate\Support\ServiceProvider;
@@ -51,6 +52,7 @@ class APIToolKitServiceProvider extends ServiceProvider
                 MakeActionCommand::class,
                 GeneratePermissions::class,
                 MakeFilterCommand::class,
+                InstallSkillCommand::class,
             ]);
         }
     }

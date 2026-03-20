@@ -20,8 +20,8 @@ Every repeated or business-meaning value (string, number, or boolean) MUST have 
 | Domain status / type | Backed Enum — see `rules/enums.md` |
 | Storage / Media paths | `StoragePaths` Enum (e.g. `case PETS = 'pets'`) |
 | Role / Permission names | `RoleName` or `Ability` Enum |
-| Cache / session / cookie key | `CacheKeysConstants` Enum with `key()` + `ttl()` — see below |
-| Config-level threshold / size | Shared constants class (e.g. `App\Constants\`) |
+| Cache / session / cookie key | Backed Enum with `key()` + `ttl()` — see below |
+| Config-level threshold / size | Backed Enum (e.g. `UtilizationThresholds::HIGH->value`) |
 | Single-use class constant | `private const` on the class itself |
 
 Benefits: single source of truth, safe rename via IDE, full-codebase search finds all usages.
@@ -76,21 +76,24 @@ $activeIds = collect($cars)
 
 ## Constants for Magic Numbers
 
-Place class-specific constants in the class itself. Place shared constants in dedicated constant classes or use backed Enums (see `rules/enums.md`):
+Place single-use constants directly on the class. Extract shared values into a Backed Enum:
 
 ```php
-// Class-specific
+// Single-use — private const on the class
 class CloseStoreAction
 {
     private const HIGH_UTILIZATION_THRESHOLD = 80;
 }
 
-// Shared numeric thresholds (app/Constants/)
-class UtilizationConstants
+// Shared — Backed Enum (app/Enums/)
+enum UtilizationThresholds: int
 {
-    public const HIGH_THRESHOLD = 80;
-    public const MAX_BATCH_SIZE = 500;
+    case HIGH = 80;
+    case MAX_BATCH_SIZE = 500;
 }
+
+// Usage
+if ($value > UtilizationThresholds::HIGH->value) { ... }
 ```
 
 ## Key Constants (Cache / Session / Cookies)

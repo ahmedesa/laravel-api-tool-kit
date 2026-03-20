@@ -247,16 +247,18 @@ $this->authorize('update', $car);
 
 ## Database
 
-**NEVER use auto-increment integers for primary keys (in new tables)**
+**NEVER use the wrong primary key type for the project**
 ```php
-// Wrong
-$table->id();
-
-// Correct
+// If project uses ULIDs (check SKILL.md Project Defaults):
 $table->ulid('id')->primary();
+$table->foreignUlid('user_id')->constrained()->cascadeOnDelete();
+
+// If project uses auto-increment:
+$table->id();
+$table->foreignId('user_id')->constrained()->cascadeOnDelete();
 ```
 
-**NEVER forget to declare ULID key properties on the Model**
+**NEVER forget to declare ULID key properties on the Model (when project uses ULIDs)**
 ```php
 // Wrong — Eloquent defaults to integer auto-increment, breaks ULID comparisons
 class Car extends Model {}
@@ -281,10 +283,16 @@ public function scopeForCurrentUser(Builder $q): Builder
     return $q->where('user_id', auth()->id()); // breaks in queues
 }
 
-// Correct
-public function scopeForUser(Builder $q, ?int $userId = null): Builder
+// Wrong — still calls auth()->id() when $userId is null (queue case)
+public function scopeForUser(Builder $q, ?string $userId = null): Builder
 {
     return $q->where('user_id', $userId ?? auth()->id());
+}
+
+// Correct — caller is always responsible for passing the user ID
+public function scopeForUser(Builder $q, string $userId): Builder
+{
+    return $q->where('user_id', $userId);
 }
 ```
 

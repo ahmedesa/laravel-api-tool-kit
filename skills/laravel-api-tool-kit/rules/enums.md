@@ -55,7 +55,9 @@ If a value carries business meaning or is used in multiple places, extract it.
 | Scenario | Action |
 |----------|--------|
 | New status or type needed | **CREATE** a new Backed Enum (e.g. `PostStatusEnum`) |
-| New storage path needed | **CREATE** a `StoragePath` Enum or Constants class |
-| Role or Permission name | **CREATE** a `RoleName` or `Ability` Enum |
+| New storage path needed | **CREATE** a `StoragePaths` Backed Enum |
+| Role or Permission name | **CREATE** a `RoleName` or `Ability` Backed Enum |
+| Shared numeric threshold or size | **CREATE** a Backed Enum (e.g. `UtilizationThresholds: int`) |
+| Cache / session / cookie key | **CREATE** a Backed Enum with `key()` + `ttl()` methods |
 
-**Rule for AI**: Do not wait for the user to ask for an Enum or Constant. If you are about to type a raw value (string, number, or boolean) that represents business logic or configuration, STOP and extract it. Create a Backed Enum for domain logic (statuses, types) or a class constant for technical thresholds.
+**Rule for AI**: Do not wait for the user to ask for an Enum or Constant. If you are about to type a raw value (string, number, or boolean) that represents business logic or configuration, STOP and extract it. Always use a Backed Enum for any shared value. Only use `private const` on the class itself for single-use values that are not shared anywhere else.

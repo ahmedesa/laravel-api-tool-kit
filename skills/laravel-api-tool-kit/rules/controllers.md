@@ -26,6 +26,7 @@ class CarController extends Controller
 
     public function store(CreateCarRequest $request): JsonResponse
     {
+        $this->authorize('create', Car::class);
         $car = Car::create($request->validated());
         return $this->responseCreated(trans('car.created'), new CarResource($car));
     }

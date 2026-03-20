@@ -19,7 +19,7 @@ Models MUST NOT contain (god object = bad):
 - MUST add `$casts` for all booleans, enums, arrays, and dates
 - MUST use `Filterable` trait and bind `$default_filters` for any model with a filterable endpoint
 - NEVER create a scope for a simple single-column condition — use `where()` directly
-- Scopes MUST accept an optional `$userId` — NEVER hardcode `auth()->id()` in a scope (breaks in queues)
+- Scopes MUST accept an explicit `$userId` parameter — NEVER hardcode `auth()->id()` in a scope (breaks in queues, caller is always responsible for passing the ID)
 - Enable `Model::shouldBeStrict(! app()->isProduction())` in `AppServiceProvider::boot()`
 
 ## Structure
@@ -99,10 +99,16 @@ public function scopeForCurrentUser(Builder $q): Builder
     return $q->where('user_id', auth()->id());
 }
 
-// Correct
+// Wrong — still calls auth()->id() when $userId is null (queue case)
 public function scopeForUser(Builder $q, ?string $userId = null): Builder
 {
     return $q->where('user_id', $userId ?? auth()->id());
+}
+
+// Correct — caller is always responsible for passing the user ID
+public function scopeForUser(Builder $q, string $userId): Builder
+{
+    return $q->where('user_id', $userId);
 }
 ```
 

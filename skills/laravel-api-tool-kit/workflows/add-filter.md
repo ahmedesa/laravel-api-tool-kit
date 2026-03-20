@@ -4,9 +4,23 @@ Use this when an existing model needs filtering, sorting, or search added to its
 
 ---
 
+## Step 0 — Detect Project Structure
+
+```bash
+ls app/
+```
+
+- `Domain/` present → **DDD**: filters live in `app/Domain/{Model}/Filters/{Model}Filters.php`
+- No `Domain/` → **Standard**: filters live in `app/Filters/{Model}Filters.php`
+
+Check the existing model file to confirm — it will have `protected string $default_filters = ...` pointing to the correct namespace if a filter already exists.
+
+---
+
 ## Step 1 — Check if a Filter class already exists
 
-Look for `app/Filters/{Model}Filters.php`.
+Standard: look for `app/Filters/{Model}Filters.php`
+DDD: look for `app/Domain/{Model}/Filters/{Model}Filters.php`
 
 - If it exists → go to Step 3
 - If it does not → go to Step 2
@@ -18,7 +32,8 @@ Look for `app/Filters/{Model}Filters.php`.
 Follow `rules/filters.md` for the correct structure.
 
 ```
-app/Filters/CarFilters.php
+Standard: app/Filters/CarFilters.php
+DDD:      app/Domain/Car/Filters/CarFilters.php
 ```
 
 ---
@@ -92,16 +107,11 @@ Open the controller's `index` method and replace any manual query building with:
 ```php
 public function index(): AnonymousResourceCollection
 {
-    $records = Car::useFilters()->dynamicPaginate();
-
-    return CarResource::collection($records);
+    return CarResource::collection(Car::useFilters()->dynamicPaginate());
 }
 ```
 
-If eager loading is needed for the resource, add it before `useFilters()`:
-```php
-$records = Car::with(['user', 'tags'])->useFilters()->dynamicPaginate();
-```
+Do NOT hardcode `->with(['user', 'tags'])` here if those relationships are in `$allowedIncludes`. The client requests them via `?includes=user,tags` and the filter class handles eager loading automatically. Hardcoding `with()` always loads relations even when not needed.
 
 ---
 

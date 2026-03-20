@@ -39,6 +39,7 @@ interface SmsProviderInterface
 
 ```php
 use Essa\APIToolKit\Api\ConsumesExternalServices;
+use Illuminate\Http\Client\PendingRequest;
 
 class SmsProvider implements SmsProviderInterface
 {
@@ -49,22 +50,24 @@ class SmsProvider implements SmsProviderInterface
         protected string $apiKey,
     ) {}
 
-    // Called automatically by ConsumesExternalServices on every request
-    public function resolveAuthorization(&$queryParams, &$formParams, &$headers): void
+    // Called automatically by ConsumesExternalServices before every request.
+    // Receives the PendingRequest instance — add auth headers and return it.
+    public function resolveAuthorization(PendingRequest $request): PendingRequest
     {
-        $headers['Authorization'] = "Bearer {$this->apiKey}";
+        return $request->withHeaders([
+            'Authorization' => "Bearer {$this->apiKey}",
+        ]);
     }
 
     public function send(string $to, string $message): array
     {
-        $response = $this->makeRequest(
+        // makeRequest signature: (string $method, string $requestUrl, array $data, array $headers, bool $isJsonRequest)
+        // Returns decoded JSON by default, or throws on failure (override handleRequestError() to customize).
+        return $this->makeRequest(
             method: 'POST',
-            requestUrl: $this->baseUri . '/messages',
-            formParams: ['to' => $to, 'body' => $message],
-            decodeResponse: false
+            requestUrl: '/messages',
+            data: ['to' => $to, 'body' => $message],
         );
-
-        return json_decode($response, true, 512, JSON_THROW_ON_ERROR);
     }
 }
 ```

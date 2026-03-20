@@ -48,3 +48,21 @@ class SendCarCreatedNotification implements ShouldQueue
 $car = Car::create($data);
 CarCreated::dispatch($car); // after the write, outside any transaction
 ```
+
+## Domain ServiceProviders
+
+In DDD projects, register events and listeners in a **domain-specific ServiceProvider** instead of the global `EventServiceProvider`. This keeps each domain self-contained:
+
+```php
+// app/Domain/Order/Providers/OrderServiceProvider.php
+class OrderServiceProvider extends ServiceProvider
+{
+    public function boot(): void
+    {
+        Event::listen(OrderPlaced::class, SendOrderConfirmation::class);
+        Event::listen(OrderPlaced::class, UpdateInventory::class);
+    }
+}
+```
+
+Register each domain provider in `bootstrap/providers.php`. Do NOT dump all domain events into a single `EventServiceProvider`.

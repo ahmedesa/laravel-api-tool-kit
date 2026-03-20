@@ -33,11 +33,15 @@ Schema::create('cars', function (Blueprint $table) {
 ## Transactions
 
 ```php
-DB::transaction(function () use ($data): void {
+// Dispatch events AFTER the transaction — never inside it.
+// Queued listeners may run before the DB commit and read missing/stale data.
+$car = DB::transaction(function () use ($data): Car {
     $car = Car::create($data);
     $car->features()->attach($data['feature_ids']);
-    CarCreated::dispatch($car);
+    return $car;
 });
+
+CarCreated::dispatch($car); // outside the transaction
 ```
 
 ## Bulk Operations

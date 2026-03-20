@@ -14,6 +14,30 @@ Before creating any file, confirm:
 - Which routes are needed? (all CRUD, or subset?)
 - Is authentication required? Which guard?
 
+### Detect the project structure first
+
+```bash
+ls app/
+```
+
+- If you see `Domain/` → **DDD structure** — check `ls app/Domain/` to confirm folder naming conventions used in the project
+- If you see `Models/`, `Http/` only → **Standard Laravel structure**
+
+### Path map — resolve once, use throughout all steps
+
+| Component | Standard Laravel | DDD |
+|---|---|---|
+| Model | `app/Models/Car.php` | `app/Domain/Car/Models/Car.php` |
+| Filter | `app/Filters/CarFilters.php` | `app/Domain/Car/Filters/CarFilters.php` |
+| Enum | `app/Enums/CarStatusEnum.php` | `app/Domain/Car/Enums/CarStatusEnum.php` |
+| Action | `app/Actions/CreateCarAction.php` | `app/Domain/Car/Actions/CreateCarAction.php` |
+| Policy | `app/Policies/CarPolicy.php` | `app/Domain/Car/Policies/CarPolicy.php` |
+| Form Request | `app/Http/Requests/Car/` | `app/Http/Requests/Application/Car/` (or `Dashboard/Car/`) |
+| Resource | `app/Http/Resources/Car/CarResource.php` | `app/Http/Resources/Application/Car/CarResource.php` |
+| Controller | `app/Http/Controllers/CarController.php` | `app/Http/Controllers/API/Application/Car/CarController.php` |
+
+> **Note**: Controllers, Requests, and Resources always stay in `app/Http/` regardless of structure — only domain logic moves into `app/Domain/`.
+
 ---
 
 ## Step 1 — Model
@@ -24,9 +48,10 @@ Follow `rules/models.md` for the correct structure.
 - Add `$casts` for booleans, enums, and arrays
 - Add `SoftDeletes` if needed
 - Add relationships
+- If project uses ULID: add `HasUlids` trait + `$keyType = 'string'` + `$incrementing = false`
 - Do NOT bind `$default_filters` yet — do that after creating the Filter (Step 3)
 
-File: `app/Models/Car.php`
+File: `app/Models/Car.php` — DDD: `app/Domain/Car/Models/Car.php`
 
 ---
 
@@ -70,7 +95,7 @@ Follow `rules/filters.md` for the correct structure.
 - Add `$allowedIncludes` for relationships clients can eager-load
 - Add custom filter methods for non-trivial conditions
 
-File: `app/Filters/CarFilters.php`
+File: `app/Filters/CarFilters.php` — DDD: `app/Domain/Car/Filters/CarFilters.php`
 
 Then go back to the Model and bind it:
 ```php
@@ -83,7 +108,7 @@ protected string $default_filters = CarFilters::class;
 
 Follow `rules/enums.md` for the correct structure. Create one for any fixed-value column (status, type, etc.).
 
-File: `app/Enums/CarStatusEnum.php`
+File: `app/Enums/CarStatusEnum.php` — DDD: `app/Domain/Car/Enums/CarStatusEnum.php`
 
 Cast it in the Model:
 ```php
@@ -108,8 +133,12 @@ Follow `rules/requests.md` for the correct structure.
 
 Files:
 ```
-app/Http/Requests/Car/CreateCarRequest.php
-app/Http/Requests/Car/UpdateCarRequest.php
+Standard: app/Http/Requests/Car/CreateCarRequest.php
+          app/Http/Requests/Car/UpdateCarRequest.php
+
+DDD:      app/Http/Requests/Application/Car/CreateCarRequest.php
+          app/Http/Requests/Application/Car/UpdateCarRequest.php
+          (use Dashboard/Car/ for admin-facing requests)
 ```
 
 ---
@@ -123,11 +152,23 @@ Follow `rules/resources.md` for the correct structure.
 - Use `dateTimeFormat()` for all timestamps
 - Never add raw DB queries inside `toArray()`
 
-File: `app/Http/Resources/Car/CarResource.php`
+File: `app/Http/Resources/Car/CarResource.php` — DDD: `app/Http/Resources/Application/Car/CarResource.php`
 
 ---
 
-## Step 7 — Action (only if needed)
+## Step 7 — Policy (if authorization needed)
+
+Follow `rules/authorization.md`. Create a Policy if any endpoint needs ownership or role checks.
+
+Include all applicable methods: `viewAny`, `view`, `create`, `update`, `delete`.
+
+File: `app/Policies/CarPolicy.php` — DDD: `app/Domain/Car/Policies/CarPolicy.php`
+
+Register in `AppServiceProvider` or via automatic discovery (Laravel auto-discovers policies by convention).
+
+---
+
+## Step 8 — Action (only if needed)
 
 Follow `rules/actions.md` for the correct structure. Create one only if the operation:
 - Has multiple distinct steps (even if all on the same model)
@@ -138,23 +179,37 @@ If it's a simple `Model::create($data)` — do it directly in the controller. No
 
 For external 3rd-party integrations (SMS, payment, etc.), see `rules/services.md`.
 
-File: `app/Actions/CreateCarAction.php`
+File: `app/Actions/CreateCarAction.php` — DDD: `app/Domain/Car/Actions/CreateCarAction.php`
 
 ---
 
-## Step 8 — Controller
+## Step 9 — Controller
 
-Follow `rules/controllers.md` for the correct structure. Use the pattern with a constructor-injected Action/Service/Repository if you created one in Step 7.
+Follow `rules/controllers.md` for the correct structure. Use the pattern with a constructor-injected Action/Service/Repository if you created one in Step 8.
 
-- Replace `{Model}` with the resource name
-- Add middleware in the constructor
 - Add `$this->authorize()` on methods that need policy checks
+- Apply middleware at the **route level** (not in the constructor — deprecated in Laravel 12)
 
-File: `app/Http/Controllers/CarController.php`
+File: `app/Http/Controllers/CarController.php` — DDD: `app/Http/Controllers/API/Application/Car/CarController.php`
 
 ---
 
-## Step 9 — Route
+## Step 10 — Language File
+
+Since all user-facing strings MUST use `trans()`, create translation keys before writing messages in the controller.
+
+```php
+// lang/en/car.php
+return [
+    'created' => 'Car created successfully.',
+    'updated' => 'Car updated successfully.',
+    'deleted' => 'Car deleted successfully.',
+];
+```
+
+---
+
+## Step 11 — Route
 
 Register the resource route in `routes/api.php`:
 
@@ -174,7 +229,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 ---
 
-## Step 10 — Factory & Test (recommended)
+## Step 12 — Factory & Test (recommended)
 
 Create a factory:
 ```php
@@ -196,7 +251,7 @@ Write a feature test covering index, store, show, update, destroy.
 
 ## Checklist
 
-Before marking the feature done, verify:
+Before marking the feature done, verify (paths per Step 0 path map):
 
 - [ ] `$fillable` is populated
 - [ ] `$casts` covers all booleans and enums

@@ -7,13 +7,9 @@ use Symfony\Component\Console\Command\Command;
 
 class InstallSkillCommandTest extends TestCase
 {
-    private string $tempPath;
-
     public function setUp(): void
     {
         parent::setUp();
-
-        // The orchestratestbench base_path is usually in /tmp or a temp vendor folder
         $this->cleanup();
     }
 
@@ -33,18 +29,20 @@ class InstallSkillCommandTest extends TestCase
                 'GitHub Copilot',
                 'Antigravity',
             ])
-            ->expectsOutput('  ✓ Installed to .cursor/rules/laravel-api')
+            ->expectsOutput('  ✓ Installed to .cursor/rules/laravel-api-tool-kit')
             ->assertExitCode(Command::SUCCESS);
 
-        $this->assertFileExists(base_path('.cursor/rules/laravel-api/SKILL.mdc'));
-        $this->assertFileExists(base_path('.cursor/rules/laravel-api/rules/actions.mdc'));
+        $this->assertFileExists(base_path('.cursor/rules/laravel-api-tool-kit/SKILL.mdc'));
+        $this->assertFileExists(base_path('.cursor/rules/laravel-api-tool-kit/rules/actions.mdc'));
+        $this->assertFileExists(base_path('knowledge/_TEMPLATE.md'));
 
-        $content = File::get(base_path('.cursor/rules/laravel-api/SKILL.mdc'));
+        $content = File::get(base_path('.cursor/rules/laravel-api-tool-kit/SKILL.mdc'));
         $this->assertStringContainsString('alwaysApply: true', $content);
         $this->assertStringContainsString('description: Laravel API Toolkit - SKILL', $content);
 
-        $actionContent = File::get(base_path('.cursor/rules/laravel-api/rules/actions.mdc'));
+        $actionContent = File::get(base_path('.cursor/rules/laravel-api-tool-kit/rules/actions.mdc'));
         $this->assertStringContainsString('alwaysApply: false', $actionContent);
+        $this->assertStringContainsString('globs: ["**/*.php"]', $actionContent);
     }
 
     /** @test */
@@ -59,54 +57,16 @@ class InstallSkillCommandTest extends TestCase
                 'GitHub Copilot',
                 'Antigravity',
             ])
-            ->expectsOutput('  ✓ Installed to .claude/skills/laravel-api')
+            ->expectsOutput('  ✓ Installed to .claude/rules/laravel-api-tool-kit + .claude/skills/')
             ->assertExitCode(Command::SUCCESS);
 
-        $this->assertFileExists(base_path('.claude/skills/laravel-api/SKILL.md'));
-        $this->assertStringContainsString('.claude/skills/laravel-api/SKILL.md', File::get(base_path('CLAUDE.md')));
-    }
+        $this->assertFileExists(base_path('.claude/rules/laravel-api-tool-kit/_overview.md'));
+        $this->assertFileExists(base_path('.claude/rules/laravel-api-tool-kit/actions.md'));
+        $this->assertFileExists(base_path('.claude/skills/code-review/SKILL.md'));
+        $this->assertFileExists(base_path('.claude/knowledge/_TEMPLATE.md'));
 
-    /** @test */
-    public function it_installs_for_antigravity(): void
-    {
-        $this->artisan('api-skill:install')
-            ->expectsChoice('Which AI coding tool are you using?', 'Antigravity', [
-                'Claude Code',
-                'Cursor',
-                'GitHub Copilot',
-                'Antigravity',
-            ])
-            ->expectsOutput('  ✓ Installed to .agents/')
-            ->assertExitCode(Command::SUCCESS);
-
-        $this->assertFileExists(base_path('.agents/instructions.md'));
-        $this->assertDirectoryExists(base_path('.agents/workflows'));
-        $this->assertFileExists(base_path('.agents/workflows/new-endpoint.md'));
-
-        $content = File::get(base_path('.agents/instructions.md'));
-        $this->assertStringContainsString('<!-- LARAVEL API TOOL KIT START -->', $content);
-        $this->assertStringContainsString('# Action Classes', $content);
-        $this->assertStringContainsString('<!-- LARAVEL API TOOL KIT END -->', $content);
-    }
-
-    /** @test */
-    public function it_updates_existing_rules_non_destructively(): void
-    {
-        File::ensureDirectoryExists(base_path('.agents'));
-        File::put(base_path('.agents/instructions.md'), "# User Rules\nMy custom rule.");
-
-        $this->artisan('api-skill:install')
-            ->expectsChoice('Which AI coding tool are you using?', 'Antigravity', [
-                'Claude Code',
-                'Cursor',
-                'GitHub Copilot',
-                'Antigravity',
-            ])
-            ->assertExitCode(Command::SUCCESS);
-
-        $content = File::get(base_path('.agents/instructions.md'));
-        $this->assertStringContainsString("# User Rules\nMy custom rule.", $content);
-        $this->assertStringContainsString('<!-- LARAVEL API TOOL KIT START -->', $content);
+        $claudemd = File::get(base_path('CLAUDE.md'));
+        $this->assertStringContainsString('.claude/rules/laravel-api-tool-kit', $claudemd);
     }
 
     /** @test */
@@ -119,23 +79,74 @@ class InstallSkillCommandTest extends TestCase
                 'GitHub Copilot',
                 'Antigravity',
             ])
-            ->expectsOutput('  ✓ Installed to .github/copilot-instructions.md')
+            ->expectsOutput('  ✓ Installed to .github/')
             ->assertExitCode(Command::SUCCESS);
 
         $this->assertFileExists(base_path('.github/copilot-instructions.md'));
+        $this->assertFileExists(base_path('.github/instructions/laravel-api-tool-kit.instructions.md'));
+        $this->assertFileExists(base_path('knowledge/_TEMPLATE.md'));
 
-        $content = File::get(base_path('.github/copilot-instructions.md'));
+        $global = File::get(base_path('.github/copilot-instructions.md'));
+        $this->assertStringContainsString('Laravel API Tool Kit Skill', $global);
+        $this->assertStringContainsString('<!-- LARAVEL API TOOL KIT START -->', $global);
+
+        $phpSpecific = File::get(base_path('.github/instructions/laravel-api-tool-kit.instructions.md'));
+        $this->assertStringContainsString('applyTo: "**/*.php"', $phpSpecific);
+        $this->assertStringContainsString('# Action Classes', $phpSpecific);
+    }
+
+    /** @test */
+    public function it_installs_for_antigravity(): void
+    {
+        $this->artisan('api-skill:install')
+            ->expectsChoice('Which AI coding tool are you using?', 'Antigravity', [
+                'Claude Code',
+                'Cursor',
+                'GitHub Copilot',
+                'Antigravity',
+            ])
+            ->expectsOutput('  ✓ Installed to AGENTS.md + .agent/skills/')
+            ->assertExitCode(Command::SUCCESS);
+
+        $this->assertFileExists(base_path('AGENTS.md'));
+        $this->assertFileExists(base_path('.agent/skills/code-review/SKILL.md'));
+        $this->assertFileExists(base_path('.agent/knowledge/_TEMPLATE.md'));
+
+        $content = File::get(base_path('AGENTS.md'));
+        $this->assertStringContainsString('Laravel API Tool Kit Skill', $content);
         $this->assertStringContainsString('<!-- LARAVEL API TOOL KIT START -->', $content);
         $this->assertStringContainsString('# Action Classes', $content);
+    }
+
+    /** @test */
+    public function it_performs_smart_update_on_antigravity(): void
+    {
+        File::put(base_path('AGENTS.md'), "Existing user rules.\n");
+
+        $this->artisan('api-skill:install')
+            ->expectsChoice('Which AI coding tool are you using?', 'Antigravity', [
+                'Claude Code',
+                'Cursor',
+                'GitHub Copilot',
+                'Antigravity',
+            ])
+            ->assertExitCode(Command::SUCCESS);
+
+        $content = File::get(base_path('AGENTS.md'));
+        $this->assertStringContainsString("Existing user rules.\n", $content);
+        $this->assertStringContainsString('<!-- LARAVEL API TOOL KIT START -->', $content);
     }
 
     private function cleanup(): void
     {
         File::deleteDirectory(base_path('.cursor'));
-        File::deleteDirectory(base_path('.agents'));
+        File::deleteDirectory(base_path('.agent'));
         File::deleteDirectory(base_path('.github'));
         File::deleteDirectory(base_path('.claude'));
+        File::deleteDirectory(base_path('knowledge'));
         File::deleteDirectory(base_path('skill'));
         File::delete(base_path('CLAUDE.md'));
+        File::delete(base_path('AGENTS.md'));
+        File::delete(base_path('GEMINI.md'));
     }
 }

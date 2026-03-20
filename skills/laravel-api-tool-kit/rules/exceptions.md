@@ -11,13 +11,16 @@
 
 ## Business Rule Violations
 
+Business logic belongs in Actions, not controllers. Throw from the Action — the exception handler converts it to the correct HTTP response automatically.
+
 ```php
-// In an Action or service:
+// In an Action or Service — always throw, never return a response:
 if ($user->hasReachedCarLimit()) {
     throw new UnprocessableEntityHttpException(trans('car.limit_reached'));
 }
 
-// In a controller (only if not delegating to an action):
+// In a controller — only for infrastructure-level guards (e.g., feature flag off),
+// not for domain rules. Use responseUnprocessable() only when there is truly no Action involved:
 return $this->responseUnprocessable(trans('car.limit_reached'));
 ```
 

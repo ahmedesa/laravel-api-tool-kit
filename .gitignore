@@ -1,8 +1,20 @@
 /vendor
-.idea
-.phpintel
-build
-.phpunit.result.cache
+/.idea
+/.phpintel
+/build
+/.phpunit.result.cache
 /.phpunit.cache
-composer.lockDockerfile
 /Dockerfile
+
+# AI tool installation artifacts (NOT part of the package source)
+/.agent
+/.agents
+/.claude
+/.cursor
+/.github/copilot-instructions.md
+/.github/instructions
+/skills/laravel-api-tool-kit -> ../.agents/skills/laravel-api-tool-kit
+/skills-lock.json
+/AGENTS.md
+/CLAUDE.md
+/knowledge

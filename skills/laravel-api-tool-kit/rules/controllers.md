@@ -70,10 +70,13 @@ class CarController extends Controller
 
 ## Middleware
 
+Apply middleware at the route level (preferred in Laravel 11+, required in Laravel 12 — constructor middleware was deprecated):
+
 ```php
-public function __construct()
-{
-    $this->middleware('auth:sanctum');
-    $this->middleware('throttle:10,1')->only(['store']);
-}
+// routes/api.php
+Route::apiResource('cars', CarController::class)
+    ->middleware('auth:sanctum');
+
+Route::post('cars', [CarController::class, 'store'])
+    ->middleware(['auth:sanctum', 'throttle:10,1']);
 ```

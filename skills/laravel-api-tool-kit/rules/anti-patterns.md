@@ -178,18 +178,24 @@ $cars = Car::useFilters()->dynamicPaginate();
 
 ## Dependency Injection
 
-**NEVER instantiate services or actions with `new`**
+**NEVER instantiate services, actions, or repositories with `new`**
 ```php
-// Wrong
-public function store(CreateCarRequest $request): JsonResponse
+// Wrong — in a controller
+$action = new CreateCarAction();
+
+// Wrong — in a service or action
+class CarService
 {
-    $action = new CreateCarAction();
-    $car = $action->execute($request->validated());
+    public function doSomething(): void
+    {
+        $repo = new CarRepository(); // breaks DI, untestable
+    }
 }
 
-// Correct — inject via constructor
+// Correct — inject everything via constructor
 public function __construct(
     private readonly CreateCarAction $createCar,
+    private readonly CarRepository $carRepository,
 ) {}
 ```
 
@@ -248,6 +254,23 @@ $table->id();
 
 // Correct
 $table->ulid('id')->primary();
+```
+
+**NEVER forget to declare ULID key properties on the Model**
+```php
+// Wrong — Eloquent defaults to integer auto-increment, breaks ULID comparisons
+class Car extends Model {}
+
+// Correct — use HasUlids trait and declare key properties explicitly
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
+
+class Car extends Model
+{
+    use HasUlids;
+
+    protected $keyType = 'string';
+    public $incrementing = false;
+}
 ```
 
 **NEVER hardcode `auth()->id()` in a model scope**

@@ -36,7 +36,7 @@ Simple `array $data` pass-through from `$request->validated()` for a basic `Mode
 ## Structure
 
 ```php
-readonly class UpdateUserData
+final readonly class UpdateUserData
 {
     public function __construct(
         private ?string $name,
@@ -70,10 +70,46 @@ class UpdateUserProfileAction
 
 ## Constructing from Request (in Controller)
 
+Prefer a `fromRequest()` static factory on the DTO — avoids repeating field names at the call site and centralises the mapping:
+
 ```php
-$action->execute($user, new UpdateUserData(
-    name:  $request->validated('name'),
-    email: $request->validated('email'),
-    phone: $request->validated('phone'),
-));
+final readonly class UpdateUserData
+{
+    public function __construct(
+        private ?string $name,
+        private ?string $email,
+        private ?string $phone,
+    ) {}
+
+    public static function fromRequest(UpdateUserProfileRequest $request): self
+    {
+        return new self(
+            name:  $request->validated('name'),
+            email: $request->validated('email'),
+            phone: $request->validated('phone'),
+        );
+    }
+
+    public function getName(): ?string { return $this->name; }
+    public function getEmail(): ?string { return $this->email; }
+    public function getPhone(): ?string { return $this->phone; }
+}
+```
+
+```php
+// Controller — clean call site
+$action->execute($user, UpdateUserData::fromRequest($request));
+```
+
+Also acceptable: `fromArray()` when building from `$request->validated()` or queue payloads:
+
+```php
+public static function fromArray(array $data): self
+{
+    return new self(
+        name:  $data['name'] ?? null,
+        email: $data['email'] ?? null,
+        phone: $data['phone'] ?? null,
+    );
+}
 ```

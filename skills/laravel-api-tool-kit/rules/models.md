@@ -40,6 +40,40 @@ class Car extends Model
 }
 ```
 
+## ULID Primary Keys
+
+When the project uses ULID as the primary key, use the `HasUlids` trait — it auto-generates IDs and sets the correct key type. Also explicitly declare `$keyType` and `$incrementing` so Eloquent comparisons and route model binding work correctly:
+
+```php
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
+
+class Car extends Model
+{
+    use HasFactory, Filterable, HasUlids;
+
+    protected $keyType = 'string';
+    public $incrementing = false;
+
+    // ...
+}
+```
+
+Enable all three strict-mode guards in `AppServiceProvider::boot()`. Read from config — never call `env()` directly in application code:
+
+```php
+// config/app.php — add this key
+'strict' => (bool) env('APP_STRICT', true),
+
+// AppServiceProvider::boot()
+$strict = config('app.strict');
+
+Model::shouldBeStrict($strict);
+Model::preventLazyLoading($strict);
+Model::preventSilentlyDiscardingAttributes($strict);
+```
+
+Set `APP_STRICT=true` in `.env.example` so all developers get strict mode locally. Set `APP_STRICT=false` in the production `.env`.
+
 ## Model Method (single-step, own data)
 
 ```php
@@ -66,7 +100,7 @@ public function scopeForCurrentUser(Builder $q): Builder
 }
 
 // Correct
-public function scopeForUser(Builder $q, ?int $userId = null): Builder
+public function scopeForUser(Builder $q, ?string $userId = null): Builder
 {
     return $q->where('user_id', $userId ?? auth()->id());
 }

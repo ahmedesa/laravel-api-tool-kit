@@ -73,7 +73,8 @@ class CarFilters extends QueryFilters
 ```php
 public function index(): AnonymousResourceCollection
 {
-    $cars = Car::with(['brand', 'owner'])->useFilters()->dynamicPaginate();
-    return CarResource::collection($cars);
+    return CarResource::collection(Car::useFilters()->dynamicPaginate());
 }
 ```
+
+Do NOT call `with()` in the controller for relationships already listed in `$allowedIncludes` — eager loading is handled automatically when the client passes `?includes=brand,owner`. Hardcoding `with()` defeats the purpose and always loads relations even when not needed.

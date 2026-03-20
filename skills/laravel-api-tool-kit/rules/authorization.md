@@ -15,6 +15,24 @@ All model-level authorization MUST live in Policies — centralized, reusable, k
 ```php
 class CarPolicy
 {
+    // viewAny — guards the index endpoint (listing all records)
+    public function viewAny(User $user): bool
+    {
+        return true; // or: $user->hasRole('admin')
+    }
+
+    // view — guards the show endpoint (single record)
+    public function view(User $user, Car $car): bool
+    {
+        return $car->user_id === $user->id;
+    }
+
+    // create — guards the store endpoint
+    public function create(User $user): bool
+    {
+        return true;
+    }
+
     public function update(User $user, Car $car): bool
     {
         return $car->user_id === $user->id;
@@ -30,6 +48,12 @@ class CarPolicy
 ## Controller Usage
 
 ```php
+public function index(): AnonymousResourceCollection
+{
+    $this->authorize('viewAny', Car::class);
+    return CarResource::collection(Car::useFilters()->dynamicPaginate());
+}
+
 public function update(UpdateCarRequest $request, Car $car): JsonResponse
 {
     $this->authorize('update', $car);

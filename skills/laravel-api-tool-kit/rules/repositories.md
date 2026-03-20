@@ -22,10 +22,12 @@ For simple queries (e.g., `Post::where('status', 'active')->get()`), you can jus
 ```php
 class PostRepository
 {
-    public function search(array $filters): LengthAwarePaginator
+    // useFilters() reads from the current HTTP request automatically — no array param needed.
+    // Call this from the controller: $this->postRepository->search()
+    public function search(): LengthAwarePaginator
     {
         return Post::query()
-            ->useFilters($filters)
+            ->useFilters()
             ->latest()
             ->dynamicPaginate();
     }

@@ -1,23 +1,29 @@
-  name: Run Tests
+name: Run Tests
 
-  on: [push]
+on: [push]
 
-  jobs:
-    test:
-      runs-on: ubuntu-latest
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [8.2, 8.3, 8.4]
 
-      steps:
-        - name: Checkout code
-          uses: actions/checkout@v4
+    name: PHP ${{ matrix.php }}
 
-        - name: Set up PHP
-          uses: shivammathur/setup-php@v2
-          with:
-            php-version: 8.3
-            coverage: xdebug
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-        - name: Install dependencies
-          run: composer install
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
 
-        - name: Run tests
-          run: XDEBUG_MODE=coverage ./vendor/bin/phpunit
+      - name: Install dependencies
+        run: composer install
+
+      - name: Run tests
+        run: ./vendor/bin/phpunit

@@ -1,0 +1,14 @@
+{
+  "name": "laravel-api-tool-kit",
+  "version": "3.2.0",
+  "description": "Production-grade rules and workflows for Laravel REST APIs built with essa/api-tool-kit. 21 rule files and 8 guided workflows covering every layer of a Laravel API including DDD support.",
+  "author": {
+    "name": "Ahmed Essa",
+    "email": "ahmedessa1997@gmail.com"
+  },
+  "homepage": "https://laravelapitoolkit.com",
+  "repository": "https://github.com/ahmedesa/laravel-api-tool-kit",
+  "license": "MIT",
+  "keywords": ["laravel", "php", "api", "rest", "ddd", "eloquent", "crud"],
+  "commands": "./skills/laravel-api-tool-kit/workflows/"
+}

@@ -1,0 +1,9 @@
+{
+  "name": "Laravel API Tool Kit",
+  "version": "3.2.0",
+  "description": "Production-grade rules and workflows for Laravel REST APIs. Covers ApiResponse, QueryFilters, dynamic pagination, Actions, DTOs, Policies, Enums, and DDD — 21 rule files and 8 guided workflows that make your AI write correct Laravel code from the first draft.",
+  "author": "ahmedesa",
+  "tags": ["laravel", "php", "api", "rest", "ddd", "eloquent", "crud"],
+  "homepage": "https://github.com/ahmedesa/laravel-api-tool-kit",
+  "rules_path": "skills/laravel-api-tool-kit/rules"
+}

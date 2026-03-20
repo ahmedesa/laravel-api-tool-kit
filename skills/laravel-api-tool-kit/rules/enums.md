@@ -45,8 +45,11 @@ protected $casts = ['status' => CarStatusEnum::class];
 ## In Resource
 
 ```php
+'status' => $this->status->value,
+```
+
 ## Strategy for Magic Values
- 
+
 If a value carries business meaning or is used in multiple places, extract it.
 
 | Scenario | Action |

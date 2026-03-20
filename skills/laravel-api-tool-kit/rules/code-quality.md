@@ -9,6 +9,7 @@
 - NEVER hardcode business-meaning strings or numbers — use enums, constants, or config values (see table below)
 - NEVER commit commented-out code
 - NEVER call `env()` in application code — only inside `config/*.php` files
+- NEVER use fully qualified class names (e.g. `\App\Domain\User\Models\User`) in code logic, model casts, or policy parameters — ALWAYS use `use` imports at the top and the short class name
 
 ## No Hardcoded Values — Total Elimination
 
@@ -19,7 +20,7 @@ Every repeated or business-meaning value (string, number, or boolean) MUST have 
 | Domain status / type | Backed Enum — see `rules/enums.md` |
 | Storage / Media paths | `StoragePaths` Enum (e.g. `case PETS = 'pets'`) |
 | Role / Permission names | `RoleName` or `Ability` Enum |
-| Cache / session / cookie key | `CacheKeys` class with `sprintf` — see below |
+| Cache / session / cookie key | `CacheKeysConstants` Enum with `key()` + `ttl()` — see below |
 | Config-level threshold / size | Shared constants class (e.g. `App\Constants\`) |
 | Single-use class constant | `private const` on the class itself |
 
@@ -84,41 +85,49 @@ class CloseStoreAction
     private const HIGH_UTILIZATION_THRESHOLD = 80;
 }
 
-// Shared (app/Constants/ or app/Enums/)
-class CacheIntervalConstants
+// Shared numeric thresholds (app/Constants/)
+class UtilizationConstants
 {
-    public const ONE_HOUR = 3600;
-    public const ONE_DAY = 86400;
+    public const HIGH_THRESHOLD = 80;
+    public const MAX_BATCH_SIZE = 500;
 }
-
-// Usage
-Cache::remember('cars', CacheIntervalConstants::ONE_HOUR, fn() => Car::all());
 ```
 
 ## Key Constants (Cache / Session / Cookies)
 
-NEVER use inline strings for cache, session, or cookie keys. Use a dedicated constants class. Use `sprintf` placeholders for dynamic parts:
+NEVER use inline strings for cache, session, or cookie keys. Use a backed **Enum** so each key carries its own TTL and a typed `key()` method:
 
 ```php
 namespace App\Enums\Cache;
 
-class CacheKeys
+enum CacheKeysConstants: string
 {
-    public const TTL = 900; // 15 minutes
+    case USER_PROFILE     = 'user:%s:profile';
+    case USER_PERMISSIONS = 'user:%s:permissions';
+    case PRODUCT_STOCK    = 'product:%s:stock';
 
-    public const USER_PROFILE     = 'user:%s:profile';
-    public const USER_PERMISSIONS = 'user:%s:permissions';
-    public const PRODUCT_STOCK    = 'product:%s:stock';
+    public function ttl(): int
+    {
+        return match ($this) {
+            self::USER_PERMISSIONS => 300,
+            default                => 900,
+        };
+    }
+
+    public function key(mixed ...$args): string
+    {
+        return sprintf($this->value, ...$args);
+    }
 }
 ```
 
 ```php
 // Usage
 Cache::remember(
-    sprintf(CacheKeys::USER_PROFILE, $userId),
-    CacheKeys::TTL,
+    CacheKeysConstants::USER_PROFILE->key($userId),
+    CacheKeysConstants::USER_PROFILE->ttl(),
     fn() => $user->fresh()
 );
-
-Session::put(sprintf(CacheKeys::PRODUCT_STOCK, $productId), $stock);
 ```
+
+Benefits over a plain class: each key owns its TTL, `->key()` is typed and IDE-auto-completable, adding a new key never forgets its TTL.

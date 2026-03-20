@@ -18,9 +18,9 @@ For simple `Model::create($data)` or `Model::update($data)` — do it directly i
 
 ## Rules
 
-- MUST be `final` — Actions are never extended; create a new Action instead
+- MUST be declared `final readonly class` — Actions are never extended or mutated
 - MUST have a single public method named `execute()`
-- MUST use `private readonly` constructor promotion for all dependencies
+- MUST use `private` constructor promotion (`readonly` is implicit on the class)
 - MUST be injected into the controller via constructor — NEVER instantiated with `new`
 - MUST return the resulting model, a collection, or `void` — NEVER return an HTTP response
 - MUST use a DTO when any parameter would be `array` OR total params exceed 3 — see `rules/dtos.md`
@@ -31,10 +31,10 @@ For simple `Model::create($data)` or `Model::update($data)` — do it directly i
 ## Structure
 
 ```php
-final class SendInvitationAction
+final readonly class SendInvitationAction
 {
     public function __construct(
-        private readonly MailService $mail,
+        private MailService $mail,
     ) {}
 
     public function execute(Team $team, string $email): Invitation

@@ -7,8 +7,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
+      # Laravel 13 + Symfony 8 (dev deps) require PHP >= 8.4 for composer install / phpunit
       matrix:
-        php: [8.2, 8.3, 8.4]
+        php: [8.4, 8.5]
 
     name: PHP ${{ matrix.php }}
 

@@ -42,7 +42,7 @@
     "is_null": true,
     "lambda_not_used_import": true,
     "logical_operators": true,
-    "mb_str_functions": true,
+    "mb_str_functions": false,
     "method_chaining_indentation": true,
     "modernize_strpos": true,
     "new_with_braces": true,

@@ -116,6 +116,7 @@ The order is always:
 ### Building
 - `workflows/new-endpoint.md` — add a complete CRUD resource from scratch
 - `workflows/add-filter.md` — add filtering to an existing model
+- `workflows/write-tests.md` — write tests for any feature (decides test type, structure, actors, edge cases)
 
 ### Reviewing
 - `workflows/code-review.md` — multi-phase code review (structural + defense + scope discipline)
